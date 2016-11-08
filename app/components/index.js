@@ -1,7 +1,7 @@
 import React from 'react';
 import Rooms from './Rooms';
 import Item from './Rooms/Item';
-import Create from './Rooms/Create'
+import Create from './Rooms/Create';
 import { Scene, Router } from 'react-native-router-flux';
 
 const App = () => {

@@ -4,22 +4,26 @@ import { Text,
   TextInput,
   View,
   StyleSheet,
-  TouchableHighlight
+  TouchableHighlight,
 } from 'react-native';
 import _ from 'lodash';
+import { Actions } from 'react-native-router-flux';
+import { addRoom } from './action';
+import { bindActionCreators } from 'redux';
 
 class CreateRoom extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      number: 'Please enter the room name',
-      location: 'Please enter the room location',
-      price: 'Please enter the price',
+      number: '',
+      location: '',
+      price: '',
     };
   }
 
-  _onClick(){
-    console.log(this.state);
+  _onClick() {
+    this.props.addRoom(this.state);
+    Actions.pop({ refresh: { rooms: this.props.rooms } });
   }
 
   render() {
@@ -29,21 +33,24 @@ class CreateRoom extends Component {
 
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          placeholder='Enter Room Number here'
           onChangeText={(number) => this.setState({number})}
           value={this.state.number}
         />
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          placeholder='Enter Location here'
           onChangeText={(location) => this.setState({location})}
           value={this.state.location}
         />
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          placeholder='Enter Price here'
           onChangeText={(price) => this.setState({price})}
           value={this.state.price}
         />
 
-        <TouchableHighlight onPress={ ()=> this._onClick()}>
+        <TouchableHighlight onPress={() => this._onClick()}>
           <Text> SAVE </Text>
         </TouchableHighlight>
 
@@ -70,8 +77,12 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    activeRoom: state.activeRoom,
+    rooms: state.rooms
   };
 }
 
-export default connect(mapStateToProps)(CreateRoom);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addRoom: addRoom }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateRoom);

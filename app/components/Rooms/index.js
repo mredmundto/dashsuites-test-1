@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
-import { selectRoom, addRoom } from './action';
+import { selectRoom } from './action';
 import { Actions } from 'react-native-router-flux';
 
 class App extends Component {
@@ -21,6 +21,7 @@ class App extends Component {
   addItem(){
     Actions.Create();
   }
+  
   render() {
     return (
       <View style={styles.container}>
@@ -57,27 +58,19 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   addButtonText: {
-    fontSize: 35
+    fontSize: 35,
+    color: 'white',
   },
   addButton: {
     backgroundColor: '#1976d2',
-    borderColor: '#1976d2',
-    borderWidth: 1,
-    height: 70,
-    width: 70,
-    borderRadius: 50,
+    height: 65,
+    width: 65,
+    borderRadius: 45,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
     bottom: 20,
-    right:20,
-    shadowColor: "#000000",
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 1,
-      width: 0,
-    }
+    right: 20,
   },
 });
 

@@ -8,9 +8,7 @@ const initialState = [
 export default function (state = initialState, action) {
   switch (action.type) {
     case 'ADD_ROOM': {
-      const newState = state;
-      newState.push(action.payload);
-      return newState;
+      return [...state, action.payload];
     }
     default:
       return state;

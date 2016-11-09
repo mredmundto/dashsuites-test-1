@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { selectRoom } from './action';
@@ -31,14 +31,14 @@ class App extends Component {
 
         {this.props.rooms.map(room => {
           return (
-            <TouchableHighlight key={room.number} onPress={ () => this._onClick(room) }>
+            <TouchableOpacity key={room.number} onPress={ () => this._onClick(room) }>
             <Text style={styles.content} key={room.number}> {room.number} </Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
           );
         })}
-        <TouchableHighlight style={styles.addButton}onPress={ ()=> this.addItem()}>
+        <TouchableOpacity style={styles.addButton}onPress={ ()=> this.addItem()}>
           <Text style={styles.addButtonText}> + </Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     );
   }

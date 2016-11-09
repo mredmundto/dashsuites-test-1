@@ -4,7 +4,7 @@ import { Text,
   TextInput,
   View,
   StyleSheet,
-  TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
 import { Actions } from 'react-native-router-flux';
@@ -50,9 +50,9 @@ class CreateRoom extends Component {
           value={this.state.price}
         />
 
-        <TouchableHighlight onPress={() => this._onClick()}>
+        <TouchableOpacity onPress={() => this._onClick()}>
           <Text> SAVE </Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
 
       </View>
     );

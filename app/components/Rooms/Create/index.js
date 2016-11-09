@@ -10,6 +10,16 @@ import _ from 'lodash';
 import { Actions } from 'react-native-router-flux';
 import { addRoom } from './action';
 import { bindActionCreators } from 'redux';
+import Elements from '../../../../composeComponents/Form/Elements';
+
+// importing the constants for theme
+import constants from '../../../../constants';
+
+console.log('constants in create', constants);
+
+const {
+  Input,
+} = Elements;
 
 class CreateRoom extends Component {
   constructor(props) {
@@ -21,7 +31,8 @@ class CreateRoom extends Component {
     };
   }
 
-  _onClick() {
+  onClick() {
+    console.log('in create and index', this.state);
     this.props.addRoom(this.state);
     Actions.pop({ refresh: { rooms: this.props.rooms } });
   }
@@ -31,26 +42,26 @@ class CreateRoom extends Component {
       <View>
         <Text> Create room page</Text>
 
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          placeholder='Enter Room Number here'
-          onChangeText={(number) => this.setState({number})}
-          value={this.state.number}
+        <Input
+          headerText="Room Number"
+          placeholder="Enter Room Number here"
+          maxLength={10}
+          onChangeText={(number) => { this.setState({ number })}}
+          constants={constants}
         />
+
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           placeholder='Enter Location here'
           onChangeText={(location) => this.setState({location})}
-          value={this.state.location}
         />
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           placeholder='Enter Price here'
           onChangeText={(price) => this.setState({price})}
-          value={this.state.price}
         />
 
-        <TouchableOpacity onPress={() => this._onClick()}>
+        <TouchableOpacity onPress={() => this.onClick()}>
           <Text> SAVE </Text>
         </TouchableOpacity>
 

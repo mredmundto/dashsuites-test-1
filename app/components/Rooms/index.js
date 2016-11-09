@@ -12,7 +12,7 @@ import { Actions } from 'react-native-router-flux';
 
 class App extends Component {
 
-  _onClick(room) {
+  onClick(room) {
     this.props.selectRoom(room);
     // routing to view one item
     Actions.Item();
@@ -31,7 +31,7 @@ class App extends Component {
 
         {this.props.rooms.map(room => {
           return (
-            <TouchableOpacity key={room.number} onPress={ () => this._onClick(room) }>
+            <TouchableOpacity key={room.number} onPress={ () => this.onClick(room) }>
             <Text style={styles.content} key={room.number}> {room.number} </Text>
             </TouchableOpacity>
           );

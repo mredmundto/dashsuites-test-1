@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { selectRoom } from './action';
@@ -12,12 +12,16 @@ import { Actions } from 'react-native-router-flux';
 
 class App extends Component {
 
-  _onClick(room) {
+  onClick(room) {
     this.props.selectRoom(room);
     // routing to view one item
     Actions.Item();
   }
 
+  addItem(){
+    Actions.Create();
+  }
+  
   render() {
     return (
       <View style={styles.container}>
@@ -27,12 +31,14 @@ class App extends Component {
 
         {this.props.rooms.map(room => {
           return (
-            <TouchableHighlight key={room.number} onPress={ () => this._onClick(room) }>
+            <TouchableOpacity key={room.number} onPress={ () => this.onClick(room) }>
             <Text style={styles.content} key={room.number}> {room.number} </Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
           );
         })}
-
+        <TouchableOpacity style={styles.addButton}onPress={ ()=> this.addItem()}>
+          <Text style={styles.addButtonText}> + </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -50,6 +56,21 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 20,
     margin: 5,
+  },
+  addButtonText: {
+    fontSize: 35,
+    color: 'white',
+  },
+  addButton: {
+    backgroundColor: '#1976d2',
+    height: 65,
+    width: 65,
+    borderRadius: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
   },
 });
 

@@ -15,11 +15,11 @@ class App extends Component {
   onClick(room) {
     this.props.selectRoom(room);
     // routing to view one item
-    Actions.Item();
+    Actions.ItemRoom();
   }
 
   addItem(){
-    Actions.Create();
+    Actions.CreateRoom();
   }
   
   render() {
@@ -32,7 +32,7 @@ class App extends Component {
         {this.props.rooms.map(room => {
           return (
             <TouchableOpacity key={room.number} onPress={ () => this.onClick(room) }>
-            <Text style={styles.content} key={room.number}> {room.number} </Text>
+            <Text style={styles.content} key={room.number}> Room Number: {room.number} </Text>
             </TouchableOpacity>
           );
         })}
@@ -77,6 +77,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     rooms: state.rooms,
+    activeRoom: state.activeRoom,
+    reviews: state.reviews,
   };
 }
 

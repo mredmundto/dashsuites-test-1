@@ -12,10 +12,7 @@ import { addRoom } from './action';
 import { bindActionCreators } from 'redux';
 import Elements from '../../../../composeComponents/Form/Elements';
 
-// importing the constants for theme
 import constants from '../../../../constants';
-
-console.log('constants in create', constants);
 
 const {
   Input,

@@ -50,6 +50,22 @@ class CreateRoom extends Component {
           constants={constants}
         />
 
+        <Input
+          headerText="Location"
+          placeholder="Enter Location here"
+          maxLength={50}
+          onChangeText={(location) => { this.setState({ location })}}
+          constants={constants}
+        />
+
+        <Input
+          headerText="Price"
+          placeholder="Enter price per night in HKD"
+          maxLength={4}
+          onChangeText={(price) => { this.setState({ price })}}
+          constants={constants}
+        />
+        {/*
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           placeholder='Enter Location here'
@@ -60,9 +76,10 @@ class CreateRoom extends Component {
           placeholder='Enter Price here'
           onChangeText={(price) => this.setState({price})}
         />
+        */}
 
         <TouchableOpacity onPress={() => this.onClick()}>
-          <Text> SAVE </Text>
+          <Text style={styles.content}> SAVE </Text>
         </TouchableOpacity>
 
       </View>

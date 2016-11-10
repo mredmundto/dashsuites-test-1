@@ -9,7 +9,7 @@ import React, {
 import {
   View,
   TextInput,
-  Text,
+  // Text,
 } from 'react-native';
 
 import HeaderText from './HeaderText';
@@ -47,17 +47,15 @@ class Input extends Component {
 
     return (
       <View style={[{ marginTop: 10, marginBottom: 10, backgroundColor: 'transparent' }, style]}>
-        {
-          headerTextLabel ?
-            <HeaderText
-              value={headerTextLabel}
-              // style={this.state.validationResult.valid ?
-              //  null
-              //  :
-              //  this.props.validationHeaderStyle}
-            /> :
-            null
-        }
+        {headerTextLabel ?
+          <HeaderText
+            value={headerTextLabel}
+            // style={this.state.validationResult.valid ?
+            //  null
+            //  :
+            //  this.props.validationHeaderStyle}
+          />
+        : null}
         <TextInput
           {...others}
           maxLength={maxLength}

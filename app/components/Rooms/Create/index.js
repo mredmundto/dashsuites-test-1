@@ -75,8 +75,11 @@ class CreateRoom extends Component {
         />
         */}
 
-        <TouchableOpacity onPress={() => this.onClick()}>
-          <Text style={styles.content}> SAVE </Text>
+        <TouchableOpacity
+          style={styles.button} 
+          onPress={() => this.onClick()}
+        >
+          <Text style={styles.buttonText}> SAVE </Text>
         </TouchableOpacity>
 
       </View>
@@ -96,6 +99,17 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 20,
     margin: 5,
+  },
+  button: {
+    backgroundColor: '#1976d2',
+    height:50,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonText: {
+    fontSize:20,
+    color: 'white'
   },
 
 });

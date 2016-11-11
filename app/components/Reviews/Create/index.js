@@ -24,7 +24,7 @@ class CreateReview extends Component {
     super(props);
     this.state = {
       room: this.props.activeRoom.number,
-      time: Date.now(),
+      time: new Date(),
       rating: '',
     };
   }
@@ -37,7 +37,8 @@ class CreateReview extends Component {
   render() {
     return (
       <View>
-        <Text> new review for room {this.props.activeRoom.number} </Text>
+        <Text style={styles.content}> New review for room {this.props.activeRoom.number} </Text>
+        <Text> (More to be added) </Text>
        
         <Input
           headerText="Rating"
@@ -47,8 +48,11 @@ class CreateReview extends Component {
           constants={constants}
         />
 
-        <TouchableOpacity onPress={() => this.onClick()}>
-          <Text style={styles.content}> Submit the review </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.onClick()}
+        >
+          <Text style={styles.buttonText}> Submit </Text>
         </TouchableOpacity>
       
       </View>
@@ -70,7 +74,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: 5,
   },
-
+  button: {
+    backgroundColor: '#1976d2',
+    height:50,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonText: {
+    fontSize:20,
+    color: 'white'
+  },
 });
 
 function mapStateToProps(state) {

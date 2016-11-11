@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Text,
   View,
+  ScrollView,
   StyleSheet,
   Image,
   TouchableOpacity
@@ -12,6 +13,9 @@ import { Actions } from 'react-native-router-flux';
 class RoomDetail extends Component {
   onClick() {
     Actions.CreateReview();
+  }
+  convertTimeFormat(dateObject){
+
   }
 
   render() {
@@ -24,21 +28,21 @@ class RoomDetail extends Component {
     }
 
     return (
-      <View>
+      <ScrollView>
         {_.map(this.props.activeRoom, (value, key) => {
           if (key === 'image') {
 
           return (
            <Image
              key={key}
-             style={{ width: 150, height: 150 }}
+             style={{ width: 380, height: 200 }}
              
              // react native image does not support dynamic rendering via require (require is for rendering local images)
              // for Demo purpose, we hardcode source to support demo without the internet            
              source={require('../../../../resources/images/1.jpg')}
 
              // we will use this for live app 
-             //source={require(value)}
+             //source={{uri: value}}
            />
             );
           }
@@ -46,8 +50,11 @@ class RoomDetail extends Component {
 
         })}
 
-        <TouchableOpacity onPress={() => this.onClick()}>
-          <Text style={styles.content}> Submit a review </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.onClick()}
+        >
+          <Text style={styles.buttonText}> Submit a review </Text>
         </TouchableOpacity>
 
         <Text style={styles.content}>
@@ -55,15 +62,16 @@ class RoomDetail extends Component {
         </Text>
 
         {this.props.reviews.map(review => {
-          return (
-          <Text style={styles.content} key={review.time}> 
-          # {review.room}
-          , Rating {review.rating}
-          , Date {review.time} </Text>
-          )
+            if (review.room === this.props.activeRoom.number){
+              return (
+                <Text key={review.time}> 
+                  {review.time.toString()}
+                  - Rating {review.rating}
+                </Text>
+              );
+            }
         })}
-
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -72,6 +80,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',
+  },
+  button: {
+    backgroundColor: '#1976d2',
+    height:50,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonText: {
+    fontSize:20,
+    color: 'white'
   },
   welcome: {
     fontSize: 25,

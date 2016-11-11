@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
@@ -28,14 +29,15 @@ class App extends Component {
         <Text style={styles.welcome}>
           Please select a room
         </Text>
-
-        {this.props.rooms.map(room => {
-          return (
-            <TouchableOpacity key={room.number} onPress={ () => this.onClick(room) }>
-            <Text style={styles.content} key={room.number}> Room Number: {room.number} </Text>
-            </TouchableOpacity>
-          );
-        })}
+        <ScrollView>
+          {this.props.rooms.map(room => {
+            return (
+                <TouchableOpacity key={room.number} onPress={ () => this.onClick(room) }>
+                  <Text style={styles.content} key={room.number}> Room Number: {room.number} </Text>
+                </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
         <TouchableOpacity style={styles.addButton}onPress={ ()=> this.addItem()}>
           <Text style={styles.addButtonText}> + </Text>
         </TouchableOpacity>

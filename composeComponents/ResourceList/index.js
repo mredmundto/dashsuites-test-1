@@ -37,6 +37,7 @@ class List extends Component {
       searchModalOpen,
       onSearchClose,
       onSearchModalRequestClose,
+      onItemPress,
       ...others,
     } = this.props;
     const {
@@ -90,6 +91,7 @@ List.propTypes = {
   allowCreate: PropTypes.bool,
   data: PropTypes.func, // can return the data, or a promise that resolves with the data
   infiniteScroll: PropTypes.bool,
+  onItemPress: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {

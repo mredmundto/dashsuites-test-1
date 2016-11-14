@@ -1,48 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import {
   Text,
-  ScrollView,
   View,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
 
-const renderColumn = (val, key) => {
-  switch (typeof val) {
-    // focus action is dispatched when a new screen comes into focus
-    case 'string':
-      return <Text style={styles.columnText}>{val}</Text>;
-    default:
-      return <Text style={styles.columnText}>{'unknown type, cannot render'}</Text>;
-  }
-};
-
-const Item = (props) => {
-  const {
-    data,
-  } = props;
-  return (
-    <View
-      style={styles.container}
-    >
-      {_.map(data, (val, key) => (
-        <View
-          styles={styles.columnContainer}
-        >
-          {renderColumn(val, key)}
-        </View>
-      ))}
-    </View>
-  );
-};
-
-Item.defaultProps = {
-  data: {},
-};
-
-Item.propTypes = {
-  data: PropTypes.object,
-};
+import constants from './../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -51,6 +16,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    borderColor: constants.style.buttonBorderColor,
+    borderBottomWidth: 1,
   },
   columnContainer: {
     width: 100,
@@ -64,8 +31,52 @@ const styles = StyleSheet.create({
   },
   columnText: {
     textAlign: 'left',
-    color: 'white',
+    color: 'black',
   },
 });
+
+const renderColumn = (val, key) => {
+  switch (typeof val) {
+    // focus action is dispatched when a new screen comes into focus
+    case 'string':
+      return <Text>{val}</Text>;
+    default:
+      return <Text>{'unknown type, cannot render'}</Text>;
+  }
+};
+
+
+const Item = (props) => {
+  const {
+    data,
+  } = props;
+  return (
+    <View
+      style={styles.container}
+    >
+      {_.map(data, (val, key) => {
+        return (
+          <TouchableOpacity
+            style={styles.columnContainer}
+            key={key}
+            onPress={() => { props.onItemPress(data); }}
+          >
+            {renderColumn(val, key)}
+          </TouchableOpacity>
+      );
+      })}
+    </View>
+  );
+};
+
+Item.defaultProps = {
+  data: {},
+  onItemPress: () => {},
+};
+
+Item.propTypes = {
+  data: PropTypes.object,
+  onItemPress: PropTypes.func,
+};
 
 export default Item;

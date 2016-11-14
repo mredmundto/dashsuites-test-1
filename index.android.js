@@ -4,25 +4,24 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
   AppRegistry,
 } from 'react-native';
-import App from './app/components';
+import App from './app';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from './app/store';
-
+import devToolsEnhancer from 'remote-redux-devtools';
 const createStoreWithMiddleware = applyMiddleware()(createStore);
+const ReduxApp = () => {
+  return (
+    <Provider store={createStoreWithMiddleware(reducers, devToolsEnhancer())}>
+      <App />
+    </Provider>
+  );
+};
 
-export default class test extends Component {
-  render() {
-    return (
-        <Provider store={createStoreWithMiddleware(reducers)}>
-          <App />
-        </Provider>
-    );
-  }
-}
+AppRegistry.registerComponent('test', () => ReduxApp);
 
-AppRegistry.registerComponent('test', () => test);
+export default ReduxApp;

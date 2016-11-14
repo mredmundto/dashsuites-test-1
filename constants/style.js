@@ -1,6 +1,7 @@
 const style = Object.freeze({
-  primaryColor: '#3B77B2',
-  secondaryColor: '#66C909',
+  primaryColor: '#3E50B4',
+  backgroundColor: '#F0F0F0',
+  secondaryColor: '#078B75',
   linearGradientPrimaryStartColor: '#049FAC',
   linearGradientPrimaryMiddleColor: '#0085A6',
   linearGradientPrimaryEndColor: '#1A5A98',

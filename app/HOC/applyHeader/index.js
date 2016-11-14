@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import _ from 'lodash';
 const ApplyHeader = ComposedComponent => {
-  console.log('applyHeader');
   const ExtendedComponent = (props) => {
     const {
       Header,
@@ -14,7 +13,6 @@ const ApplyHeader = ComposedComponent => {
       router,
       ...others,
     } = props;
-    console.log(others);
     const RenderedHeader = Header || DefaultHeader;
     return (
       <View>
@@ -38,7 +36,6 @@ const ApplyHeader = ComposedComponent => {
     };
   };
 
-  return ExtendedComponent;
   return connect(mapStateToProps)(ExtendedComponent);
 };
 

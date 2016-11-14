@@ -7,6 +7,7 @@ import {
   Image,
 } from 'react-native';
 import _ from 'lodash';
+import SearchBar from '../../../composeComponents/Search/Bar';
 
 const Header = (props) => {
   const {
@@ -23,20 +24,13 @@ const Header = (props) => {
   const leftType = (leftTitle !== undefined && leftTitle.length > 0) ? 'text' : 'icon';
   const rightType = (rightTitle !== undefined && rightTitle.length > 0) ? 'text' : 'icon';
 
-  console.log(props);
   const styles = StyleSheet.create({
     container: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      left: 0,
-      height: 50,
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
       backgroundColor: _.get(constants, 'style.primaryColor', '#3E50B4'),
-      elevation: 5,
     },
     leftContainer: {
       width: 100,
@@ -75,51 +69,63 @@ const Header = (props) => {
   });
   return (
     <View
-      style={styles.container}
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        left: 0,
+        minHeight: 50,
+        elevation: 5,
+      }}
     >
-      <TouchableOpacity
-        onPress={onLeft}
-        style={styles.leftContainer}
-      >
-        {leftType === 'icon' ?
-          <Image
-            resizeMode={'center'}
-            style={styles.leftIcon}
-            source={leftImage}
-          />
-        :
-          <Text
-            style={styles.leftTitle}
-          >
-            {leftTitle.toUpperCase()}
-          </Text>
-        }
-      </TouchableOpacity>
-      <View style={styles.titleContainer}>
-        <Text
-          style={styles.title}
+      <View style={styles.container}>
+        <TouchableOpacity
+          onPress={onLeft}
+          style={styles.leftContainer}
         >
-          {_.capitalize(title)}
-        </Text>
-      </View>
-      <TouchableOpacity
-        onPress={onRight}
-        style={styles.rightContainer}
-      >
-        {rightType === 'icon' ?
-          <Image
-            resizeMode={'center'}
-            style={styles.rightIcon}
-            source={rightImage}
-          />
-        :
+          {leftType === 'icon' ?
+            <Image
+              resizeMode={'center'}
+              style={styles.leftIcon}
+              source={leftImage}
+            />
+            :
+            <Text
+              style={styles.leftTitle}
+            >
+              {leftTitle.toUpperCase()}
+            </Text>
+          }
+        </TouchableOpacity>
+        <View style={styles.titleContainer}>
           <Text
-            style={styles.rightTitle}
+            style={styles.title}
           >
-            {rightTitle.toUpperCase()}
+            {_.capitalize(title)}
           </Text>
-        }
-      </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          onPress={onRight}
+          style={styles.rightContainer}
+        >
+          {rightType === 'icon' ?
+            <Image
+              resizeMode={'center'}
+              style={styles.rightIcon}
+              source={rightImage}
+            />
+          :
+            <Text
+              style={styles.rightTitle}
+            >
+              {rightTitle.toUpperCase()}
+            </Text>
+          }
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

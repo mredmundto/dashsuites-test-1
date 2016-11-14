@@ -30,7 +30,6 @@ class CreateRoom extends Component {
   }
 
   onClick() {
-    console.log('in create and index', this.state);
     this.props.addRoom(this.state);
     Actions.pop({ refresh: { rooms: this.props.rooms } });
   }

@@ -3,6 +3,13 @@ import { connect } from 'react-redux';
 import ResourceList from '../../../composeComponents/ResourceList';
 
 class ReviewList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      modalOpen: false,
+    };
+  }
   render() {
     const {
       toggleDrawer,
@@ -13,6 +20,16 @@ class ReviewList extends Component {
           onLeft: () => {
             toggleDrawer(true);
           },
+          onRight: () => {
+            this.setState({ modalOpen: true });
+          },
+        }}
+        searchModalOpen={this.state.modalOpen}
+        onSearchClose={() => {
+          this.setState({ modalOpen: false });
+        }}
+        onSearchModalRequestClose={() => {
+          this.setState({ modalOpen: false });
         }}
       />
     );

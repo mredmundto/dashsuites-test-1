@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {
+  View,
   Text,
   ScrollView,
 } from 'react-native';
@@ -8,6 +9,7 @@ import { connect } from 'react-redux';
 import Promise from 'bluebird';
 import HOC from '../../app/HOC';
 import applyHeader from '../../app/HOC/applyHeader';
+import SearchModal from '../Search/Modal';
 
 class List extends Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class List extends Component {
       errorMessage: '',
     };
   }
+
   componentDidMount() {
     Promise.resolve(this.props.data())
       .then((data) => {
@@ -30,39 +33,60 @@ class List extends Component {
 
   render() {
     const {
+      searchable,
+      searchModalOpen,
+      onSearchClose,
+      onSearchModalRequestClose,
       ...others,
     } = this.props;
     const {
       data,
     } = this.state;
     return (
-      <ScrollView
-        {...others}
-        style={{ flex: 1 }}
-      >
-        {this.state.errorMessage ?
-          <Text>{this.state.errorMessage}</Text>
-        : null}
+      <View>
+        <ScrollView
+          {...others}
+          style={{ flex: 1 }}
+        >
+          {this.state.errorMessage ?
+            <Text>{this.state.errorMessage}</Text>
+          : null}
 
-        {this.state.loading ?
-          <Text>{'loading...'}</Text>
-        : null}
+          {this.state.loading ?
+            <Text>{'loading...'}</Text>
+          : null}
 
-        {data.map((rowData, i) => (
-          <Item data={rowData} key={i} />
-        ))}
-      </ScrollView>
+          {data.map((rowData, i) => (
+            <Item data={rowData} key={i} />
+          ))}
+        </ScrollView>
+        {searchable ?
+          <SearchModal
+            onRequestClose={onSearchModalRequestClose}
+            visible={searchModalOpen}
+            onClose={onSearchClose}
+          />
+        : null}
+      </View>
     );
   }
 }
 
 List.defaultProps = {
+  onSearchModalRequestClose: () => {},
+  searchModalOpen: false,
+  searchable: true,
   allowCreate: true,
   infiniteScroll: true,
   data: () => [],
+  onSearchClose: () => {},
 };
 
 List.propTypes = {
+  onSearchModalRequestClose: PropTypes.func,
+  searchModalOpen: PropTypes.bool,
+  searchable: PropTypes.bool,
+  onSearchClose: PropTypes.func,
   allowCreate: PropTypes.bool,
   data: PropTypes.func, // can return the data, or a promise that resolves with the data
   infiniteScroll: PropTypes.bool,
@@ -86,4 +110,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const composedList = HOC(List, [applyHeader]);
-export default connect(mapStateToProps, mapDispatchToProps)(composedList);
+const connectedList = connect(mapStateToProps, mapDispatchToProps)(composedList);
+
+export default connectedList;

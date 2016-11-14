@@ -1,39 +1,40 @@
 import React, { Component, PropTypes } from 'react';
 import {
-  TouchableOpacity,
   Text,
-  View,
   ScrollView,
-  Dimensions,
 } from 'react-native';
 import Item from './Item';
 import { connect } from 'react-redux';
+import Promise from 'bluebird';
+import HOC from '../../app/HOC';
+import applyHeader from '../../app/HOC/applyHeader';
 
 class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      data: [],
       loading: false,
       errorMessage: '',
     };
   }
   componentDidMount() {
-    if (typeof this.props.data === 'function') {
-      this.data()
+    Promise.resolve(this.props.data())
       .then((data) => {
-
+        this.setState({ data });
       })
       .catch((err) => {
         this.setState({ errorMessage: err.message });
       });
-    }
   }
 
   render() {
     const {
-      data,
       ...others,
     } = this.props;
+    const {
+      data,
+    } = this.state;
     return (
       <ScrollView
         {...others}
@@ -58,15 +59,12 @@ class List extends Component {
 List.defaultProps = {
   allowCreate: true,
   infiniteScroll: true,
-  data: [],
+  data: () => [],
 };
 
 List.propTypes = {
   allowCreate: PropTypes.bool,
-  data: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.func,
-  ]),
+  data: PropTypes.func, // can return the data, or a promise that resolves with the data
   infiniteScroll: PropTypes.bool,
 };
 
@@ -87,4 +85,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+const composedList = HOC(List, [applyHeader]);
+export default connect(mapStateToProps, mapDispatchToProps)(composedList);

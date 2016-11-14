@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "build-android": "react-native run-android && adb reverse tcp:8081 tcp:8081",
     "test": "jest"
   },
   "dependencies": {
+    "bluebird": "^3.4.6",
     "lodash": "^4.16.6",
     "react": "15.3.2",
     "react-native": "0.36.0",

@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import RoomList from './components/Rooms';
-import ReviewList from './components/Review';
+import RoomList from './components/RoomList';
+import RoomCreate from './components/RoomList/Create';
+import RoomItem from './components/RoomList/Item';
+import ReviewList from './components/ReviewList';
 import {
   Scene,
   // Router,
@@ -27,6 +29,16 @@ class App extends Component {
             key="RoomList"
             component={RoomList}
             title="Rooms"
+          />
+          <Scene
+            key="RoomCreate"
+            component={RoomCreate}
+            title="Create a room"
+          />
+          <Scene
+            key="RoomView"
+            component={RoomItem}
+            title="View a room"
           />
           <Scene
             initial

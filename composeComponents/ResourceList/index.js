@@ -30,6 +30,7 @@ class List extends Component {
 
   render() {
     const {
+      onItemPress,
       ...others,
     } = this.props;
     const {
@@ -38,7 +39,6 @@ class List extends Component {
     return (
       <ScrollView
         {...others}
-        style={{ flex: 1 }}
       >
         {this.state.errorMessage ?
           <Text>{this.state.errorMessage}</Text>
@@ -47,9 +47,8 @@ class List extends Component {
         {this.state.loading ?
           <Text>{'loading...'}</Text>
         : null}
-
         {data.map((rowData, i) => (
-          <Item data={rowData} key={i} />
+          <Item onItemPress={onItemPress} data={rowData} key={i} />
         ))}
       </ScrollView>
     );
@@ -66,6 +65,7 @@ List.propTypes = {
   allowCreate: PropTypes.bool,
   data: PropTypes.func, // can return the data, or a promise that resolves with the data
   infiniteScroll: PropTypes.bool,
+  onItemPress: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {

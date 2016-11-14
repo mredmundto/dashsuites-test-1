@@ -14,7 +14,7 @@ const ApplyHeader = ComposedComponent => {
       router,
       ...others,
     } = props;
-    console.log(others);
+    console.log('others', others);
     const RenderedHeader = Header || DefaultHeader;
     return (
       <View>
@@ -38,7 +38,6 @@ const ApplyHeader = ComposedComponent => {
     };
   };
 
-  return ExtendedComponent;
   return connect(mapStateToProps)(ExtendedComponent);
 };
 

@@ -15,7 +15,11 @@ import Action from './action';
 
 const {
   Input,
+  PhotoUploadAndroid,
+  DropDown
 } = Elements;
+
+console.log('PhotoUploadAndroid', PhotoUploadAndroid);
 
 class CreateRoom extends Component {
   constructor(props) {
@@ -24,6 +28,7 @@ class CreateRoom extends Component {
       number: '',
       location: '',
       price: '',
+      imageArr: [],
     };
     this.onClick = this.onClick.bind(this);
   }
@@ -35,9 +40,10 @@ class CreateRoom extends Component {
   }
 
   render() {
+    console.log('this state in render', this.state);
     return (
-      <View>
-        <Text> Create room page</Text>
+       <View>
+        <Text> Create room page </Text>
 
         <Input
           headerText="Room Number"
@@ -62,23 +68,17 @@ class CreateRoom extends Component {
           onChangeText={(price) => { this.setState({ price }); }}
           constants={constants}
         />
-        {/*
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          placeholder='Enter Location here'
-          onChangeText={(location) => this.setState({location})}
+        <DropDown/>
+
+        <PhotoUploadAndroid
+          headerText="Add Photos"
+          successCallback={(newImage) => { this.setState({ imageArr: [...this.state.imageArr, newImage] }); }}
         />
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          placeholder='Enter Price here'
-          onChangeText={(price) => this.setState({price})}
-        />
-        */}
 
         <TouchableOpacity onPress={() => this.onClick()}>
           <Text style={styles.content}> SAVE </Text>
         </TouchableOpacity>
-
+        
       </View>
     );
   }

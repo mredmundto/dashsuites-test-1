@@ -1,14 +1,16 @@
 import Input from './Input';
-// import DropDown from './DropDown';
+import DropDown from './DropDown';
 // import IconSelect from './IconSelect';
 // import OptionSelect from './OptionSelect';
+import PhotoUploadAndroid from './PhotoUploadAndroid';
 // import PhotoUpload from './PhotoUpload';
 // import PhotoUploadList from './PhotoUploadList';
 // import Switch from './Switch';
 // import HeaderText from './HeaderText';
-let elements = {
+const elements = {
   Input,
-  // DropDown,
+  PhotoUploadAndroid,
+  DropDown,
   // IconSelect,
   // PhotoUpload,
   // Switch,

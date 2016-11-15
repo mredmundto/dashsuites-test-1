@@ -30,8 +30,11 @@ const Header = (props) => {
 =======
       top: 0,
       height: 50,
+<<<<<<< 12ddc60b6f4d11062885f56ca5521bac57c58e59
 >>>>>>> Created clickable listview
       flex: 1,
+=======
+>>>>>>> Added Listview Header
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',

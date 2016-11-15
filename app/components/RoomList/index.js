@@ -14,6 +14,7 @@ import Action from './action';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     backgroundColor: '#F5FCFF',
   },
   content: {
@@ -59,7 +60,9 @@ class RoomList extends Component {
     } = this.props;
 
     return (
-      <View>
+      <View
+        style={styles.container}
+      >
         <ResourceList
           headerProps={{
             onLeft: () => {

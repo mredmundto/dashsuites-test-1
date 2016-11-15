@@ -28,7 +28,6 @@ const Header = (props) => {
     container: {
       top: 0,
       height: 50,
-      flex: 1,
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',

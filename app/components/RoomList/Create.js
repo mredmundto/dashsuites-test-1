@@ -6,12 +6,12 @@ import { Text,
   TouchableOpacity,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import Elements from '../../../../composeComponents/Form/Elements';
+import Elements from '../../../composeComponents/Form/Elements';
 
 // importing the constants for theme
-import constants from '../../../../constants';
+import constants from '../../../constants';
 
-import Action from './../action';
+import Action from './action';
 
 const {
   Input,

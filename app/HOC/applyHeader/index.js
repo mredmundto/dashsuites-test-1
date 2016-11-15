@@ -17,7 +17,7 @@ const ApplyHeader = ComposedComponent => {
     console.log('others', others);
     const RenderedHeader = Header || DefaultHeader;
     return (
-      <View>
+      <View style={{ flex: 1, flexDirection: 'column' }}>
         <RenderedHeader
           title={_.get(router, 'scene.title', 'title')}
           {...headerProps}

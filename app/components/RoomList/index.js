@@ -69,9 +69,7 @@ class RoomList extends Component {
               toggleDrawer(true);
             },
           }}
-          data={() => {
-            return this.props.rooms;
-          }}
+          data={this.props.rooms}
           onItemPress={this.selectRoom}
         />
         <TouchableOpacity
@@ -103,8 +101,13 @@ RoomList.propTypes = {
 };
 
 function mapStateToProps(store) {
+  const storeRooms = store.roomList.get('rooms');
+  const rooms = [];
+  storeRooms.forEach(mapRoom => {
+    rooms.push(mapRoom.toJS());
+  });
   return {
-    rooms: store.roomList.rooms,
+    rooms,
   };
 }
 

@@ -30,7 +30,7 @@ class List extends Component {
     this.state = {
       loading: false,
       errorMessage: '',
-      dataBlob: '',
+      dataBlob: props.data,
       dataSource: new ListView.DataSource({
         rowHasChanged: (r1, r2) => {
           // let result = false;
@@ -47,22 +47,31 @@ class List extends Component {
         },
       }),
     };
-    this.state.dataSource = this.state.dataSource.cloneWithRows([]);
+    this.state.dataSource = this.state.dataSource.cloneWithRows(props.data);
     this._renderRow = this._renderRow.bind(this);
   }
 
-  componentDidMount() {
-    Promise.resolve(this.props.data())
-      .then((data) => {
-        this.setState({
-          dataBlob: data,
-          dataSource: this.state.dataSource.cloneWithRows(data),
-        });
-        console.log(this.state.dataSource);
-      })
-      .catch((err) => {
-        this.setState({ errorMessage: err.message });
-      });
+  // componentDidMount() {
+  //   Promise.resolve(this.props.data())
+  //     .then((data) => {
+  //       this.setState({
+  //         dataBlob: data,
+  //         dataSource: this.state.dataSource.cloneWithRows(data),
+  //       });
+  //       console.log(this.state.dataSource);
+  //     })
+  //     .catch((err) => {
+  //       this.setState({ errorMessage: err.message });
+  //     });
+  // }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data.length === nextProps.data.length) return;
+    const data = nextProps.data;
+    this.setState({
+      dataBlob: data,
+      dataSource: this.state.dataSource.cloneWithRows(data),
+    });
   }
 
   _renderRow(rowData) {
@@ -123,8 +132,8 @@ List.defaultProps = {
   searchable: true,
   allowCreate: true,
   infiniteScroll: true,
-  data: () => [],
   onSearchClose: () => {},
+  data: [],
 };
 
 List.propTypes = {
@@ -133,7 +142,7 @@ List.propTypes = {
   searchable: PropTypes.bool,
   onSearchClose: PropTypes.func,
   allowCreate: PropTypes.bool,
-  data: PropTypes.func, // can return the data, or a promise that resolves with the data
+  data: PropTypes.array, // can return the data, or a promise that resolves with the data
   infiniteScroll: PropTypes.bool,
   onItemPress: PropTypes.func,
 };

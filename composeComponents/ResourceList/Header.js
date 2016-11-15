@@ -35,7 +35,12 @@ const styles = StyleSheet.create({
 });
 
 const renderColumn = (key) => {
-  return <Text>{key}</Text>;
+  const toProperCase = (originalText) => {
+    return originalText.replace(/\w\S*/g, (text) => {
+      return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+    });
+  };
+  return <Text>{toProperCase(key)}</Text>;
 };
 
 

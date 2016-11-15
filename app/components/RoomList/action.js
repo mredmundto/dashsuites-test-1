@@ -1,10 +1,11 @@
 import store from './../../store';
+import { Map } from 'immutable';
 
 export default {
   addRoom: (newRoom) => {
-    const roomList = store.getState().rooms;
+    let roomList = store.getState().roomList.get('rooms');
 
-    roomList.push(newRoom);
+    roomList = roomList.push(Map(newRoom));
 
     return {
       type: 'ADD_ROOM',

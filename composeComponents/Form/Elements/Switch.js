@@ -16,6 +16,9 @@ const ThemedSwitch = (props) => {
     ...others,
   } = props;
 
+
+  console.log('state in input', props);
+
   return (
     <View
       style={[{

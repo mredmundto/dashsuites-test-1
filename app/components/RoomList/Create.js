@@ -16,7 +16,8 @@ import Action from './action';
 const {
   Input,
   PhotoUploadAndroid,
-  DropDown
+  Switch,
+  DropDownAndroid,
 } = Elements;
 
 console.log('PhotoUploadAndroid', PhotoUploadAndroid);
@@ -29,6 +30,7 @@ class CreateRoom extends Component {
       location: '',
       price: '',
       imageArr: [],
+      issue: true,
     };
     this.onClick = this.onClick.bind(this);
   }
@@ -42,9 +44,8 @@ class CreateRoom extends Component {
   render() {
     console.log('this state in render', this.state);
     return (
-       <View>
-        <Text> Create room page </Text>
-
+       <View style={styles.container}>
+        
         <Input
           headerText="Room Number"
           placeholder="Enter Room Number here"
@@ -52,7 +53,7 @@ class CreateRoom extends Component {
           onChangeText={(number) => { this.setState({ number }); }}
           constants={constants}
         />
-
+        {/*
         <Input
           headerText="Location"
           placeholder="Enter Location here"
@@ -68,17 +69,28 @@ class CreateRoom extends Component {
           onChangeText={(price) => { this.setState({ price }); }}
           constants={constants}
         />
-        <DropDown/>
+        */}
+
+        <Switch
+          headerText="Issue Solved"
+          value={this.state.issue}
+          onValueChange={(issue) => { this.setState({ issue }); }}
+        />
+
+        <DropDownAndroid
+          headerText="header for drop down"
+        />
 
         <PhotoUploadAndroid
           headerText="Add Photos"
           successCallback={(newImage) => { this.setState({ imageArr: [...this.state.imageArr, newImage] }); }}
         />
 
-        <TouchableOpacity onPress={() => this.onClick()}>
-          <Text style={styles.content}> SAVE </Text>
+        <TouchableOpacity 
+        style={styles.bottom} onPress={() => this.onClick()}>
+          <Text > SAVE </Text>
         </TouchableOpacity>
-        
+       
       </View>
     );
   }
@@ -86,8 +98,7 @@ class CreateRoom extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
+    flex: 1
   },
   welcome: {
     fontSize: 25,
@@ -97,7 +108,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: 5,
   },
-
+  bottom: {
+    height: 50,
+    width: 360, // to be edited
+    backgroundColor: '#009688',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0,
+  },
 });
 
 CreateRoom.propTypes = {

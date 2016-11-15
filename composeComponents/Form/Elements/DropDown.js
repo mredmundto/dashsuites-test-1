@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontSize: 15,
-    fontFamily: constants.style.primaryFontFamily,
-    color: constants.style.textColor,
+    fontFamily: 'Bariol',
+    color: '#7B7B7B',
   }
 });
 
@@ -161,7 +161,7 @@ DropDown.defaultProps = {
   validate: () => { return { valid: true }; },
   validationMessageStyle: {
     color: 'red',
-    fontFamily: constants.style.primaryFontFamily,
+    fontFamily: 'Bariol',
     marginTop: 7,
   },
   validationHeaderStyle: { color: 'red' },

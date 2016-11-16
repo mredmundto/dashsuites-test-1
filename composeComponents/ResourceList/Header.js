@@ -3,7 +3,6 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
 
@@ -11,13 +10,13 @@ import constants from './../../constants';
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
-    flex: 1,
+    height: 30,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor: 'white',
     borderColor: constants.style.buttonBorderColor,
-    borderBottomWidth: 1,
+    elevation: 2,
   },
   columnContainer: {
     width: 100,
@@ -35,18 +34,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const renderColumn = (val, key) => {
-  switch (typeof val) {
-    // focus action is dispatched when a new screen comes into focus
-    case 'string':
-      return <Text>{val}</Text>;
-    default:
-      return <Text>{'unknown type, cannot render'}</Text>;
-  }
+const renderColumn = (key) => {
+  const toProperCase = (originalText) => {
+    return originalText.replace(/\w\S*/g, (text) => {
+      return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+    });
+  };
+  return <Text>{toProperCase(key)}</Text>;
 };
 
 
-const Item = (props) => {
+const Header = (props) => {
   const {
     data,
   } = props;
@@ -54,29 +52,25 @@ const Item = (props) => {
     <View
       style={styles.container}
     >
-      {_.map(data, (val, key) => {
-        return (
-          <TouchableOpacity
-            style={styles.columnContainer}
-            key={key}
-            onPress={() => { props.onItemPress(data); }}
-          >
-            {renderColumn(val, key)}
-          </TouchableOpacity>
+    {_.map(data, (val, key) => {
+      return (
+        <View style={styles.columnContainer} key={key}>
+          {renderColumn(key)}
+        </View>
       );
-      })}
+    })}
     </View>
   );
 };
 
-Item.defaultProps = {
+Header.defaultProps = {
   data: {},
   onItemPress: () => {},
 };
 
-Item.propTypes = {
+Header.propTypes = {
   data: PropTypes.object,
   onItemPress: PropTypes.func,
 };
 
-export default Item;
+export default Header;

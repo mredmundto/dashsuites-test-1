@@ -10,13 +10,11 @@ import {
 } from 'react-native';
 import App from './app';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import reducers from './app/store';
-import devToolsEnhancer from 'remote-redux-devtools';
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+import store from './app/store';
+
 const ReduxApp = () => {
   return (
-    <Provider store={createStoreWithMiddleware(reducers, devToolsEnhancer())}>
+    <Provider store={store}>
       <App />
     </Provider>
   );

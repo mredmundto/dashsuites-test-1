@@ -1,19 +1,17 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Text,
-  TextInput,
   View,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import _ from 'lodash';
 import { Actions } from 'react-native-router-flux';
-import { addRoom } from './action';
-import { bindActionCreators } from 'redux';
-import Elements from '../../../../composeComponents/Form/Elements';
+import Elements from '../../../composeComponents/Form/Elements';
 
 // importing the constants for theme
-import constants from '../../../../constants';
+import constants from '../../../constants';
+
+import Action from './../List/action';
 
 const {
   Input,
@@ -27,6 +25,7 @@ class CreateRoom extends Component {
       location: '',
       price: '',
     };
+    this.onClick = this.onClick.bind(this);
   }
 
   onClick() {
@@ -43,7 +42,7 @@ class CreateRoom extends Component {
           headerText="Room Number"
           placeholder="Enter Room Number here"
           maxLength={10}
-          onChangeText={(number) => { this.setState({ number })}}
+          onChangeText={(number) => { this.setState({ number }); }}
           constants={constants}
         />
 
@@ -51,7 +50,7 @@ class CreateRoom extends Component {
           headerText="Location"
           placeholder="Enter Location here"
           maxLength={50}
-          onChangeText={(location) => { this.setState({ location })}}
+          onChangeText={(location) => { this.setState({ location }); }}
           constants={constants}
         />
 
@@ -59,7 +58,7 @@ class CreateRoom extends Component {
           headerText="Price"
           placeholder="Enter price per night in HKD"
           maxLength={4}
-          onChangeText={(price) => { this.setState({ price })}}
+          onChangeText={(price) => { this.setState({ price }); }}
           constants={constants}
         />
         {/*
@@ -100,14 +99,23 @@ const styles = StyleSheet.create({
 
 });
 
+CreateRoom.propTypes = {
+  addRoom: PropTypes.func,
+  rooms: PropTypes.array,
+};
+
 function mapStateToProps(state) {
   return {
-    rooms: state.rooms
+    rooms: state.rooms,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addRoom: addRoom }, dispatch);
+  return {
+    addRoom: (newRoom) => {
+      return dispatch(Action.addItem(newRoom, 'rooms'));
+    },
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateRoom);

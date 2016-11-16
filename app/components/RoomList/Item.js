@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Text,
   View,
@@ -9,15 +9,11 @@ import _ from 'lodash';
 class RoomDetail extends Component {
 
   render() {
-    if (!this.props.activeRoom) {
-      return (
-        <View>
-          <Text style={styles.welcome}> please select a room</Text>
-        </View>
-			);
-    }
-
-    return (
+    return (!this.props.activeRoom) ? (
+      <View>
+        <Text style={styles.welcome}> please select a room</Text>
+      </View>
+    ) : (
       <View>
         {_.map(this.props.activeRoom, (value, key) => {
           return <Text style={styles.content} key={key}> {key} : {value} </Text>;
@@ -42,10 +38,14 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
+function mapStateToProps(store) {
   return {
-    activeRoom: state.activeRoom,
+    activeRoom: store.list.getIn(['rooms', 'activeItem']),
   };
 }
+
+RoomDetail.propTypes = {
+  activeRoom: PropTypes.object,
+};
 
 export default connect(mapStateToProps)(RoomDetail);

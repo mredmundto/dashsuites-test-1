@@ -2,7 +2,7 @@ const initialState = {
   open: false,
 };
 
-export default function reducer(state = initialState, action = {}) {
+const drawer = (state = initialState, action = {}) => {
   switch (action.type) {
     // focus action is dispatched when a new screen comes into focus
     case 'TOGGLE_DRAWER':
@@ -14,4 +14,6 @@ export default function reducer(state = initialState, action = {}) {
     default:
       return state;
   }
-}
+};
+
+export default drawer;

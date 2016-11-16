@@ -26,7 +26,8 @@ const Header = (props) => {
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      top: 0,
+      height: 50,
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
@@ -73,7 +74,6 @@ const Header = (props) => {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        position: 'absolute',
         top: 0,
         right: 0,
         left: 0,

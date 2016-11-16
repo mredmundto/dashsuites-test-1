@@ -1,14 +1,16 @@
-import { combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import devToolsEnhancer from 'remote-redux-devtools';
 import router from '../components/Router/reducer';
 import drawer from '../components/Drawer/reducer';
-import RoomsReducer from '../components/Rooms/reducer';
-import ActiveRoom from '../components/Rooms/Item/reducer';
+import list from '../components/List/reducer';
 
 const rootReducer = combineReducers({
   router,
   drawer,
-  rooms: RoomsReducer,
-  activeRoom: ActiveRoom,
+  list,
 });
+// const createStoreWithMiddleware = applyMiddleware()(createStore);
+// const store = createStoreWithMiddleware(rootReducer, devToolsEnhancer());
+const store = createStore(rootReducer);
 
-export default rootReducer;
+export default store;

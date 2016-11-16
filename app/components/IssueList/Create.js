@@ -32,15 +32,15 @@ class CreateList extends Component {
       flag: false,
       issue: true,
       imageArr: [],
+      description: '',
     };
     this.onClick = this.onClick.bind(this);
   }
 
   onClick() {
     console.log('in create and index when click submit', this.state);
-    // this.props.addRoom(this.state);
+    this.props.addIssue(this.state, 0, 0);
     // Actions.pop({ refresh: { rooms: this.props.rooms } });
-
 
   }
 
@@ -73,7 +73,7 @@ class CreateList extends Component {
             multiline={false}
             numberOfLines={1}
             maxLength={120}
-            onChangeText={(number) => { this.setState({ number }); }}
+            onChangeText={(description) => { this.setState({ description }); }}
             constants={constants}
           />
 
@@ -134,8 +134,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   // to be updated with the new action
   return {
-    addRoom: (newRoom) => {
-      return dispatch(Action.addItem(newRoom, 'rooms'));
+    addIssue: (newIssue, roomIndex, reviewIndex) => {
+      return dispatch(Action.addIssue(newIssue, roomIndex, reviewIndex));
     },
   };
 }

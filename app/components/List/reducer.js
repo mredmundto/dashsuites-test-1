@@ -46,12 +46,14 @@ const initialState = List([
 
 const list = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_ITEM':
-      return state.setIn([action.listType, 'list'], action.itemList);
+    case 'ADD_ISSUE':
+      return action.store;
+    // case 'ADD_ITEM':
+    //   return state.setIn([action.listType, 'list'], action.itemList);
 
-    case 'SELECT_ITEM': {
-      return state.setIn([action.listType, 'activeItem'], action.activeItem);
-    }
+    // case 'SELECT_ITEM': {
+    //   return state.setIn([action.listType, 'activeItem'], action.activeItem);
+    // }
     default:
       return state;
   }

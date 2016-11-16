@@ -21,7 +21,7 @@ const Header = (props) => {
     onLeft,
     onRight,
   } = props;
-console.log(props);
+
   const leftType = (leftTitle !== undefined && leftTitle.length > 0) ? 'text' : 'icon';
   const rightType = (rightTitle !== undefined && rightTitle.length > 0) ? 'text' : 'icon';
 
@@ -135,7 +135,7 @@ Header.defaultProps = {
   leftTitle: '',
   leftImage: require('../../resources/images/left-arrow@3x.png'),
   rightTitle: '',
-  rightImage: require('../../resources/images/search@3x.png'),
+  // rightImage: require('../../resources/images/search@3x.png'),
   onLeft: () => { Actions.pop(); },
   onRight: () => {},
 };

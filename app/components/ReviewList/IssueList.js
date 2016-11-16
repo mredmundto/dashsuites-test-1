@@ -2,16 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {
   StyleSheet,
-  Text,
-  View,
   TouchableOpacity,
+  View,
+  Text,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-
 import ResourceList from '../../../composeComponents/ResourceList';
-import Action from './../List/action';
-
-const displayedInList = ['name', 'building', 'community'];
 
 const styles = StyleSheet.create({
   container: {
@@ -41,23 +37,29 @@ const styles = StyleSheet.create({
   },
 });
 
-class RoomList extends Component {
+const displayedInList = ['issues', 'room', 'created'];
+
+class IssueList extends Component {
   constructor(props) {
     super(props);
 
-    this.selectRoom = this.selectRoom.bind(this);
+    this.state = {
+      modalOpen: false,
+    };
+
+    this.selectReview = this.selectReview.bind(this);
   }
 
-  // addItem() {
-  //   Actions.RoomCreate();
-  // }
-
-  selectRoom(selectedRoom, roomIndex) {
-    Actions.RoomView(`${roomIndex}`);
+  addIssue() {
+    Actions.IssueCreate(path);
   }
 
+  selectReview(selectedReview) {
+    Actions.ReviewView(selectedReview.room);
+  }
   render() {
     const {
+      reviewList,
       toggleDrawer,
     } = this.props;
     return (
@@ -70,53 +72,62 @@ class RoomList extends Component {
             onLeft: () => {
               toggleDrawer(true);
             },
+            onRight: () => {
+              this.setState({ modalOpen: true });
+            },
           }}
-          data={this.props.rooms}
-          onItemPress={this.selectRoom}
           displayedInList={displayedInList}
+          data={reviewList.toJS()}
+          onItemPress={this.selectReview}
+          searchModalOpen={this.state.modalOpen}
+          onSearchClose={() => {
+            this.setState({ modalOpen: false });
+          }}
+          onSearchModalRequestClose={() => {
+            this.setState({ modalOpen: false });
+          }}
         />
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => this.addItem()}
-        >
-          <Text style={styles.addButtonText}> + </Text>
-        </TouchableOpacity>
       </View>
     );
   }
 }
 
-RoomList.defaultProps = {
+IssueList.defaultProps = {
   allowCreate: true,
-  rooms: [],
+  reviews: [],
   infiniteScroll: true,
 };
 
-RoomList.propTypes = {
+IssueList.propTypes = {
   toggleDrawer: PropTypes.func,
   allowCreate: PropTypes.bool,
-  rooms: PropTypes.oneOfType([
+  reviews: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.func,
   ]),
   infiniteScroll: PropTypes.bool,
-  selectRoom: PropTypes.func,
+  selectReview: PropTypes.func,
 };
 
-function mapStateToProps(store) {
-  const data = store.list.toJS();
+const mapStateToProps = (store) => {
+  const roomList = store.list.get('data');
+  const reviewList = roomList
+    .map(room => {
+      return room.get('reviewList')
+        .map(review => review.set('room', room.get('name')));
+    })
+    .flatten(1);
+
   return {
-    rooms: data.data,
+    roomList,
+    reviewList,
   };
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    selectRoom: (selectedRoom) => {
-      dispatch(Action.selectItem(selectedRoom, 'rooms'));
-    },
     toggleDrawer: (open) => {
-      dispatch({
+      return dispatch({
         type: 'TOGGLE_DRAWER',
         open,
       });
@@ -124,4 +135,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoomList);
+export default connect(mapStateToProps, mapDispatchToProps)(IssueList);

@@ -1,3 +1,6 @@
+/*
+ * TODO POORLY COPIED FROM REVIEW CREATE. DELETE AFTER DEMO !
+ */
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Text,
@@ -38,7 +41,6 @@ class CreateReview extends Component {
   }
 
   onClick() {
-    console.log('clicked!');
   }
 
   render() {
@@ -46,15 +48,16 @@ class CreateReview extends Component {
       data,
       roomList,
     } = this.props;
+    const path = data.split(' ');
 
-    const room = roomList.find((r) => r.get('name') === data).toJS();
+    const room = roomList.get(path[0]).toJS();
     return (
       <View style={styles.container}>
         <ScrollView style={styles.insideContainer}>
           <Input
             headerText="Room"
             editable={false}
-            placeholder={data}
+            placeholder={room.name}
           />
           <DropDownAndroid
             enabled={false}
@@ -97,13 +100,6 @@ class CreateReview extends Component {
           />
 
         </ScrollView>
-
-        <TouchableOpacity
-          style={styles.bottom} onPress={() => this.onClick()}
-        >
-          <Text style={styles.bottomText} > SAVE </Text>
-        </TouchableOpacity>
-
       </View>
     );
   }

@@ -10,6 +10,7 @@ import IssueCreate from './components/IssueList/Create';
 import {
   Scene,
   // Router,
+  Actions,
 } from 'react-native-router-flux';
 import Drawer from './components/Drawer';
 import Router from './components/Router';
@@ -47,7 +48,19 @@ class App extends Component {
 
           <Scene
             key="ReviewView"
-            component={ReviewItem}
+            component={(props) => {
+              return (
+                <ReviewItem
+                  {...props}
+                  headerProps={{
+                    toRight: () => {
+                      Actions.ReviewEdit(props.data);
+                    },
+                    rightTitle: 'Edit',
+                  }}
+                />
+              );
+            }}
             title="Review"
           />
 

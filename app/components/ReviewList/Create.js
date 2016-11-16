@@ -38,7 +38,6 @@ class CreateReview extends Component {
   }
 
   onClick() {
-    console.log('clicked!');
     // this.props.addIssue(this.state, 0, 0);
   }
 
@@ -47,17 +46,16 @@ class CreateReview extends Component {
       data,
       roomList,
     } = this.props;
-    console.log(data);
-    console.log(roomList);
 
-    const room = roomList.find((r) => r.get('name') === data).toJS();
+    const roomIndex = data.split(' ')[0];
+    const room = roomList.get(roomIndex).toJS();
     return (
       <View style={styles.container}>
         <ScrollView style={styles.insideContainer}>
           <Input
             headerText="Room"
             editable={false}
-            placeholder={data}
+            placeholder={room.name}
           />
           <DropDownAndroid
             headerText="Community"

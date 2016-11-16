@@ -46,16 +46,16 @@ const renderColumn = (key) => {
 
 const Header = (props) => {
   const {
-    data,
+    displayedInList,
   } = props;
   return (
     <View
       style={styles.container}
     >
-    {_.map(data, (val, key) => {
+    {_.map(displayedInList, (val, key) => {
       return (
         <View style={styles.columnContainer} key={key}>
-          {renderColumn(key)}
+          {renderColumn(val)}
         </View>
       );
     })}
@@ -64,13 +64,11 @@ const Header = (props) => {
 };
 
 Header.defaultProps = {
-  data: {},
-  onItemPress: () => {},
+  displayedInList: [],
 };
 
 Header.propTypes = {
-  data: PropTypes.object,
-  onItemPress: PropTypes.func,
+  displayedInList: PropTypes.array,
 };
 
 export default Header;

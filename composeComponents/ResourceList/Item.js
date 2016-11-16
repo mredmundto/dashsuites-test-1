@@ -65,13 +65,6 @@ const renderColumn = (val, key) => {
     );
   };
 
-  // switch (typeof val) {
-  //   // focus action is dispatched when a new screen comes into focus
-  //   case 'string':
-  //     return <Text>{val}</Text>;
-  //   default:
-  //     return <Text>{'unknown type, cannot render'}</Text>;
-  // }
   // TODO: Better assignment
   switch (key) {
     case 'issues': {
@@ -81,27 +74,35 @@ const renderColumn = (val, key) => {
     default:
       return <Text>{val}</Text>;
   }
+  // switch (typeof val) {
+  //   // focus action is dispatched when a new screen comes into focus
+  //   case 'string':
+  //     return <Text>{val}</Text>;
+  //   default:
+  //     return <Text>{'unknown type, cannot render'}</Text>;
+  // }
 };
 
 
 const Item = (props) => {
   const {
     data,
+    displayedInList,
   } = props;
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => { props.onItemPress(data); }}
     >
-      {_.map(data, (val, key) => {
+      {_.map(displayedInList, (val, key) => {
         return (
           <View
             style={styles.columnContainer}
             key={key}
           >
-            {renderColumn(val, key)}
+            {renderColumn(data[val], val)}
           </View>
-      );
+        );
       })}
     </TouchableOpacity>
   );
@@ -110,11 +111,13 @@ const Item = (props) => {
 Item.defaultProps = {
   data: {},
   onItemPress: () => {},
+  displayedInList: [],
 };
 
 Item.propTypes = {
   data: PropTypes.object,
   onItemPress: PropTypes.func,
+  displayedInList: PropTypes.array,
 };
 
 export default Item;

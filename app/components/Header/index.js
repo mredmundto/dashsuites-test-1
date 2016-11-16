@@ -71,7 +71,6 @@ const Header = (props) => {
   return (
     <View
       style={{
-        flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         top: 0,

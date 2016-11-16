@@ -1,28 +1,39 @@
 import { Map, List } from 'immutable';
 
-const initialState = List([
-  Map({
-    name: 'Suite#1',
-    building: 'Tai Chi Court',
-    community: 'TST-1',
-    address: '5A, Tai Chi Court, 132-134 Austin Road, Tsim Sha Tsui, Kowloon',
-    reviews: List([
-      Map({
-        issues: '3/4',
-        room: 'Suite#1 TST-1',
-        created: 'Nov 15 2016',
-        issueList: List([
-          Map({
-            flagged: true,
-            title: 'Issue Title Name',
-            created: 'Nov 15 2016',
-          }),
-        ]),
-      }),
-    ]),
-  }),
-]);
-      // Map({ room: 'Suite#2', building: 'Tai Chi Court', community: '1' }),
+const initialState = Map({
+  data: List([
+    Map({
+      name: 'Suite#1 TST-1',
+      building: 'Tai Chi Court',
+      community: 'TST-1',
+      address: '5A, Tai Chi Court, 132-134 Austin Road, Tsim Sha Tsui, Kowloon',
+      reviewList: List([
+        Map({
+          issues: '3/4',
+          room: 'name + community please',
+          created: 'Nov 15 2016',
+          issueList: List([
+            Map({
+              flagged: true,
+              title: 'Issue Title Name',
+              created: 'Nov 15 2016',
+            }),
+          ]),
+        }),
+      ]),
+    }),
+    Map({
+      name: 'Suite#1 Wan Chai',
+      building: 'Tonnochy Tower',
+      community: 'Wan Chai',
+      address: '20J Tonnochy Tower, Block B, 250-274 Jaffe Road, Wan Chai',
+      reviews: List([]),
+    }),
+  ]),
+  selectedRoom: 0,
+  selectedReview: 0,
+  selectedIssue: 0,
+});
       // Map({ room: 'Suite#3', building: 'Tai Chi Court', community: '1' }),
       // Map({ room: 'Suite#19', building: 'Brilliant Court', community: '1' }),
       // Map({ room: 'Suite#20', building: 'Universal Mansion', community: '1' }),

@@ -2,22 +2,56 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Text,
   View,
+  ScrollView,
+  TouchableOpacity,
   StyleSheet,
 } from 'react-native';
 import _ from 'lodash';
+import constants from '../../../constants';
+import { Actions } from 'react-native-router-flux';
 
 class RoomDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.writeReview = this.writeReview.bind(this);
+  }
+  writeReview() {
+    // Actions()
+    // Actions.RoomCreate();
 
+  }
   render() {
-    return (!this.props.activeRoom) ? (
-      <View>
-        <Text style={styles.welcome}> please select a room</Text>
-      </View>
-    ) : (
-      <View>
-        {_.map(this.props.activeRoom, (value, key) => {
-          return <Text style={styles.content} key={key}> {key} : {value} </Text>;
-        })}
+    console.log('in room detail');
+    console.log(this.props);
+    const room = this.props.roomList.find((room) => room.get('name') === this.props.data).toJS();
+    return (
+      <View style={{ flex: 1 }}>
+        <ScrollView>
+          {!room ?
+            <Text style={styles.welcome}> please select a room</Text>
+          : null}
+          <View>
+            {_.map(room, (value, key) => {
+              if (typeof value === 'string') {
+                return <Text style={styles.content} key={key}> {key} : {value} </Text>;
+              }
+            })}
+          </View>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 50,
+              marginTop: 30,
+              marginHorizontal: 20,
+              elevation: 10,
+              backgroundColor: _.get(constants, 'style.secondaryColor', 'green'),
+            }}
+          >
+            <Text style={{ color: 'white', textAlign: 'center' }}>{'Write Review'}</Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     );
   }
@@ -40,12 +74,17 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(store) {
   return {
-    activeRoom: store.list.getIn(['rooms', 'activeItem']),
+    source: store.list,
+    roomList: store.list.get('data'),
   };
 }
 
+RoomDetail.defaultProps = {
+  data: '',
+};
 RoomDetail.propTypes = {
-  activeRoom: PropTypes.object,
+  data: PropTypes.string,
+  roomList: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(RoomDetail);

@@ -36,7 +36,7 @@ class App extends Component {
             title="Create a room"
           />
           <Scene
-            // initial
+            initial
             key="IssueCreate"
             component={IssueCreate}
             title="Create an issue"
@@ -47,7 +47,6 @@ class App extends Component {
             title="View a room"
           />
           <Scene
-            initial
             key="ReviewList"
             component={ReviewList}
             title="Reviews"

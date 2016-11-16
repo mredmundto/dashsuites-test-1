@@ -27,8 +27,6 @@ class List extends Component {
   constructor(props) {
     super(props);
 
-    console.log('data',props.data);
-
     this.state = {
       loading: false,
       errorMessage: '',
@@ -50,7 +48,6 @@ class List extends Component {
   //         dataBlob: data,
   //         dataSource: this.state.dataSource.cloneWithRows(data),
   //       });
-  //       console.log(this.state.dataSource);
   //     })
   //     .catch((err) => {
   //       this.setState({ errorMessage: err.message });
@@ -67,7 +64,6 @@ class List extends Component {
   }
 
   _renderRow(rowData) {
-    console.log('rowData', rowData);
     return (
       <Item
         onItemPress={this.props.onItemPress}

@@ -7,8 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import Item from './Item';
-import { connect } from 'react-redux';
-import Promise from 'bluebird';
+// import Promise from 'bluebird';
 import HOC from '../../app/HOC';
 import applyHeader from '../../app/HOC/applyHeader';
 import SearchModal from '../Search/Modal';
@@ -146,24 +145,6 @@ List.propTypes = {
   onItemPress: PropTypes.func,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    open: state.drawer.open,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleDrawer: (open) => {
-      dispatch({
-        type: 'TOGGLE_DRAWER',
-        open,
-      });
-    },
-  };
-};
-
 const composedList = HOC(List, [applyHeader]);
-const connectedList = connect(mapStateToProps, mapDispatchToProps)(composedList);
 
-export default connectedList;
+export default composedList;

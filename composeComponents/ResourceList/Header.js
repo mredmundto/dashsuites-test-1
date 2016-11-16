@@ -10,7 +10,7 @@ import constants from './../../constants';
 
 const styles = StyleSheet.create({
   container: {
-    height: 30,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     width: 40,
   },
   columnText: {
+    fontWeight: 'bold',
     textAlign: 'left',
-    color: 'black',
   },
 });
 
@@ -40,7 +40,7 @@ const renderColumn = (key) => {
       return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
     });
   };
-  return <Text>{toProperCase(key)}</Text>;
+  return <Text style={styles.columnText}>{toProperCase(key)}</Text>;
 };
 
 

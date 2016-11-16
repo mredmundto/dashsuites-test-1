@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import _ from 'lodash';
 
@@ -18,30 +19,67 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: constants.style.buttonBorderColor,
     borderBottomWidth: 1,
+    backgroundColor: 'white',
   },
   columnContainer: {
     width: 100,
     paddingLeft: 10,
     flexGrow: 1,
   },
-  columnIcon: {
-    alignSelf: 'flex-start',
-    height: 40,
-    width: 40,
-  },
   columnText: {
     textAlign: 'left',
     color: 'black',
   },
+  columnIcon: {
+    alignSelf: 'flex-start',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginLeft: 10,
+  },
+  columnIconText: {
+    fontSize: 10,
+  },
+  icon: {
+    height: 15,
+    width: 15,
+  },
 });
 
+const checkboxIcon = require('../../app/resources/images/checkbox@3x.png');
+const checkboxFullIcon = require('../../app/resources/images/checkboxfull@3x.png');
+
 const renderColumn = (val, key) => {
-  switch (typeof val) {
-    // focus action is dispatched when a new screen comes into focus
-    case 'string':
-      return <Text>{val}</Text>;
+  const renderIssueColumn = (currPoint, fullPoint) => {
+    const source = (currPoint === fullPoint) ? checkboxFullIcon : checkboxIcon;
+    return (
+      <View style={styles.columnIcon}>
+        <Image
+          style={styles.icon}
+          resizeMode={'center'}
+          source={source}
+        />
+        <Text style={styles.columnIconText}>
+          {`${currPoint}/${fullPoint}`}
+        </Text>
+      </View>
+    );
+  };
+
+  // switch (typeof val) {
+  //   // focus action is dispatched when a new screen comes into focus
+  //   case 'string':
+  //     return <Text>{val}</Text>;
+  //   default:
+  //     return <Text>{'unknown type, cannot render'}</Text>;
+  // }
+  // TODO: Better assignment
+  switch (key) {
+    case 'issues': {
+      const valArray = val.split('/');
+      return renderIssueColumn(valArray[0], valArray[1]);
+    }
     default:
-      return <Text>{'unknown type, cannot render'}</Text>;
+      return <Text>{val}</Text>;
   }
 };
 
@@ -51,21 +89,21 @@ const Item = (props) => {
     data,
   } = props;
   return (
-    <View
+    <TouchableOpacity
       style={styles.container}
+      onPress={() => { props.onItemPress(data); }}
     >
       {_.map(data, (val, key) => {
         return (
-          <TouchableOpacity
+          <View
             style={styles.columnContainer}
             key={key}
-            onPress={() => { props.onItemPress(data); }}
           >
             {renderColumn(val, key)}
-          </TouchableOpacity>
+          </View>
       );
       })}
-    </View>
+    </TouchableOpacity>
   );
 };
 

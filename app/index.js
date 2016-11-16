@@ -3,6 +3,7 @@ import RoomList from './components/RoomList';
 import RoomCreate from './components/RoomList/Create';
 import RoomItem from './components/RoomList/Item';
 import ReviewList from './components/ReviewList';
+import IssueCreate from './components/IssueList/Create'
 import {
   Scene,
   // Router,
@@ -36,6 +37,11 @@ class App extends Component {
             title="Create a room"
           />
           <Scene
+            key="IssueCreate"
+            component={IssueCreate}
+            title="Create an issue"
+          />
+          <Scene
             key="RoomView"
             component={RoomItem}
             title="View a room"
@@ -46,6 +52,7 @@ class App extends Component {
             component={ReviewList}
             title="Reviews"
           />
+
         </Router>
       </Drawer>
     );

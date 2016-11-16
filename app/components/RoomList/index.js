@@ -66,6 +66,7 @@ class RoomList extends Component {
       >
         <ResourceList
           headerProps={{
+            leftImage: require('../../resources/images/path@3x.png'),
             onLeft: () => {
               toggleDrawer(true);
             },

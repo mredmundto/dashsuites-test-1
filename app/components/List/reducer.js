@@ -10,7 +10,6 @@ const initialState = Map({
       reviewList: List([
         Map({
           issues: '3/4',
-          room: 'name + community please',
           created: 'Nov 15 2016',
           issueList: List([
             Map({
@@ -27,7 +26,7 @@ const initialState = Map({
       building: 'Tonnochy Tower',
       community: 'Wan Chai',
       address: '20J Tonnochy Tower, Block B, 250-274 Jaffe Road, Wan Chai',
-      reviews: List([]),
+      reviewList: List([]),
     }),
   ]),
   selectedRoom: 0,

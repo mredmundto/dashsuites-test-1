@@ -51,9 +51,6 @@ class DropDownAndroid extends Component {
     super(props);
     this.state = {
       selectedValue: null || this.props.defaultValue,
-      // validationResult: {
-      //   valid: true,
-      // }
     };
   }
 
@@ -62,36 +59,30 @@ class DropDownAndroid extends Component {
     const {
       headerText,
       style,
+      options,
+      ...others,
     } = props;
 
     return (
-
-  
-
-
       <View style={[styles.container, style]}>
-
         {
           headerText ?
             <HeaderText
               value={headerText}
-              // style={this.state.validationResult.valid ?
-              //   null
-              //   :
-              //   this.props.validationHeaderStyle}
             /> :
             null
         }
 
         <Picker
+          {...others}
           selectedValue={this.state.language}
           onValueChange={(selectedValue) => {
-           this.setState({selectedValue}) 
-          }}>
-          <Picker.Item label="Testing1" value="Testing1" />
-          <Picker.Item label="Testing2" value="Testing2" />
-          <Picker.Item label="Testing3" value="Testing3" />
-          <Picker.Item label="Testing4" value="Testing4" />
+            this.setState({ selectedValue });
+          }}
+        >
+          {options.map((option, i) => {
+            return <Picker.Item key={i} label={option.label} value={option.value} />;
+          })}
         </Picker>
 
           {/*
@@ -113,7 +104,7 @@ class DropDownAndroid extends Component {
         </View>
       );
   }
-  
+
   //static DROPDOWN_TYPE_PICKER = 'picker';
   //static DROPDOWN_TYPE_DATE_PICKER = 'datePicker';
 
@@ -226,6 +217,10 @@ DropDownAndroid.defaultProps = {
   },
   validationHeaderStyle: { color: 'red' },
   //type: DropDown.DROPDOWN_TYPE_PICKER,
+  options: [
+    { label: 'example option 1', value: 'value' },
+    { label: 'example option 2', value: 'value' },
+  ],
 };
 
 DropDownAndroid.propTypes = {
@@ -236,6 +231,7 @@ DropDownAndroid.propTypes = {
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
   mapOptionToLabel: PropTypes.func,
+  options: PropTypes.array,
 };
 
 export default DropDownAndroid;

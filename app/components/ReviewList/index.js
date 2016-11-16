@@ -56,11 +56,11 @@ class ReviewList extends Component {
   }
 
   selectReview(selectedReview) {
-    // this.props.selectReview(selectedReview);
-    // Actions.RoomView();
+    Actions.ReviewView(selectedReview.room);
   }
   render() {
     const {
+      reviewList,
       toggleDrawer,
     } = this.props;
     return (
@@ -77,7 +77,7 @@ class ReviewList extends Component {
             },
           }}
           displayedInList={displayedInList}
-          data={this.props.reviews}
+          data={reviewList.toJS()}
           onItemPress={this.selectReview}
           searchModalOpen={this.state.modalOpen}
           onSearchClose={() => {
@@ -109,14 +109,21 @@ ReviewList.propTypes = {
   selectReview: PropTypes.func,
 };
 
-function mapStateToProps(store) {
-  const rooms = store.list.data.toJS();
-  const reviews = [];
-  rooms.forEach(room => {
-    reviews.push(room.toJS().reviews[0]);
-  });
+const mapStateToProps = (store) => {
+  const roomList = store.list.get('data');
+  const rooms = roomList.toJS();
+  const reviewList = roomList
+    .map(room => {
+      console.log(room);
+      return room.get('reviewList')
+        .map(review => review.set('room', room.get('name')))
+    })
+    .flatten(1);
+
+
   return {
-    reviews,
+    roomList,
+    reviewList,
   };
 }
 

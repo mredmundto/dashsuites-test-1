@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import RoomList from './components/RoomList';
-import RoomCreate from './components/RoomList/Create';
+// import RoomCreate from './components/RoomList/Create';
 import RoomItem from './components/RoomList/Item';
+
+import ReviewCreate from './components/ReviewList/Create';
 import ReviewList from './components/ReviewList';
+import ReviewItem from './components/ReviewList/Item';
 import IssueCreate from './components/IssueList/Create';
 import {
   Scene,
@@ -31,25 +34,33 @@ class App extends Component {
             title="Rooms"
           />
           <Scene
-            key="RoomCreate"
-            component={RoomCreate}
-            title="Create a room"
+            key="RoomView"
+            component={RoomItem}
+            title="Room"
           />
           <Scene
             initial
-            key="IssueCreate"
-            component={IssueCreate}
-            title="Create an issue"
-          />
-          <Scene
-            key="RoomView"
-            component={RoomItem}
-            title="View a room"
-          />
-          <Scene
             key="ReviewList"
             component={ReviewList}
             title="Reviews"
+          />
+
+          <Scene
+            key="ReviewView"
+            component={ReviewItem}
+            title="Review"
+          />
+
+          <Scene
+            key="ReviewCreate"
+            component={ReviewCreate}
+            title="Reviews"
+          />
+
+          <Scene
+            key="IssueCreate"
+            component={IssueCreate}
+            title="Create an issue"
           />
 
         </Router>

@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import HeaderText from './HeaderText';
 
 const options = {
   title: 'Upload photo',
@@ -72,9 +73,17 @@ class PhotoUploadAndroid extends Component {
   }
 
   render() {
+    const {
+      headerText,
+    } = this.props;
+
     return (
       <View>
-        <Text>{this.props.headerText}</Text>
+      {headerText ?
+        <HeaderText
+          value={headerText}
+        />
+      : null}
         <ScrollView style={styles.container} horizontal={true}>
           <TouchableOpacity onPress={() => this.renderMenu()}>
             <Image

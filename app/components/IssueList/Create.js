@@ -4,10 +4,10 @@ import { Text,
   View,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Elements from '../../../composeComponents/Form/Elements';
-
 import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
 // importing the constants for theme
@@ -22,13 +22,14 @@ const {
   DropDownAndroid,
 } = Elements;
 
-console.log('PhotoUploadAndroid', PhotoUploadAndroid);
+const window = Dimensions.get('window');
+
 
 class CreateList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      flag: false, 
+      flag: false,
       issue: true,
       imageArr: [],
     };
@@ -36,52 +37,58 @@ class CreateList extends Component {
   }
 
   onClick() {
-    console.log('in create and index', this.state);
-    //this.props.addRoom(this.state);
-    //Actions.pop({ refresh: { rooms: this.props.rooms } });
-    //Actions.RoomView();
+    console.log('in create and index when click submit', this.state);
+    // this.props.addRoom(this.state);
+    // Actions.pop({ refresh: { rooms: this.props.rooms } });
+
+
   }
 
   render() {
     console.log('this state in render', this.state);
     return (
-       <View style={styles.container}>
-        
-        <Switch
-          headerText="Flagged"
-          value={this.state.flag}
-          onValueChange={(flag) => { this.setState({ flag }); }}
-        />        
 
-        <Switch
-          headerText="Issue Solved"
-          value={this.state.issue}
-          onValueChange={(issue) => { this.setState({ issue }); }}
-        />
+      <View style={styles.container}>
+        <View style={styles.insideContainer}>
+          <Switch
+            headerText="Flagged"
+            value={this.state.flag}
+            onValueChange={(flag) => { this.setState({ flag }); }}
+          />
 
-        <Input
-          headerText="Add Description"
-          placeholder="Enter here"
-          maxLength={120}
-          onChangeText={(number) => { this.setState({ number }); }}
-          constants={constants}
-        />
+          <Switch
+            headerText="Issue Solved"
+            value={this.state.issue}
+            onValueChange={(issue) => { this.setState({ issue }); }}
+          />
 
-      {/* DropDownAndroid to be completed*/}
-        <DropDownAndroid
-          headerText="Category"
-        />
+          {/* DropDownAndroid to be completed, currently not working*/}
+          <DropDownAndroid
+            headerText="Category"
+          />
 
-        <PhotoUploadAndroid
-          headerText="Add Photos"
-          successCallback={(newImage) => { this.setState({ imageArr: [...this.state.imageArr, newImage] }); }}
-        />
+          <Input
+            headerText="Add Description"
+            placeholder="Enter here"
+            multiline={false}
+            numberOfLines={1}
+            maxLength={120}
+            onChangeText={(number) => { this.setState({ number }); }}
+            constants={constants}
+          />
 
-        <TouchableOpacity 
-        style={styles.bottom} onPress={() => this.onClick()}>
+          <PhotoUploadAndroid
+            headerText="Add Photos"
+            successCallback={(newImage) => { this.setState({ imageArr: [...this.state.imageArr, newImage] }); }}
+          />
+        </View>
+
+        <TouchableOpacity
+          style={styles.bottom} onPress={() => this.onClick()}
+        >
           <Text style={styles.bottomText} > SAVE </Text>
         </TouchableOpacity>
-       
+
       </View>
     );
   }
@@ -89,12 +96,17 @@ class CreateList extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    flexDirection: 'column'
+    flex: 1,
+    flexDirection: 'column',
+  },
+  insideContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    padding: 10,
   },
   bottom: {
     height: 50,
-    width: 360, // to be edited
+    width: window.width,
     backgroundColor: '#009688',
     alignItems: 'center',
     justifyContent: 'center',
@@ -102,8 +114,8 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   bottomText: {
-    color: 'white'
-  }
+    color: 'white',
+  },
 });
 
 CreateList.propTypes = {
@@ -112,12 +124,15 @@ CreateList.propTypes = {
 };
 
 function mapStateToProps(state) {
+  // to be updated
+  console.log('all state in mapStateToProp', state);
   return {
     rooms: state.rooms,
   };
 }
 
 function mapDispatchToProps(dispatch) {
+  // to be updated with the new action
   return {
     addRoom: (newRoom) => {
       return dispatch(Action.addItem(newRoom, 'rooms'));
@@ -128,4 +143,4 @@ function mapDispatchToProps(dispatch) {
 
 const composedCreateList = HOC(CreateList, [applyHeader]);
 const connectedCreateList = connect(mapStateToProps, mapDispatchToProps)(composedCreateList);
-export default connectedCreateList
+export default connectedCreateList;

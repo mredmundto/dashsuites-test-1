@@ -3,7 +3,7 @@ import RoomList from './components/RoomList';
 import RoomCreate from './components/RoomList/Create';
 import RoomItem from './components/RoomList/Item';
 import ReviewList from './components/ReviewList';
-import IssueCreate from './components/IssueList/Create'
+import IssueCreate from './components/IssueList/Create';
 import {
   Scene,
   // Router,
@@ -36,6 +36,7 @@ class App extends Component {
             title="Create a room"
           />
           <Scene
+            initial
             key="IssueCreate"
             component={IssueCreate}
             title="Create an issue"
@@ -46,7 +47,7 @@ class App extends Component {
             title="View a room"
           />
           <Scene
-            initial
+            // initial
             key="ReviewList"
             component={ReviewList}
             title="Reviews"

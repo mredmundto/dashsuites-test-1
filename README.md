@@ -32,11 +32,13 @@ export ANDROID_HOME=~/Library/Android/sdk
 Then type
 ```
 react-native run-android
+react-native link 
 ```
 
 For iOS, after installation, you can run that by typing
 ```
 react-native run-ios
+react-native link 
 ```
 
 Below is the documentation from Facebook on setting that up react-native

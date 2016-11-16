@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const displayedInList = ['issues', 'room', 'created'];
+
 class ReviewList extends Component {
   constructor(props) {
     super(props);
@@ -74,6 +76,7 @@ class ReviewList extends Component {
               this.setState({ modalOpen: true });
             },
           }}
+          displayedInList={displayedInList}
           data={this.props.reviews}
           onItemPress={this.selectReview}
           searchModalOpen={this.state.modalOpen}
@@ -84,12 +87,6 @@ class ReviewList extends Component {
             this.setState({ modalOpen: false });
           }}
         />
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => this.addItem()}
-        >
-          <Text style={styles.addButtonText}> + </Text>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -113,10 +110,10 @@ ReviewList.propTypes = {
 };
 
 function mapStateToProps(store) {
-  const storeReviews = store.list.getIn(['reviews', 'list']);
+  const rooms = store.list.toArray();
   const reviews = [];
-  storeReviews.forEach(mapReview => {
-    reviews.push(mapReview.toJS());
+  rooms.forEach(room => {
+    reviews.push(room.toJS().reviews[0]);
   });
   return {
     reviews,

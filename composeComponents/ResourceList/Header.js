@@ -10,7 +10,7 @@ import constants from './../../constants';
 
 const styles = StyleSheet.create({
   container: {
-    height: 30,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     width: 40,
   },
   columnText: {
+    fontWeight: 'bold',
     textAlign: 'left',
-    color: 'black',
   },
 });
 
@@ -40,22 +40,22 @@ const renderColumn = (key) => {
       return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
     });
   };
-  return <Text>{toProperCase(key)}</Text>;
+  return <Text style={styles.columnText}>{toProperCase(key)}</Text>;
 };
 
 
 const Header = (props) => {
   const {
-    data,
+    displayedInList,
   } = props;
   return (
     <View
       style={styles.container}
     >
-    {_.map(data, (val, key) => {
+    {_.map(displayedInList, (val, key) => {
       return (
         <View style={styles.columnContainer} key={key}>
-          {renderColumn(key)}
+          {renderColumn(val)}
         </View>
       );
     })}
@@ -64,13 +64,11 @@ const Header = (props) => {
 };
 
 Header.defaultProps = {
-  data: {},
-  onItemPress: () => {},
+  displayedInList: [],
 };
 
 Header.propTypes = {
-  data: PropTypes.object,
-  onItemPress: PropTypes.func,
+  displayedInList: PropTypes.array,
 };
 
 export default Header;

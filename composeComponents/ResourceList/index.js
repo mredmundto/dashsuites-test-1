@@ -7,8 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import Item from './Item';
-import { connect } from 'react-redux';
-import Promise from 'bluebird';
+// import Promise from 'bluebird';
 import HOC from '../../app/HOC';
 import applyHeader from '../../app/HOC/applyHeader';
 import SearchModal from '../Search/Modal';
@@ -27,22 +26,15 @@ const styles = StyleSheet.create({
 class List extends Component {
   constructor(props) {
     super(props);
+
+    console.log('data',props.data);
+
     this.state = {
       loading: false,
       errorMessage: '',
       dataBlob: props.data,
       dataSource: new ListView.DataSource({
         rowHasChanged: (r1, r2) => {
-          // let result = false;
-          // if (r1.length !== r2.length) {
-          //   result = true;
-          // } else {
-          //   for (let i = 0; i < r1.length; i++) {
-          //     result = result || r1[i].number !== r2[i].number;
-          //     result = result || r1[i].updatedAt !== r2[i].updatedAt;
-          //   }
-          // }
-          // return result;
           return r1 !== r2;
         },
       }),
@@ -75,8 +67,13 @@ class List extends Component {
   }
 
   _renderRow(rowData) {
+    console.log('rowData', rowData);
     return (
-      <Item onItemPress={this.props.onItemPress} data={rowData} />
+      <Item
+        onItemPress={this.props.onItemPress}
+        data={rowData}
+        displayedInList={this.props.displayedInList}
+      />
     );
   }
 
@@ -86,10 +83,10 @@ class List extends Component {
       searchModalOpen,
       onSearchClose,
       onSearchModalRequestClose,
+      displayedInList,
       ...others,
     } = this.props;
     const {
-      dataBlob,
       dataSource,
     } = this.state;
     return (
@@ -113,7 +110,9 @@ class List extends Component {
           />
         : null}
         <View>
-          <ListHeader data={dataBlob[0]} />
+          <ListHeader
+            displayedInList={displayedInList}
+          />
           <ListView
             enableEmptySections
             dataSource={dataSource}
@@ -133,6 +132,7 @@ List.defaultProps = {
   infiniteScroll: true,
   onSearchClose: () => {},
   data: [],
+  displayedInList: [],
 };
 
 List.propTypes = {
@@ -144,26 +144,9 @@ List.propTypes = {
   data: PropTypes.array, // can return the data, or a promise that resolves with the data
   infiniteScroll: PropTypes.bool,
   onItemPress: PropTypes.func,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    open: state.drawer.open,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleDrawer: (open) => {
-      dispatch({
-        type: 'TOGGLE_DRAWER',
-        open,
-      });
-    },
-  };
+  displayedInList: PropTypes.array,
 };
 
 const composedList = HOC(List, [applyHeader]);
-const connectedList = connect(mapStateToProps, mapDispatchToProps)(composedList);
 
-export default connectedList;
+export default composedList;

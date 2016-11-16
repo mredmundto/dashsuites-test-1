@@ -11,6 +11,8 @@ import { Actions } from 'react-native-router-flux';
 import ResourceList from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
 
+const displayedInList = ['name', 'building', 'community'];
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -72,6 +74,7 @@ class RoomList extends Component {
           }}
           data={this.props.rooms}
           onItemPress={this.selectRoom}
+          displayedInList={displayedInList}
         />
         <TouchableOpacity
           style={styles.addButton}
@@ -102,7 +105,7 @@ RoomList.propTypes = {
 };
 
 function mapStateToProps(store) {
-  const storeRooms = store.list.getIn(['rooms', 'list']);
+  const storeRooms = store.list.toArray();
   const rooms = [];
   storeRooms.forEach(mapRoom => {
     rooms.push(mapRoom.toJS());

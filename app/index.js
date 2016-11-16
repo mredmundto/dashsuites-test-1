@@ -9,7 +9,6 @@ import {
 } from 'react-native-router-flux';
 import Drawer from './components/Drawer';
 import Router from './components/Router';
-import Header from './components/Header';
 import { connect } from 'react-redux';
 // import _ from 'lodash';
 

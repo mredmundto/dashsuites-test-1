@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
   StyleSheet,
   TouchableOpacity,
+  Image,
   View,
   Text,
 } from 'react-native';
@@ -12,32 +13,44 @@ import ResourceList from '../../../composeComponents/ResourceList';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#F5FCFF',
-  },
-  content: {
-    fontSize: 20,
-    margin: 5,
-  },
-  addButton: {
-    elevation: 5,
-    backgroundColor: '#1976d2',
-    height: 65,
-    width: 65,
-    borderRadius: 45,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
+    justifyContent: 'flex-start',
   },
-  addButtonText: {
-    fontSize: 35,
-    color: 'white',
+  columnIcon: {
+    flexGrow: 1,
+    flexDirection: 'row',
+    marginRight: 10,
+    marginLeft: 15,
+  },
+  columnIconText: {
+    fontSize: 10,
+    marginLeft: 5,
+  },
+  icon: {
+    height: 18,
+    width: 18,
   },
 });
 
-const displayedInList = ['issues', 'room', 'created'];
+const checkboxIcon = require('../../../app/resources/images/checkbox@3x.png');
+const checkboxFullIcon = require('../../../app/resources/images/checkboxfull@3x.png');
+const renderIssueIcon = (currPoint, fullPoint) => {
+  const source = (currPoint === fullPoint) ? checkboxFullIcon : checkboxIcon;
+  return (
+    <View style={styles.columnIcon}>
+      <Image
+        style={styles.icon}
+        resizeMode={'contain'}
+        source={source}
+      />
+      <Text style={styles.columnIconText}>
+        {`${currPoint}/${fullPoint}`}
+      </Text>
+    </View>
+  );
+};
+
 
 class IssueList extends Component {
   constructor(props) {
@@ -46,67 +59,110 @@ class IssueList extends Component {
     this.state = {
       modalOpen: false,
     };
-
-    this.selectReview = this.selectReview.bind(this);
   }
 
-  addIssue() {
-    Actions.IssueCreate(path);
-  }
+  // addIssue() {
+  //   Actions.IssueCreate();
+  // }
 
-  selectReview(selectedReview) {
-    Actions.ReviewView(selectedReview.room);
-  }
   render() {
     const {
-      reviewList,
-      toggleDrawer,
+      data,
+      editable,
+      source,
+      roomList,
+      addIssue,
+      resolvedIssueCount,
+      ...others,
     } = this.props;
+
+    // const roomIndex = data.split(' ')[0];
+    // const room = roomList.get(roomIndex).toJS();
+    const resolvedCount = data.filter(i => !i.flagged).length;
+    const totalCount = data.length;
+
     return (
       <View
-        style={styles.container}
+        {...others}
+        style={{
+          alignSelf: 'stretch',
+          flex: 1,
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          paddingBottom: 100, // TODO hack to solve scroll bottom being clipped
+        }}
       >
-        <ResourceList
-          headerProps={{
-            leftImage: require('../../resources/images/path@3x.png'),
-            onLeft: () => {
-              toggleDrawer(true);
-            },
-            onRight: () => {
-              this.setState({ modalOpen: true });
-            },
-          }}
-          displayedInList={displayedInList}
-          data={reviewList.toJS()}
-          onItemPress={this.selectReview}
-          searchModalOpen={this.state.modalOpen}
-          onSearchClose={() => {
-            this.setState({ modalOpen: false });
-          }}
-          onSearchModalRequestClose={() => {
-            this.setState({ modalOpen: false });
-          }}
-        />
+        <View
+          style={styles.container}
+        >
+          <Text
+            style={{ fontSize: 20, fontWeight: 'bold' }}
+          >
+            {'Issue'}
+          </Text>
+          {renderIssueIcon(resolvedCount, totalCount)}
+          {editable ?
+            <TouchableOpacity
+              style={{ padding: 5, borderRadius: 5, borderWidth: 1, borderColor: '#078B75' }}
+              onPress={addIssue}
+            >
+              <Text style={{ textAlign: 'center', color: '#078B75', fontSize: 12 }}>{'+ Add Issue'}</Text>
+            </TouchableOpacity>
+
+          : null}
+        </View>
+        <View>
+          {data.map((issue, i) => {
+            return (
+              <TouchableOpacity
+                key={i}
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                  padding: 8,
+                  marginTop: 15,
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: 'grey',
+                }}
+              >
+                <Image
+                  style={{
+                    marginLeft: 5,
+                    height: 20,
+                    width: 20,
+                  }}
+                  resizeMode={'contain'}
+                  source={issue.flagged ? checkboxIcon : checkboxFullIcon}
+                />
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    flexGrow: 1,
+                    marginLeft: 25,
+                  }}
+                >
+                  <Text>{issue.title}</Text>
+                  <Text>{issue.createdAt}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
     );
   }
 }
 
 IssueList.defaultProps = {
-  allowCreate: true,
-  reviews: [],
-  infiniteScroll: true,
+  resolvedIssueCount: 0,
+  data: [],
 };
 
 IssueList.propTypes = {
-  toggleDrawer: PropTypes.func,
-  allowCreate: PropTypes.bool,
-  reviews: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.func,
-  ]),
-  infiniteScroll: PropTypes.bool,
-  selectReview: PropTypes.func,
 };
 
 const mapStateToProps = (store) => {

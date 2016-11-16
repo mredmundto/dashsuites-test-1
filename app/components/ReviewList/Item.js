@@ -3,7 +3,8 @@
  */
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { Text,
+import {
+  Text,
   ScrollView,
   View,
   StyleSheet,
@@ -16,6 +17,8 @@ import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
 // importing the constants for theme
 import constants from '../../../constants';
+import IssueList from './IssueList';
+
 
 import Action from './../List/action';
 
@@ -45,14 +48,17 @@ class CreateReview extends Component {
 
   render() {
     const {
+      source,
       data,
       roomList,
     } = this.props;
     const path = data.split(' ');
 
     const room = roomList.get(path[0]).toJS();
+    const review = roomList.getIn(path).toJS();
     return (
-      <View style={styles.container}>
+      <View style={{ flex: 1 }}>
+
         <ScrollView style={styles.insideContainer}>
           <Input
             headerText="Room"
@@ -98,7 +104,7 @@ class CreateReview extends Component {
             enabled={false}
             headerText="Condition"
           />
-
+          <IssueList data={review.issueList} editable={false} source={source} roomList={roomList} style={{ flex: 1 }} />
         </ScrollView>
       </View>
     );
@@ -106,23 +112,11 @@ class CreateReview extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
   insideContainer: {
     flex: 1,
     flexDirection: 'column',
     padding: 10,
-  },
-  bottom: {
-    height: 50,
-    width: window.width,
-    backgroundColor: '#009688',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 0,
+    paddingBottom: 100,
   },
   bottomText: {
     color: 'white',

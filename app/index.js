@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import RoomList from './components/RoomList';
 // import RoomCreate from './components/RoomList/Create';
 import RoomItem from './components/RoomList/Item';
-
+import {
+  Dimensions,
+} from 'react-native';
 import ReviewCreate from './components/ReviewList/Create';
 import ReviewList from './components/ReviewList';
 import ReviewItem from './components/ReviewList/Item';
@@ -17,6 +19,8 @@ import Router from './components/Router';
 import { connect } from 'react-redux';
 // import _ from 'lodash';
 
+const window = Dimensions.get('window');
+
 class App extends Component {
   render() {
     const {
@@ -30,6 +34,7 @@ class App extends Component {
           hideNavBar
         >
           <Scene
+            initial
             key="RoomList"
             component={RoomList}
             title="Rooms"
@@ -40,7 +45,6 @@ class App extends Component {
             title="Room"
           />
           <Scene
-            initial
             key="ReviewList"
             component={ReviewList}
             title="Reviews"
@@ -53,7 +57,8 @@ class App extends Component {
                 <ReviewItem
                   {...props}
                   headerProps={{
-                    toRight: () => {
+                    onRight: () => {
+                      console.log('right from view ');
                       Actions.ReviewEdit(props.data);
                     },
                     rightTitle: 'Edit',
@@ -67,6 +72,12 @@ class App extends Component {
           <Scene
             key="ReviewCreate"
             component={ReviewCreate}
+            title="Reviews"
+          />
+
+          <Scene
+            key="ReviewEdit"
+            component={(props) => <ReviewCreate {...props} edit />}
             title="Reviews"
           />
 

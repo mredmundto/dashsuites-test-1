@@ -22,7 +22,8 @@ class RoomDetail extends Component {
     // Actions.RoomCreate();
   }
   render() {
-    const room = this.props.roomList.find((r) => r.get('name') === this.props.data).toJS();
+    const roomIndex = this.props.data.split(' ')[0];
+    const room = this.props.roomList.get(roomIndex).toJS();
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
@@ -48,7 +49,7 @@ class RoomDetail extends Component {
               backgroundColor: _.get(constants, 'style.secondaryColor', 'green'),
             }}
             onPress={() => {
-              Actions.ReviewCreate(room.name);
+              Actions.ReviewCreate(roomIndex);
             }}
           >
             <Text style={{ color: 'white', textAlign: 'center' }}>{'Write Review'}</Text>

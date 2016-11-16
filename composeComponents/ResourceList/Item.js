@@ -86,13 +86,14 @@ const renderColumn = (val, key) => {
 
 const Item = (props) => {
   const {
+    id,
     data,
     displayedInList,
   } = props;
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => { props.onItemPress(data); }}
+      onPress={() => { props.onItemPress(data, id); }}
     >
       {_.map(displayedInList, (val, key) => {
         return (

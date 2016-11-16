@@ -55,8 +55,8 @@ class ReviewList extends Component {
     // Actions.RoomCreate();
   }
 
-  selectReview(selectedReview) {
-    Actions.ReviewView(selectedReview.room);
+  selectReview(selectedReview, reviewIndex) {
+    Actions.ReviewView(`${selectedReview.roomIndex} reviewList ${reviewIndex}`);
   }
   render() {
     const {
@@ -73,9 +73,9 @@ class ReviewList extends Component {
             onLeft: () => {
               toggleDrawer(true);
             },
-            onRight: () => {
-              this.setState({ modalOpen: true });
-            },
+            // onRight: () => {
+            //   this.setState({ modalOpen: true });
+            // },
           }}
           displayedInList={displayedInList}
           data={reviewList.toJS()}
@@ -113,10 +113,9 @@ ReviewList.propTypes = {
 const mapStateToProps = (store) => {
   const roomList = store.list.get('data');
   const reviewList = roomList
-    .map(room => {
-      console.log(room);
+    .map((room, i) => {
       return room.get('reviewList')
-        .map(review => review.set('room', room.get('name')));
+        .map(review => review.set('room', room.get('name')).set('roomIndex', i));
     })
     .flatten(1);
 

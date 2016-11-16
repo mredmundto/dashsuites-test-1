@@ -38,7 +38,6 @@ class CreateList extends Component {
   }
 
   onClick() {
-    console.log('clicked!');
     // this.props.addIssue(this.state, 0, 0);
   }
 

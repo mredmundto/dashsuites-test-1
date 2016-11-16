@@ -63,9 +63,10 @@ class List extends Component {
     });
   }
 
-  _renderRow(rowData) {
+  _renderRow(rowData, a, b) {
     return (
       <Item
+        id={b}
         onItemPress={this.props.onItemPress}
         data={rowData}
         displayedInList={this.props.displayedInList}

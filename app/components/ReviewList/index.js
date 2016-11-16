@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const displayedInList = ['issues', 'room', 'created'];
+const displayedInList = ['issueList', 'room', 'createdAt'];
 
 class ReviewList extends Component {
   constructor(props) {

@@ -9,13 +9,27 @@ const initialState = Map({
       address: '5A, Tai Chi Court, 132-134 Austin Road, Tsim Sha Tsui, Kowloon',
       reviewList: List([
         Map({
-          issues: '3/4',
-          created: 'Nov 15 2016',
+          createdAt: 'Nov 15 2016',
           issueList: List([
             Map({
               flagged: true,
-              title: 'Issue Title Name',
-              created: 'Nov 15 2016',
+              title: 'Some issue one',
+              createdAt: 'Nov 15 2016',
+            }),
+            Map({
+              flagged: true,
+              title: 'Some issue two',
+              createdAt: 'Nov 15 2016',
+            }),
+            Map({
+              flagged: true,
+              title: 'Some issue two',
+              createdAt: 'Nov 15 2016',
+            }),
+            Map({
+              flagged: true,
+              title: 'Some issue two',
+              createdAt: 'Nov 15 2016',
             }),
           ]),
         }),
@@ -47,12 +61,12 @@ const initialState = Map({
       // Map({ room: 'Suite#11', building: 'Lei Ha Court', community: '3' }),
       // Map({ room: 'Suite#1', building: 'Tonnochy Tower', community: '2' }),
 
-      // Map({ issues: '3/4', room: 'Suite#1 - community 1', created: 'Nov 15 2016' }),
-      // Map({ issues: '3/4', room: 'Suite#9 - community 3', created: 'Nov 9 2016' }),
-      // Map({ issues: '4/4', room: 'Suite#20 - community 1 ', created: 'Oct 8 2016' }),
+      // Map({ issues: '3/4', room: 'Suite#1 - community 1', createdAt: 'Nov 15 2016' }),
+      // Map({ issues: '3/4', room: 'Suite#9 - community 3', createdAt: 'Nov 9 2016' }),
+      // Map({ issues: '4/4', room: 'Suite#20 - community 1 ', createdAt: 'Oct 8 2016' }),
 
-      // Map({ flagged: true, title: 'Issue Title Name', created: 'Nov 9 2016' }),
-      // Map({ flagged: true, title: 'Issue Title Name', created: 'Oct 8 2016' }),
+      // Map({ flagged: true, title: 'Issue Title Name', createdAt: 'Nov 9 2016' }),
+      // Map({ flagged: true, title: 'Issue Title Name', createdAt: 'Oct 8 2016' }),
 
 const list = (state = initialState, action) => {
   switch (action.type) {

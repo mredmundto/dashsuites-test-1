@@ -11,15 +11,12 @@ import { Actions } from 'react-native-router-flux';
 import Elements from '../../../composeComponents/Form/Elements';
 import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
-// importing the constants for theme
-import constants from '../../../constants';
 
 import Action from './../List/action';
+import IssueList from './IssueList';
 
 const {
   Input,
-  PhotoUploadAndroid,
-  Switch,
   DropDownAndroid,
 } = Elements;
 
@@ -44,11 +41,15 @@ class CreateReview extends Component {
   render() {
     const {
       data,
+      source,
       roomList,
+      edit,
     } = this.props;
 
     const roomIndex = data.split(' ')[0];
     const room = roomList.get(roomIndex).toJS();
+    const review = roomList.getIn(data.split(' ')).toJS();
+    // console.log(review);
     return (
       <View style={styles.container}>
         <ScrollView style={styles.insideContainer}>
@@ -64,7 +65,6 @@ class CreateReview extends Component {
                 value: room.community,
                 label: room.community,
               },
-
               ...[
                 {
                   value: 'TST-1',
@@ -90,19 +90,17 @@ class CreateReview extends Component {
             editable={false}
             placeholder={String(new Date())}
           />
-
           <DropDownAndroid
             headerText="Condition"
           />
-
+          <IssueList source={source} data={review.issueList || []} roomList={roomList} editable addIssue={() => { Actions.IssueCreate(data); }} />
         </ScrollView>
 
         <TouchableOpacity
-          style={styles.bottom} onPress={() => this.onClick()}
+          style={styles.bottom} onPress={() => { Actions.ReviewList(); }}
         >
           <Text style={styles.bottomText} > SAVE </Text>
         </TouchableOpacity>
-
       </View>
     );
   }
@@ -147,9 +145,9 @@ function mapStateToProps(store) {
 function mapDispatchToProps(dispatch) {
   // to be updated with the new action
   return {
-    addIssue: (newIssue, roomIndex, reviewIndex) => {
-      return dispatch(Action.addIssue(newIssue, roomIndex, reviewIndex));
-    },
+    // addIssue: (newIssue, roomIndex, reviewIndex) => {
+    //   return dispatch(Action.addIssue(newIssue, roomIndex, reviewIndex));
+    // },
   };
 }
 

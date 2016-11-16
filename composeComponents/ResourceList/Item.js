@@ -67,8 +67,8 @@ const renderColumn = (val, key) => {
 
   // TODO: Better assignment
   switch (key) {
-    case 'issues': {
-      const valArray = val.split('/');
+    case 'issueList': {
+      const valArray = [val.filter(i => !i.flagged).length, val.length];
       return renderIssueColumn(valArray[0], valArray[1]);
     }
     default:

@@ -110,7 +110,7 @@ ReviewList.propTypes = {
 };
 
 function mapStateToProps(store) {
-  const rooms = store.list.toArray();
+  const rooms = store.list.data.toJS();
   const reviews = [];
   rooms.forEach(room => {
     reviews.push(room.toJS().reviews[0]);

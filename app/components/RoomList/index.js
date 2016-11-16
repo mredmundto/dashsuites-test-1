@@ -53,15 +53,13 @@ class RoomList extends Component {
   }
 
   selectRoom(selectedRoom) {
-    this.props.selectRoom(selectedRoom);
-    Actions.RoomView();
+    Actions.RoomView(selectedRoom.name);
   }
 
   render() {
     const {
       toggleDrawer,
     } = this.props;
-
     return (
       <View
         style={styles.container}
@@ -105,13 +103,9 @@ RoomList.propTypes = {
 };
 
 function mapStateToProps(store) {
-  const storeRooms = store.list.toArray();
-  const rooms = [];
-  storeRooms.forEach(mapRoom => {
-    rooms.push(mapRoom.toJS());
-  });
+  const data = store.list.toJS();
   return {
-    rooms,
+    rooms: data.data,
   };
 }
 

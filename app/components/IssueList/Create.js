@@ -38,14 +38,12 @@ class CreateList extends Component {
   }
 
   onClick() {
-    console.log('in create and index when click submit', this.state);
     this.props.addIssue(this.state, 0, 0);
     // Actions.pop({ refresh: { rooms: this.props.rooms } });
 
   }
 
   render() {
-    console.log('this state in render', this.state);
     return (
 
       <View style={styles.container}>
@@ -125,7 +123,6 @@ CreateList.propTypes = {
 
 function mapStateToProps(state) {
   // to be updated
-  console.log('all state in mapStateToProp', state);
   return {
     rooms: state.rooms,
   };

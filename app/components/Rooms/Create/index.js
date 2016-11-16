@@ -15,8 +15,6 @@ import Elements from '../../../../composeComponents/Form/Elements';
 // importing the constants for theme
 import constants from '../../../../constants';
 
-console.log('constants in create', constants);
-
 const {
   Input,
 } = Elements;
@@ -32,7 +30,6 @@ class CreateRoom extends Component {
   }
 
   onClick() {
-    console.log('in create and index', this.state);
     this.props.addRoom(this.state);
     Actions.pop({ refresh: { rooms: this.props.rooms } });
   }

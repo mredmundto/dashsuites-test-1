@@ -37,7 +37,6 @@ class Input extends Component {
       ...others,
     } = this.props;
 
-    console.log('props in input', this.props);
     // This is for the header
     const availableCharLen = maxLength - this.state.value.length;
     let headerTextLabel = headerText;

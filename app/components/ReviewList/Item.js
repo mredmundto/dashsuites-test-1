@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Text,
+  ScrollView,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -24,8 +25,7 @@ const {
 
 const window = Dimensions.get('window');
 
-
-class CreateList extends Component {
+class CreateReview extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,45 +39,64 @@ class CreateList extends Component {
 
   onClick() {
     console.log('clicked!');
-    // this.props.addIssue(this.state, 0, 0);
   }
 
   render() {
+    const {
+      data,
+      roomList,
+    } = this.props;
+
+    const room = roomList.find((r) => r.get('name') === data).toJS();
     return (
       <View style={styles.container}>
-        <View style={styles.insideContainer}>
-          <Switch
-            headerText="Flagged"
-            value={this.state.flag}
-            onValueChange={(flag) => { this.setState({ flag }); }}
-          />
-
-          <Switch
-            headerText="Issue Solved"
-            value={this.state.issue}
-            onValueChange={(issue) => { this.setState({ issue }); }}
-          />
-
-          {/* DropDownAndroid to be completed, currently not working*/}
-          <DropDownAndroid
-            headerText="Category"
-          />
-
+        <ScrollView style={styles.insideContainer}>
           <Input
-            headerText="Add Description"
-            placeholder="Enter here"
-            multiline={false}
-            numberOfLines={1}
-            maxLength={120}
-            onChangeText={(description) => { this.setState({ description }); }}
-            constants={constants}
+            headerText="Room"
+            editable={false}
+            placeholder={data}
+          />
+          <DropDownAndroid
+            enabled={false}
+            headerText="Community"
+            options={[
+              {
+                value: room.community,
+                label: room.community,
+              },
+
+              ...[
+                {
+                  value: 'TST-1',
+                  label: 'TST-1',
+                },
+                {
+                  value: 'TST-2',
+                  label: 'TST-2',
+                },
+                {
+                  value: 'Wan Chai',
+                  label: 'Wan Chai',
+                },
+                {
+                  value: 'Causeway Bay',
+                  label: 'Causeway Bay',
+                },
+              ].filter((option) => option.value !== room.community),
+            ]}
+          />
+          <Input
+            headerText="Last Cleaning Date"
+            editable={false}
+            placeholder={String(new Date())}
           />
 
-          <PhotoUploadAndroid
-            headerText="Add Photos"
-            successCallback={(newImage) => { this.setState({ imageArr: [...this.state.imageArr, newImage] }); }}
+          <DropDownAndroid
+            enabled={false}
+            headerText="Condition"
           />
-        </View>
+
+        </ScrollView>
 
         <TouchableOpacity
           style={styles.bottom} onPress={() => this.onClick()}
@@ -114,15 +133,15 @@ const styles = StyleSheet.create({
   },
 });
 
-CreateList.propTypes = {
+CreateReview.propTypes = {
   addRoom: PropTypes.func,
   rooms: PropTypes.array,
 };
 
-function mapStateToProps(state) {
-  // to be updated
+function mapStateToProps(store) {
   return {
-    rooms: state.rooms,
+    source: store.list,
+    roomList: store.list.get('data'),
   };
 }
 
@@ -136,6 +155,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-const composedCreateList = HOC(CreateList, [applyHeader]);
-const connectedCreateList = connect(mapStateToProps, mapDispatchToProps)(composedCreateList);
-export default connectedCreateList;
+const composedCreateReview = HOC(CreateReview, [applyHeader]);
+const connectedCreateReview = connect(mapStateToProps, mapDispatchToProps)(composedCreateReview);
+export default connectedCreateReview;

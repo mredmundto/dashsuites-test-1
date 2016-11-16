@@ -21,9 +21,7 @@ class RoomDetail extends Component {
 
   }
   render() {
-    console.log('in room detail');
-    console.log(this.props);
-    const room = this.props.roomList.find((room) => room.get('name') === this.props.data).toJS();
+    const room = this.props.roomList.find((r) => r.get('name') === this.props.data).toJS();
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
@@ -47,6 +45,9 @@ class RoomDetail extends Component {
               marginHorizontal: 20,
               elevation: 10,
               backgroundColor: _.get(constants, 'style.secondaryColor', 'green'),
+            }}
+            onPress={() => {
+              Actions.ReviewCreate(room.name);
             }}
           >
             <Text style={{ color: 'white', textAlign: 'center' }}>{'Write Review'}</Text>

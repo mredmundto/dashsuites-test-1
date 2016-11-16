@@ -69,6 +69,7 @@ class ReviewList extends Component {
       >
         <ResourceList
           headerProps={{
+            leftImage: require('../../resources/images/path@3x.png'),
             onLeft: () => {
               toggleDrawer(true);
             },
@@ -111,21 +112,19 @@ ReviewList.propTypes = {
 
 const mapStateToProps = (store) => {
   const roomList = store.list.get('data');
-  const rooms = roomList.toJS();
   const reviewList = roomList
     .map(room => {
       console.log(room);
       return room.get('reviewList')
-        .map(review => review.set('room', room.get('name')))
+        .map(review => review.set('room', room.get('name')));
     })
     .flatten(1);
-
 
   return {
     roomList,
     reviewList,
   };
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {

@@ -9,6 +9,8 @@ import { Text,
 import _ from 'lodash';
 import constants from '../../../constants';
 import { Actions } from 'react-native-router-flux';
+import HOC from '../../HOC';
+import applyHeader from '../../HOC/applyHeader';
 
 class RoomDetail extends Component {
   constructor(props) {
@@ -18,7 +20,6 @@ class RoomDetail extends Component {
   writeReview() {
     // Actions()
     // Actions.RoomCreate();
-
   }
   render() {
     const room = this.props.roomList.find((r) => r.get('name') === this.props.data).toJS();
@@ -87,5 +88,6 @@ RoomDetail.propTypes = {
   data: PropTypes.string,
   roomList: PropTypes.object,
 };
-
-export default connect(mapStateToProps)(RoomDetail);
+const composedRoomDetail = HOC(RoomDetail, [applyHeader]);
+const connectedRoomDetail = connect(mapStateToProps)(composedRoomDetail);
+export default connectedRoomDetail;

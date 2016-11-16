@@ -62,8 +62,6 @@ class Drawer extends Component {
 }
 
 Drawer.propTypes = {
-  navigationState: PropTypes.object,
-  onNavigate: PropTypes.func,
   toggleDrawer: PropTypes.func,
   open: PropTypes.bool,
 };

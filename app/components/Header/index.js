@@ -7,7 +7,8 @@ import {
   Image,
 } from 'react-native';
 import _ from 'lodash';
-import SearchBar from '../../../composeComponents/Search/Bar';
+// import SearchBar from '../../../composeComponents/Search/Bar';
+import { Actions } from 'react-native-router-flux';
 
 const Header = (props) => {
   const {
@@ -20,7 +21,7 @@ const Header = (props) => {
     onLeft,
     onRight,
   } = props;
-
+console.log(props);
   const leftType = (leftTitle !== undefined && leftTitle.length > 0) ? 'text' : 'icon';
   const rightType = (rightTitle !== undefined && rightTitle.length > 0) ? 'text' : 'icon';
 
@@ -131,12 +132,11 @@ const Header = (props) => {
 
 Header.defaultProps = {
   constants: {},
-  navigationState: {},
   leftTitle: '',
-  leftImage: require('../../resources/images/path@3x.png'),
+  leftImage: require('../../resources/images/left-arrow@3x.png'),
   rightTitle: '',
   rightImage: require('../../resources/images/search@3x.png'),
-  onLeft: () => {},
+  onLeft: () => { Actions.pop(); },
   onRight: () => {},
 };
 
@@ -149,7 +149,6 @@ Header.propTypes = {
   rightTitle: PropTypes.string,
   rightImage: PropTypes.number,
   constants: PropTypes.object,
-  navigationState: PropTypes.object,
 };
 
 

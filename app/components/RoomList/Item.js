@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(store) {
   return {
-    activeRoom: store.roomList.activeRoom,
+    activeRoom: store.list.getIn(['rooms', 'activeItem']),
   };
 }
 

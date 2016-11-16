@@ -26,15 +26,8 @@ const Header = (props) => {
 
   const styles = StyleSheet.create({
     container: {
-<<<<<<< 43b7cef77fcde33425e71df44b9838438623f00c
-=======
       top: 0,
       height: 50,
-<<<<<<< 12ddc60b6f4d11062885f56ca5521bac57c58e59
->>>>>>> Created clickable listview
-      flex: 1,
-=======
->>>>>>> Added Listview Header
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
@@ -81,7 +74,6 @@ const Header = (props) => {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        position: 'absolute',
         top: 0,
         right: 0,
         left: 0,

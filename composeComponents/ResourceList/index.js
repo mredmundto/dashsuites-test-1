@@ -86,7 +86,6 @@ class List extends Component {
       searchModalOpen,
       onSearchClose,
       onSearchModalRequestClose,
-      onItemPress,
       ...others,
     } = this.props;
     const {

@@ -11,7 +11,7 @@ import Elements from '../../../composeComponents/Form/Elements';
 // importing the constants for theme
 import constants from '../../../constants';
 
-import Action from './action';
+import Action from './../List/action';
 
 const {
   Input,
@@ -113,7 +113,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     addRoom: (newRoom) => {
-      return dispatch(Action.addRoom(newRoom));
+      return dispatch(Action.addItem(newRoom, 'rooms'));
     },
   };
 }

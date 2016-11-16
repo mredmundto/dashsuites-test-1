@@ -9,7 +9,7 @@ import {
 import { Actions } from 'react-native-router-flux';
 
 import ResourceList from '../../../composeComponents/ResourceList';
-import Action from './action';
+import Action from './../List/action';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,6 +45,7 @@ class RoomList extends Component {
 
     this.selectRoom = this.selectRoom.bind(this);
   }
+
   addItem() {
     Actions.RoomCreate();
   }
@@ -101,7 +102,7 @@ RoomList.propTypes = {
 };
 
 function mapStateToProps(store) {
-  const storeRooms = store.roomList.get('rooms');
+  const storeRooms = store.list.getIn(['rooms', 'list']);
   const rooms = [];
   storeRooms.forEach(mapRoom => {
     rooms.push(mapRoom.toJS());
@@ -114,7 +115,7 @@ function mapStateToProps(store) {
 const mapDispatchToProps = (dispatch) => {
   return {
     selectRoom: (selectedRoom) => {
-      dispatch(Action.selectRoom(selectedRoom));
+      dispatch(Action.selectItem(selectedRoom, 'rooms'));
     },
     toggleDrawer: (open) => {
       dispatch({

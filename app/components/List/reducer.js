@@ -3,9 +3,9 @@ import { Map, List } from 'immutable';
 const initialState = Map({
   data: List([
     Map({
-      name: 'Suite#1 TST-1',
+      name: 'Suite#1',
       building: 'Tai Chi Court',
-      community: 'TST-1',
+      community: 'TST',
       address: '5A, Tai Chi Court, 132-134 Austin Road, Tsim Sha Tsui, Kowloon',
       reviewList: List([
         Map({
@@ -36,16 +36,13 @@ const initialState = Map({
       ]),
     }),
     Map({
-      name: 'Suite#1 Wan Chai',
+      name: 'Suite#1',
       building: 'Tonnochy Tower',
       community: 'Wan Chai',
       address: '20J Tonnochy Tower, Block B, 250-274 Jaffe Road, Wan Chai',
       reviewList: List([]),
     }),
   ]),
-  selectedRoom: 0,
-  selectedReview: 0,
-  selectedIssue: 0,
 });
       // Map({ room: 'Suite#3', building: 'Tai Chi Court', community: '1' }),
       // Map({ room: 'Suite#19', building: 'Brilliant Court', community: '1' }),

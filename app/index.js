@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import RoomList from './components/RoomList';
-// import RoomCreate from './components/RoomList/Create';
+import RoomCreate from './components/RoomList/Create';
 import RoomItem from './components/RoomList/Item';
 import {
   Dimensions,
@@ -41,7 +41,25 @@ class App extends Component {
           />
           <Scene
             key="RoomView"
-            component={RoomItem}
+            component={(props) => {
+              return (
+                <RoomItem
+                  {...props}
+                  headerProps={{
+                    onRight: () => {
+                      console.log('right from view ');
+                      Actions.RoomEdit(props.data);
+                    },
+                    rightTitle: 'Edit',
+                  }}
+                />
+              );
+            }}
+            title="Room"
+          />
+          <Scene
+            key="RoomEdit"
+            component={(props) => <RoomCreate {...props} edit />}
             title="Room"
           />
           <Scene
@@ -51,6 +69,7 @@ class App extends Component {
           />
 
           <Scene
+          
             key="ReviewView"
             component={(props) => {
               return (

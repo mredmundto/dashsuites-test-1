@@ -21,14 +21,20 @@ export default {
   //   };
   // },
   addIssue: (newIssue, roomIndex, reviewIndex) => {
-    let currList = store.getState().list;
-    let issue = currList.getIn([roomIndex, 'reviews', reviewIndex, 'issueList']);
-    issue = issue.push(Map(newIssue));
-    currList = currList.setIn([roomIndex, 'reviews', reviewIndex, 'issueList'], issue);
-    // currList = currList.get(roomIndex).get('reviews').get(reviewIndex).set('issueList', issue);
+    // to get the application state
+    const currList = store.getState().list;
+    // to create the new issue list by getting the old issue list and pushing the new issue to the list
+    const newIssueList = currList.get('data')
+                        .get(roomIndex)
+                        .get('reviewList')
+                        .get(reviewIndex)
+                        .get('issueList')
+                        .push(Map(newIssue));
+    //  to generate a new application state
+    const newList = currList.setIn(['data', roomIndex, 'reviewList', reviewIndex, 'issueList'], newIssueList);
     return {
       type: 'ADD_ISSUE',
-      store: currList,
+      store: newList,
     };
   },
 };

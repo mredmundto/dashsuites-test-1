@@ -11,6 +11,7 @@ import constants from '../../../constants';
 import { Actions } from 'react-native-router-flux';
 import HOC from '../../HOC';
 import applyHeader from '../../HOC/applyHeader';
+import IssueList from '../ReviewList/IssueList';
 
 class RoomDetail extends Component {
   constructor(props) {
@@ -24,6 +25,11 @@ class RoomDetail extends Component {
   render() {
     const roomIndex = this.props.data.split(' ')[0];
     const room = this.props.roomList.get(roomIndex).toJS();
+
+    console.log('in room item', this.props.data);
+    console.log('thats the props here', this.props);
+    console.log('this is the room here', room);
+
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
@@ -54,6 +60,9 @@ class RoomDetail extends Component {
           >
             <Text style={{ color: 'white', textAlign: 'center' }}>{'Write Review'}</Text>
           </TouchableOpacity>
+
+          <IssueList data={review.issueList} editable={false} source={source} roomList={roomList} style={{ flex: 1 }} />
+
         </ScrollView>
       </View>
     );

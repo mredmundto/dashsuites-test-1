@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Text,
   View,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
@@ -22,33 +23,43 @@ const {
   DropDownAndroid,
 } = Elements;
 
-const window = Dimensions.get('window');
 
+const window = Dimensions.get('window');
 
 class CreateList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      flag: false,
+      flagged: false,
       issue: true,
       imageArr: [],
-      description: '',
+      title: null,
+      createdAt: new Date().toString(),
+      category: null || 'cleaning', // to be set as some default values
     };
     this.onClick = this.onClick.bind(this);
   }
 
   onClick() {
-    // this.props.addIssue(this.state, 0, 0);
+    console.log('the state in issue created', this.state);
+    const arr = this.props.data.split(' ');
+    console.log('this is the arr', arr);
+    const roomIndex = arr[0];
+    console.log('review Index before assign', reviewIndex);
+    const reviewIndex = arr[2] || 0;
+    console.log('review Index before assign', reviewIndex);
+    console.log(roomIndex);
+    this.props.addIssue(this.state, roomIndex, reviewIndex);
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.insideContainer}>
+        <ScrollView style={styles.insideContainer}>
           <Switch
             headerText="Flagged"
-            value={this.state.flag}
-            onValueChange={(flag) => { this.setState({ flag }); }}
+            value={this.state.flagged}
+            onValueChange={(flagged) => { this.setState({ flagged }); }}
           />
 
           <Switch
@@ -57,18 +68,23 @@ class CreateList extends Component {
             onValueChange={(issue) => { this.setState({ issue }); }}
           />
 
-          {/* DropDownAndroid to be completed, currently not working*/}
           <DropDownAndroid
             headerText="Category"
+            options={[
+              { value: 'Cleaning', label: 'Cleaning' },
+              { value: 'Maintenance', label: 'Maintenance' },
+              { value: 'Guest Services', label: 'Guest Services' },
+            ]}
+            onValueChange={(category) => { this.setState({ category }); }}
           />
 
           <Input
-            headerText="Add Description"
+            headerText="Add title"
             placeholder="Enter here"
             multiline={false}
             numberOfLines={1}
             maxLength={120}
-            onChangeText={(description) => { this.setState({ description }); }}
+            onChangeText={(title) => { this.setState({ title }); }}
             constants={constants}
           />
 
@@ -76,7 +92,7 @@ class CreateList extends Component {
             headerText="Add Photos"
             successCallback={(newImage) => { this.setState({ imageArr: [...this.state.imageArr, newImage] }); }}
           />
-        </View>
+        </ScrollView>
 
         <TouchableOpacity
           style={styles.bottom} onPress={() => this.onClick()}
@@ -114,19 +130,17 @@ const styles = StyleSheet.create({
 });
 
 CreateList.propTypes = {
-  addRoom: PropTypes.func,
-  rooms: PropTypes.array,
+  addIssue: PropTypes.func,
 };
 
 function mapStateToProps(state) {
   // to be updated
   return {
-    rooms: state.rooms,
+    // rooms: state.rooms,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  // to be updated with the new action
   return {
     addIssue: (newIssue, roomIndex, reviewIndex) => {
       return dispatch(Action.addIssue(newIssue, roomIndex, reviewIndex));

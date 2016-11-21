@@ -4,12 +4,9 @@ import React, {
 } from 'react';
 
 import {
-  Text,
-  TouchableOpacity,
   View,
   StyleSheet,
-  Image,
-  Picker
+  Picker,
 } from 'react-native';
 
 import HeaderText from './HeaderText';
@@ -24,7 +21,7 @@ import HeaderText from './HeaderText';
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   textInputContainer: {
     flex: 1,
@@ -42,7 +39,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Bariol',
     color: '#7B7B7B',
-  }
+  },
 });
 
 class DropDownAndroid extends Component {
@@ -60,6 +57,7 @@ class DropDownAndroid extends Component {
       headerText,
       style,
       options,
+      onValueChange,
       ...others,
     } = props;
 
@@ -75,10 +73,12 @@ class DropDownAndroid extends Component {
 
         <Picker
           {...others}
-          selectedValue={this.state.language}
+          selectedValue={this.state.selectedValue}
           onValueChange={(selectedValue) => {
             this.setState({ selectedValue });
+            onValueChange(selectedValue);
           }}
+          value={this.state.selectedValue}
         >
           {options.map((option, i) => {
             return <Picker.Item key={i} label={option.label} value={option.value} />;

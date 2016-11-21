@@ -48,9 +48,9 @@ class RoomList extends Component {
     this.selectRoom = this.selectRoom.bind(this);
   }
 
-  // addItem() {
-  //   Actions.RoomCreate();
-  // }
+  addItem() {
+    Actions.RoomEdit();
+  }
 
   selectRoom(selectedRoom, roomIndex) {
     Actions.RoomView(`${roomIndex}`);
@@ -75,12 +75,14 @@ class RoomList extends Component {
           onItemPress={this.selectRoom}
           displayedInList={displayedInList}
         />
+
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => this.addItem()}
         >
           <Text style={styles.addButtonText}> + </Text>
         </TouchableOpacity>
+
       </View>
     );
   }

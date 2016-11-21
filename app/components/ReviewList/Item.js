@@ -76,20 +76,20 @@ class CreateReview extends Component {
 
               ...[
                 {
-                  value: 'TST-1',
-                  label: 'TST-1',
+                  value: 'TST',
+                  label: 'TST',
                 },
                 {
-                  value: 'TST-2',
-                  label: 'TST-2',
+                  value: 'Causeway Bay 1',
+                  label: 'Causeway Bay 1',
+                },
+                {
+                  value: 'Causeway Bay 2',
+                  label: 'Causeway Bay 2',
                 },
                 {
                   value: 'Wan Chai',
                   label: 'Wan Chai',
-                },
-                {
-                  value: 'Causeway Bay',
-                  label: 'Causeway Bay',
                 },
               ].filter((option) => option.value !== room.community),
             ]}

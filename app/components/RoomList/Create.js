@@ -59,28 +59,24 @@ class CreateRoom extends Component {
             headerText="name"
             placeholder={room.name}
             onChangeText={(number) => { this.setState({ number }); }}
-            constants={constants}
           />
 
           <Input
             headerText="building"
             placeholder={room.building}
             onChangeText={(location) => { this.setState({ location }); }}
-            constants={constants}
           />
 
           <Input
             headerText="community"
             placeholder={room.community}
             onChangeText={(community) => { this.setState({ community }); }}
-            constants={constants}
           />
 
           <Input
             headerText="address"
             placeholder={room.address}
             onChangeText={(address) => { this.setState({ address }); }}
-            constants={constants}
           />          
 
         </ScrollView>

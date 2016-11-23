@@ -61,8 +61,6 @@ class RoomDetail extends Component {
             <Text style={{ color: 'white', textAlign: 'center' }}>{'Write Review'}</Text>
           </TouchableOpacity>
 
-          <IssueList data={review.issueList} editable={false} source={source} roomList={roomList} style={{ flex: 1 }} />
-
         </ScrollView>
       </View>
     );

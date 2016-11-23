@@ -19,8 +19,6 @@ import Router from './components/Router';
 import { connect } from 'react-redux';
 // import _ from 'lodash';
 
-const window = Dimensions.get('window');
-
 class App extends Component {
   render() {
     const {

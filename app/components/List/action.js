@@ -1,5 +1,5 @@
 import store from './../../store';
-import { Map } from 'immutable';
+import Immutable, { Map } from 'immutable';
 
 export default {
   // addItem: (newRoom, type) => {
@@ -34,6 +34,14 @@ export default {
     const newList = currList.setIn(['data', roomIndex, 'reviewList', reviewIndex, 'issueList'], newIssueList);
     return {
       type: 'ADD_ISSUE',
+      store: newList,
+    };
+  },
+
+  initApp: (currObj) => {
+    const newList = Immutable.fromJS({ data: currObj });
+    return {
+      type: 'INIT_APP',
       store: newList,
     };
   },

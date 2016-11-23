@@ -35,6 +35,11 @@ react-native run-android
 react-native link 
 ```
 
+If you are using the Android emulator and would like to connect to your local server 
+```
+adb reverse tcp:3000 tcp:3000
+```
+
 For iOS, after installation, you can run that by typing
 ```
 react-native run-ios
@@ -43,3 +48,4 @@ react-native link
 
 Below is the documentation from Facebook on setting that up react-native
 https://facebook.github.io/react-native/docs/getting-started.html
+

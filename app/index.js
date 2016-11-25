@@ -32,7 +32,7 @@ class App extends Component {
           hideNavBar
         >
           <Scene
-            initial
+            // initial
             key="RoomList"
             component={RoomList}
             title="Rooms"
@@ -61,6 +61,7 @@ class App extends Component {
             title="Room"
           />
           <Scene
+            initial
             key="ReviewList"
             component={ReviewList}
             title="Reviews"

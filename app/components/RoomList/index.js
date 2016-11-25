@@ -47,59 +47,12 @@ class RoomList extends Component {
     this.selectRoom = this.selectRoom.bind(this);
   }
 
-  addItem() {
-    // This is seeding data into DB, will move server side
-    fetch('http://127.0.0.1:3000/REST/room', {
-      method: 'POST',
-      headers: {
-        // 'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: 'Fake seed data from client',
-        building: 'Fake data',
-        address: 'Fake data',
-        community: 'TST',
-      }),
-    })
-    .then((res) => {
-      return res.json();
-    })
-    .then((resJSON) => {
-      console.log('post request to server', resJSON);
-    })
-    .catch((e) => {
-      console.log('e', e);
-      throw e;
-    });
-    fetch('http://127.0.0.1:3000/REST/room', {
-      method: 'POST',
-      headers: {
-        // 'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: 'Fake seed data from client 2',
-        building: 'Fake data 2',
-        address: 'Fake data 2',
-        community: 'TST',
-      }),
-    })
-    .then((res) => {
-      return res.json();
-    })
-    .then((resJSON) => {
-      console.log('post request to server', resJSON);
-    })
-    .catch((e) => {
-      console.log('e', e);
-      throw e;
-    });
-
+  componentWillMount() {
+    // get all roooms
     fetch('http://127.0.0.1:3000/REST/room', {
       method: 'GET',
       headers: {
-        // 'Accept': 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
     })
@@ -108,13 +61,18 @@ class RoomList extends Component {
     })
     .then((resJSON) => {
       // push the fetched object from server to reducer
-      this.props.initApp(resJSON);
+      this.props.loadRoom(resJSON);
+      // console.log('updated code');
+      // this.props.rooms = resJSON;
       console.log('getting a list', resJSON);
     })
     .catch((e) => {
       console.log('e', e);
       throw e;
     });
+  }
+
+  addItem() {
     // Actions.RoomEdit();
   }
 
@@ -169,13 +127,16 @@ RoomList.propTypes = {
   ]),
   infiniteScroll: PropTypes.bool,
   selectRoom: PropTypes.func,
-  initApp: PropTypes.func,
+  loadRoom: PropTypes.func,
 };
 
 function mapStateToProps(store) {
   const data = store.list.toJS();
+
+  console.log('store in room', store.list.toJS());
+
   return {
-    rooms: data.data,
+    rooms: data.room,
   };
 }
 
@@ -184,8 +145,8 @@ const mapDispatchToProps = (dispatch) => {
     selectRoom: (selectedRoom) => {
       dispatch(Action.selectItem(selectedRoom, 'rooms'));
     },
-    initApp: (initObj) => {
-      dispatch(Action.initApp(initObj));
+    loadRoom: (initObj) => {
+      dispatch(Action.loadRoom(initObj));
     },
     toggleDrawer: (open) => {
       dispatch({

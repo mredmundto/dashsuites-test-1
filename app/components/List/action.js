@@ -38,10 +38,18 @@ export default {
     };
   },
 
-  initApp: (currObj) => {
-    const newList = Immutable.fromJS({ data: currObj });
+  loadRoom: (currObj) => {
+    const newList = Immutable.fromJS({ room: currObj });
     return {
-      type: 'INIT_APP',
+      type: 'LOAD_ROOM',
+      store: newList,
+    };
+  },
+  loadReview: (currObj) => {
+    const newList = Immutable.fromJS({ review: currObj });
+    console.log('newList in Load Review', newList.toJS());
+    return {
+      type: 'LOAD_ROOM',
       store: newList,
     };
   },

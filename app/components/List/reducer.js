@@ -21,16 +21,6 @@ import { Map, List } from 'immutable';
 //               title: 'Some issue two',
 //               createdAt: 'Nov 15 2016',
 //             }),
-//             Map({
-//               flagged: true,
-//               title: 'Some issue two',
-//               createdAt: 'Nov 15 2016',
-//             }),
-//             Map({
-//               flagged: true,
-//               title: 'Some issue two',
-//               createdAt: 'Nov 15 2016',
-//             }),
 //           ]),
 //         }),
 //       ]),
@@ -45,30 +35,24 @@ import { Map, List } from 'immutable';
 //   ]),
 // });
       // Map({ room: 'Suite#3', building: 'Tai Chi Court', community: '1' }),
-      // Map({ room: 'Suite#19', building: 'Brilliant Court', community: '1' }),
-      // Map({ room: 'Suite#20', building: 'Universal Mansion', community: '1' }),
-      // Map({ room: 'Suite#21', building: 'Universal Mansion', community: '1' }),
-      // Map({ room: 'Suite#1', building: 'Malahon Apartments', community: '2' }),
-      // Map({ room: 'Suite#2', building: 'Vienna Mansion', community: '2' }),
-      // Map({ room: 'Suite#3', building: 'Vienna Mansion', community: '2' }),
-      // Map({ room: 'Suite#16', building: 'Greenfield Mansion', community: '2' }),
-      // Map({ room: 'Suite#17', building: 'Greenfield Mansion', community: '2' }),
-      // Map({ room: 'Suite#9', building: 'Lei Ha Court', community: '3' }),
-      // Map({ room: 'Suite#10', building: 'Lei Ha Court', community: '3' }),
-      // Map({ room: 'Suite#11', building: 'Lei Ha Court', community: '3' }),
-      // Map({ room: 'Suite#1', building: 'Tonnochy Tower', community: '2' }),
-
-      // Map({ issues: '3/4', room: 'Suite#1 - community 1', createdAt: 'Nov 15 2016' }),
-      // Map({ issues: '3/4', room: 'Suite#9 - community 3', createdAt: 'Nov 9 2016' }),
-      // Map({ issues: '4/4', room: 'Suite#20 - community 1 ', createdAt: 'Oct 8 2016' }),
-
-      // Map({ flagged: true, title: 'Issue Title Name', createdAt: 'Nov 9 2016' }),
-      // Map({ flagged: true, title: 'Issue Title Name', createdAt: 'Oct 8 2016' }),
 
 // to be updated when to fetch from server when the app starts, an empty state to make sure no error
 const initialState = Map({
-  data: List([
+  room: List([
     Map({}),
+  ]),
+  review: List([
+    Map({
+      room: { 'name': 'testing' },
+      createdAt: 'Seed data from client',
+      issueList: List([
+        Map({
+          flagged: true,
+          title: 'Some issue one',
+          createdAt: 'Nov 15 2016',
+        }),
+      ]),
+    }),
   ]),
 });
 
@@ -76,8 +60,11 @@ const list = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_ISSUE':
       return action.store;
-    case 'INIT_APP': {
-      return action.store;
+    case 'LOAD_ROOM': {
+      return state.mergeDeep(action.store);
+    }
+    case 'LOAD_REVIEW': {
+      return state.mergeDeep(action.store);
     }
 
     // case 'SELECT_ITEM': {

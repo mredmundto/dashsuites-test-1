@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const displayedInList = ['issueList', 'room', 'createdAt'];
+const displayedInList = ['issueList', 'room name', 'createdAt'];
+// const displayedInList = ['roomname', 'createdAt'];
 
 class ReviewList extends Component {
   constructor(props) {
@@ -49,6 +50,27 @@ class ReviewList extends Component {
     };
 
     this.selectReview = this.selectReview.bind(this);
+  }
+
+  componentWillMount() {
+    // get all reviews
+    fetch('http://127.0.0.1:3000/REST/review', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((res) => {
+      return res.json();
+    })
+    .then((resJSON) => {
+      this.props.loadReview(resJSON);
+    })
+    .catch((e) => {
+      console.log('e', e);
+      throw e;
+    });
   }
 
   addItem() {
@@ -78,7 +100,7 @@ class ReviewList extends Component {
             // },
           }}
           displayedInList={displayedInList}
-          data={reviewList.toJS()}
+          data={reviewList}
           onItemPress={this.selectReview}
           searchModalOpen={this.state.modalOpen}
           onSearchClose={() => {
@@ -108,25 +130,41 @@ ReviewList.propTypes = {
   ]),
   infiniteScroll: PropTypes.bool,
   selectReview: PropTypes.func,
+  loadReview: PropTypes.func,
+  reviewList: PropTypes.array,
 };
 
 const mapStateToProps = (store) => {
-  const roomList = store.list.get('data');
-  const reviewList = roomList
-    .map((room, i) => {
-      return room.get('reviewList')
-        .map(review => review.set('room', room.get('name')).set('roomIndex', i));
-    })
-    .flatten(1);
+  // console.log('store in review', store.list.toJS());
+  const reviewList = store.list.toJS().review;
+  // this is to map the room name from the room object back to the review array
+  reviewList.forEach((review) => {
+    review['room name'] = review.room.name;
+  });
 
   return {
-    roomList,
     reviewList,
   };
+
+  // const roomList = store.list.get('data');
+  // const reviewList = roomList
+  //   .map((room, i) => {
+  //     return room.get('reviewList')
+  //       .map(review => review.set('room', room.get('name')).set('roomIndex', i));
+  //   })
+  //   .flatten(1);
+
+  // return {
+  //   roomList,
+  //   reviewList,
+  // };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    loadReview: (initObj) => {
+      dispatch(Action.loadReview(initObj));
+    },
     toggleDrawer: (open) => {
       return dispatch({
         type: 'TOGGLE_DRAWER',

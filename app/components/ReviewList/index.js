@@ -7,8 +7,10 @@ import {
   Text,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import ResourceList from '../../../composeComponents/ResourceList';
+import allList from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
+
+const ResourceList = allList.composedList;
 
 const styles = StyleSheet.create({
   container: {

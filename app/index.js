@@ -9,6 +9,7 @@ import ReviewCreate from './components/ReviewList/Create';
 import ReviewList from './components/ReviewList';
 import ReviewItem from './components/ReviewList/Item';
 import IssueCreate from './components/IssueList/Create';
+import CleaningList from './components/CleaningList';
 import {
   Scene,
   // Router,
@@ -32,7 +33,6 @@ class App extends Component {
           hideNavBar
         >
           <Scene
-            // initial
             key="RoomList"
             component={RoomList}
             title="Rooms"
@@ -61,14 +61,12 @@ class App extends Component {
             title="Room"
           />
           <Scene
-            initial
             key="ReviewList"
             component={ReviewList}
             title="Reviews"
           />
 
           <Scene
-          
             key="ReviewView"
             component={(props) => {
               return (
@@ -103,6 +101,25 @@ class App extends Component {
             key="IssueCreate"
             component={IssueCreate}
             title="Create an issue"
+          />
+          
+          <Scene
+            initial
+            key="CleaningList"
+            component={(props) => {
+              return (
+                <CleaningList
+                  {...props}
+                  headerProps={{
+                    leftImage: require('./resources/images/path@3x.png'),
+                    onLeft: () => {
+                      toggleDrawer(true);
+                    },
+                  }}
+                />
+              );
+            }}
+            title="My Cleaning Schedule"
           />
 
         </Router>

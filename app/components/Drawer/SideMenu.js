@@ -16,10 +16,10 @@ const menuList = [
     key: 'ReviewList',
     title: 'Reviews List',
   },
-  // {
-  //   key: 'Issues',
-  //   title: 'Issuess List',
-  // },
+  {
+    key: 'CleaningList',
+    title: 'Cleaing Schedule',
+  },
 ];
 
 const SideMenu = (props) => {

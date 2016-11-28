@@ -11,13 +11,14 @@ import { Actions } from 'react-native-router-flux';
 import Elements from '../../../composeComponents/Form/Elements';
 
 // importing the constants for theme
-import constants from '../../../constants';
+// import constants from '../../../constants';
 import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
 import Action from './../List/action';
 
 const {
   Input,
+  DropDownAndroid,
 } = Elements;
 
 const window = Dimensions.get('window');
@@ -28,16 +29,32 @@ class CreateRoom extends Component {
     this.state = {
       name: '',
       building: '',
-      community: '',
+      community: 'TST',
       address: '',
+      professionalCleaning: 'Monday',
     };
     this.onClick = this.onClick.bind(this);
   }
 
   onClick() {
-    console.log('here');
-    // this.props.addRoom(this.state);
-    // Actions.pop({ refresh: { rooms: this.props.rooms } });
+    return customFetch('http://127.0.0.1:3000/REST/room', {
+      method: 'POST',
+      body: {
+        name: this.state.name,
+        building: this.state.building,
+        community: this.state.community,
+        address: this.state.address,
+        professionalCleaning: this.state.professionalCleaning,
+      },
+    })
+    .then((res) => {
+      console.log('successful post object', res);
+      Actions.RoomList();
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });
   }
 
   render() {
@@ -47,10 +64,25 @@ class CreateRoom extends Component {
       roomList,
     } = this.props;
 
-    console.log('in edit page', this.props);
-    // this.props.data is the index of the room
-    const room = roomList.get(data).toJS();
-    console.log('room in edit', room);
+    const defaultObj = {
+      name: 'please enter the room name here',
+      building: 'please enter the room building here',
+      community: 'please enter the room community here',
+      address: 'please enter the room address here',
+      professionalCleaning: 'please enter the professionalCleaning date here',
+    };
+    const room = room || defaultObj;
+
+
+    // TODO: to dynamic render
+
+    // this.props.appSchema.map((model) => {
+    //   if (model.name === 'room') {
+    //     model.fields.map((fieldsObj) => {
+    //       console.log(fieldsObj)
+    //     });
+    //   }
+    // });
 
     return (
       <View style={styles.container}>
@@ -58,31 +90,76 @@ class CreateRoom extends Component {
           <Input
             headerText="name"
             placeholder={room.name}
-            onChangeText={(number) => { this.setState({ number }); }}
+            onChangeText={(name) => { this.setState({ name }); }}
           />
 
           <Input
             headerText="building"
             placeholder={room.building}
-            onChangeText={(location) => { this.setState({ location }); }}
+            onChangeText={(building) => { this.setState({ building }); }}
           />
 
-          <Input
-            headerText="community"
-            placeholder={room.community}
-            onChangeText={(community) => { this.setState({ community }); }}
+          <DropDownAndroid
+            headerText="Community"
+            options={[
+              {
+                value: 'TST',
+                label: 'TST',
+              },
+              {
+                value: 'CWB1',
+                label: 'CWB1',
+              },
+              {
+                value: 'CWB2',
+                label: 'CWB2',
+              },
+              {
+                value: 'Wan Chai',
+                label: 'Wan Chai',
+              },
+            ]}
+            onValueChange={(community) => { this.setState({ community }); }}
           />
+
 
           <Input
             headerText="address"
             placeholder={room.address}
             onChangeText={(address) => { this.setState({ address }); }}
-          />          
+          />
+
+          <DropDownAndroid
+            headerText="Professional Cleaning"
+            options={[
+              {
+                value: 'Monday',
+                label: 'Monday',
+              },
+              {
+                value: 'Tuesday',
+                label: 'Tuesday',
+              },
+              {
+                value: 'Wednesday',
+                label: 'Wednesday',
+              },
+              {
+                value: 'Thursday',
+                label: 'Thursday',
+              },
+              {
+                value: 'Friday',
+                label: 'Friday',
+              },
+            ]}
+            onValueChange={(professionalCleaning) => { this.setState({ professionalCleaning }); }}
+          />
 
         </ScrollView>
 
         <TouchableOpacity
-          style={styles.bottom} onPress={() => { this.onClick() }}
+          style={styles.bottom} onPress={() => { this.onClick(); }}
         >
           <Text style={styles.bottomText} > SAVE </Text>
         </TouchableOpacity>
@@ -96,6 +173,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    paddingBottom: 50,
   },
   insideContainer: {
     flex: 1,
@@ -122,17 +200,21 @@ CreateRoom.propTypes = {
 };
 
 function mapStateToProps(store) {
+  // console.log('store in create', store.list.toJS());
+
+  // TODO: dynamic rendering 
+  const appSchema = store.list.toJS().appSchema;
+  console.log('schema here', appSchema);
   return {
-    source: store.list,
-    roomList: store.list.get('data'),
+    appSchema,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addRoom: (newRoom) => {
-      return dispatch(Action.addItem(newRoom, 'rooms'));
-    },
+    // addRoom: (newRoom) => {
+    //   return dispatch(Action.addItem(newRoom, 'rooms'));
+    // },
   };
 }
 

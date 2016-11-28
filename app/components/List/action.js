@@ -38,6 +38,16 @@ export default {
     };
   },
 
+
+  // adding schema first
+  loadSchema: (schemaObj) => {
+    const newList = Immutable.fromJS({ appSchema: schemaObj });
+    return {
+      type: 'LOAD_SCHEMA',
+      store: newList,
+    };
+  },
+
   loadRoom: (currObj) => {
     const newList = Immutable.fromJS({ room: currObj });
     return {

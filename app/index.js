@@ -20,7 +20,25 @@ import Router from './components/Router';
 import { connect } from 'react-redux';
 // import _ from 'lodash';
 
+// set customFetch to global
+import setFetchToGlobal from './admin/global';
+import Action from './components/List/action';
+
 class App extends Component {
+
+  componentWillMount() {
+    customFetch('http://127.0.0.1:3000/REST', {
+      method: 'GET',
+    })
+    .then((resJSON) => {
+      this.props.loadSchema(resJSON);
+      console.log('the whole rest API', resJSON);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  }
+
   render() {
     const {
       toggleDrawer,
@@ -104,7 +122,7 @@ class App extends Component {
           />
           
           <Scene
-            initial
+            // initial
             key="CleaningList"
             component={(props) => {
               return (
@@ -130,6 +148,7 @@ class App extends Component {
 
 App.propTypes = {
   toggleDrawer: PropTypes.func,
+  loadSchema: PropTypes.func,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -139,6 +158,9 @@ const mapDispatchToProps = (dispatch) => {
         type: 'TOGGLE_DRAWER',
         open,
       });
+    },
+    loadSchema: (initObj) => {
+      dispatch(Action.loadSchema(initObj));
     },
   };
 };

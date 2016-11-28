@@ -50,36 +50,25 @@ class RoomList extends Component {
   }
 
   componentWillMount() {
-    // get all roooms
-    fetch('http://127.0.0.1:3000/REST/room', {
+    // define in global
+    customFetch('http://127.0.0.1:3000/REST/room', {
       method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((res) => {
-      return res.json();
     })
     .then((resJSON) => {
-      // push the fetched object from server to reducer
       this.props.loadRoom(resJSON);
-      // console.log('updated code');
-      // this.props.rooms = resJSON;
-      console.log('getting a list', resJSON);
     })
     .catch((e) => {
-      console.log('e', e);
-      throw e;
+      console.log(e);
     });
   }
 
   addItem() {
-    // Actions.RoomEdit();
+    console.log('clicked add room');
+    Actions.RoomEdit();
   }
 
   selectRoom(selectedRoom, roomIndex) {
-    Actions.RoomView(`${roomIndex}`);
+    // Actions.RoomView(`${roomIndex}`);
   }
 
   render() {
@@ -133,10 +122,8 @@ RoomList.propTypes = {
 };
 
 function mapStateToProps(store) {
-  const data = store.list.toJS();
-
-  console.log('store in room', store.list.toJS());
-
+  const data = store.list.toJS(); 
+  // console.log('store in room', store.list.toJS());
   return {
     rooms: data.room,
   };

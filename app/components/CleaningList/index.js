@@ -130,7 +130,7 @@ class CleaningList extends Component {
                 </TouchableOpacity>
               );
             })}
-          </ScrollView>   
+          </ScrollView>
         </View>
 
         <View style={styles.list}>

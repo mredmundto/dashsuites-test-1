@@ -66,7 +66,11 @@ const list = (state = initialState, action) => {
     case 'LOAD_REVIEW': {
       return state.mergeDeep(action.store);
     }
-
+    case 'LOAD_SCHEMA': {
+      console.log('calling', action.store);
+      
+      return state.mergeDeep(action.store);
+    }
     // case 'SELECT_ITEM': {
     //   return state.setIn([action.listType, 'activeItem'], action.activeItem);
     // }

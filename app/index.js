@@ -122,7 +122,7 @@ class App extends Component {
           />
           
           <Scene
-            // initial
+            initial
             key="CleaningList"
             component={(props) => {
               return (

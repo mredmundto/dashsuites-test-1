@@ -56,23 +56,23 @@ class ReviewList extends Component {
 
   componentWillMount() {
     // get all reviews
-    fetch('http://127.0.0.1:3000/REST/review', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((res) => {
-      return res.json();
-    })
-    .then((resJSON) => {
-      this.props.loadReview(resJSON);
-    })
-    .catch((e) => {
-      console.log('e', e);
-      throw e;
-    });
+    // fetch('http://127.0.0.1:3000/REST/review', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    // .then((res) => {
+    //   return res.json();
+    // })
+    // .then((resJSON) => {
+    //   this.props.loadReview(resJSON);
+    // })
+    // .catch((e) => {
+    //   console.log('e', e);
+    //   throw e;
+    // });
   }
 
   addItem() {
@@ -164,9 +164,9 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadReview: (initObj) => {
-      dispatch(Action.loadReview(initObj));
-    },
+    // loadReview: (initObj) => {
+    //   dispatch(Action.loadReview(initObj));
+    // },
     toggleDrawer: (open) => {
       return dispatch({
         type: 'TOGGLE_DRAWER',

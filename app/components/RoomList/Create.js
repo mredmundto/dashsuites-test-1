@@ -200,11 +200,8 @@ CreateRoom.propTypes = {
 };
 
 function mapStateToProps(store) {
-  // console.log('store in create', store.list.toJS());
-
   // TODO: dynamic rendering
   const appSchema = store.list.toJS().appSchema;
-  console.log('schema here', appSchema);
   return {
     appSchema,
   };

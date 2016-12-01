@@ -72,4 +72,10 @@ export default {
       store: newList,
     };
   },
+  selectRoom: (roomObj) => {
+    return {
+      type: 'SELECT_ROOM',
+      store: roomObj,
+    };
+  },
 };

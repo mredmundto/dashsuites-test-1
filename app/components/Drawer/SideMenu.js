@@ -20,6 +20,10 @@ const menuList = [
     key: 'CleaningList',
     title: 'Cleaing Schedule',
   },
+  {
+    key: 'LinenList',
+    title: 'Linen Schedule',
+  },
 ];
 
 const SideMenu = (props) => {

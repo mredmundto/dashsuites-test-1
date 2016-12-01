@@ -10,6 +10,9 @@ import ReviewList from './components/ReviewList';
 import ReviewItem from './components/ReviewList/Item';
 import IssueCreate from './components/IssueList/Create';
 import CleaningList from './components/CleaningList';
+import CleaningItem from './components/CleaningList/Item';
+import LinenList from './components/LinenList';
+
 import {
   Scene,
   // Router,
@@ -36,6 +39,35 @@ class App extends Component {
     })
     .catch((e) => {
       console.log(e);
+    });
+
+    // getting all rooms
+    customFetch('http://127.0.0.1:3000/REST/room', {
+      method: 'GET',
+    })
+    .then((resJSON) => {
+      this.props.loadRoom(resJSON);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+    // getting all reviews
+    fetch('http://127.0.0.1:3000/REST/review', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((res) => {
+      return res.json();
+    })
+    .then((resJSON) => {
+      this.props.loadReview(resJSON);
+    })
+    .catch((e) => {
+      console.log('e', e);
+      throw e;
     });
   }
 
@@ -73,6 +105,7 @@ class App extends Component {
             }}
             title="Room"
           />
+
           <Scene
             key="RoomEdit"
             component={(props) => <RoomCreate {...props} edit />}
@@ -122,7 +155,6 @@ class App extends Component {
           />
           
           <Scene
-            initial
             key="CleaningList"
             component={(props) => {
               return (
@@ -138,6 +170,30 @@ class App extends Component {
               );
             }}
             title="My Cleaning Schedule"
+          />
+
+          <Scene
+            key="CleaningItem"
+            component={CleaningItem}
+            title="Room Details"
+          />
+          <Scene
+            initial
+            key="LinenList"
+            component={(props) => {
+              return (
+                <LinenList
+                  {...props}
+                  headerProps={{
+                    leftImage: require('./resources/images/path@3x.png'),
+                    onLeft: () => {
+                      toggleDrawer(true);
+                    },
+                  }}
+                />
+              );
+            }}
+            title="My Linen Schedule"
           />
 
         </Router>
@@ -159,8 +215,14 @@ const mapDispatchToProps = (dispatch) => {
         open,
       });
     },
+    loadRoom: (initObj) => {
+      dispatch(Action.loadRoom(initObj));
+    },
     loadSchema: (initObj) => {
       dispatch(Action.loadSchema(initObj));
+    },
+    loadReview: (initObj) => {
+      dispatch(Action.loadReview(initObj));
     },
   };
 };

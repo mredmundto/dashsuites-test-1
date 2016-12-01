@@ -49,26 +49,27 @@ class RoomList extends Component {
     this.selectRoom = this.selectRoom.bind(this);
   }
 
-  componentWillMount() {
-    // define in global
-    customFetch('http://127.0.0.1:3000/REST/room', {
-      method: 'GET',
-    })
-    .then((resJSON) => {
-      this.props.loadRoom(resJSON);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-  }
+  // componentWillMount() {
+  //   // define in global
+  //   customFetch('http://127.0.0.1:3000/REST/room', {
+  //     method: 'GET',
+  //   })
+  //   .then((resJSON) => {
+  //     this.props.loadRoom(resJSON);
+  //   })
+  //   .catch((e) => {
+  //     console.log(e);
+  //   });
+  // }
 
   addItem() {
     console.log('clicked add room');
     Actions.RoomEdit();
   }
 
-  selectRoom(selectedRoom, roomIndex) {
-    // Actions.RoomView(`${roomIndex}`);
+  selectRoom(selectedRoom) {
+    this.props.selectRoom(selectedRoom);
+    Actions.RoomView();
   }
 
   render() {
@@ -132,11 +133,11 @@ function mapStateToProps(store) {
 const mapDispatchToProps = (dispatch) => {
   return {
     selectRoom: (selectedRoom) => {
-      dispatch(Action.selectItem(selectedRoom, 'rooms'));
+      dispatch(Action.selectRoom(selectedRoom));
     },
-    loadRoom: (initObj) => {
-      dispatch(Action.loadRoom(initObj));
-    },
+    // loadRoom: (initObj) => {
+    //   dispatch(Action.loadRoom(initObj));
+    // },
     toggleDrawer: (open) => {
       dispatch({
         type: 'TOGGLE_DRAWER',

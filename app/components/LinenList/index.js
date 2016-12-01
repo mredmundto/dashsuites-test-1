@@ -203,7 +203,7 @@ class CleaningList extends Component {
 
         <View style={styles.list}>
           <ResourceList
-            displayedInList={['cleaning', 'name', 'community']}
+            displayedInList={['name', 'community']}
             data={this.props.cleaningSchedule}
             onItemPress={this.selectRoom}
           />

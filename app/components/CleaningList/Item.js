@@ -13,20 +13,10 @@ import HOC from '../../HOC';
 import applyHeader from '../../HOC/applyHeader';
 import IssueList from '../ReviewList/IssueList';
 
-class RoomDetail extends Component {
-  constructor(props) {
-    super(props);
-    this.writeReview = this.writeReview.bind(this);
-  }
-  writeReview() {
-    // Actions()
-    // Actions.RoomCreate();
-  }
-  render() {
-    // const roomIndex = this.props.data.split(' ')[0];
-    // const room = this.props.roomList.get(roomIndex).toJS();
-    const room = this.props.room;
+class CleaningItem extends Component {
 
+  render() {
+    const room = this.props.room;
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
@@ -40,24 +30,6 @@ class RoomDetail extends Component {
               }
             })}
           </View>
-  
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 50,
-              marginTop: 30,
-              marginHorizontal: 20,
-              elevation: 10,
-              backgroundColor: _.get(constants, 'style.secondaryColor', 'green'),
-            }}
-            onPress={() => {
-              Actions.ReviewCreate();
-            }}
-          >
-            <Text style={{ color: 'white', textAlign: 'center' }}>{'Write Review'}</Text>
-          </TouchableOpacity>
 
         </ScrollView>
       </View>
@@ -86,13 +58,13 @@ function mapStateToProps(store) {
   };
 }
 
-RoomDetail.defaultProps = {
+CleaningItem.defaultProps = {
   data: '',
 };
-RoomDetail.propTypes = {
+CleaningItem.propTypes = {
   data: PropTypes.string,
   roomList: PropTypes.object,
 };
-const composedRoomDetail = HOC(RoomDetail, [applyHeader]);
-const connectedRoomDetail = connect(mapStateToProps)(composedRoomDetail);
-export default connectedRoomDetail;
+const composedCleaningItem = HOC(CleaningItem, [applyHeader]);
+const connectedCleaningItem = connect(mapStateToProps)(composedCleaningItem);
+export default connectedCleaningItem;

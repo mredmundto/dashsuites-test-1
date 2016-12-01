@@ -55,7 +55,7 @@ const initialState = Map({
     }),
   ]),
   cleaningSchedule: List([]),
-  activeRoom: Map({}),
+  selectedRoom: Map({}),
 });
 
 const list = (state = initialState, action) => {
@@ -75,8 +75,8 @@ const list = (state = initialState, action) => {
       return state.mergeDeep(action.store);
     }
     case 'SELECT_ROOM': {
-      // action.store
-      return state.setIn([action.listType, 'activeItem'], action.activeItem);
+      // setActive room to current
+      return state.set('selectedRoom', action.store);
     }
     default:
       return state;

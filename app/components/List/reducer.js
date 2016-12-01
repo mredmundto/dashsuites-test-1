@@ -54,6 +54,8 @@ const initialState = Map({
       ]),
     }),
   ]),
+  cleaningSchedule: List([]),
+  activeRoom: Map({}),
 });
 
 const list = (state = initialState, action) => {
@@ -67,13 +69,15 @@ const list = (state = initialState, action) => {
       return state.mergeDeep(action.store);
     }
     case 'LOAD_SCHEMA': {
-      console.log('calling', action.store);
-      
       return state.mergeDeep(action.store);
     }
-    // case 'SELECT_ITEM': {
-    //   return state.setIn([action.listType, 'activeItem'], action.activeItem);
-    // }
+    case 'LOAD_ClEANING_SCHEDULE': {
+      return state.mergeDeep(action.store);
+    }
+    case 'SELECT_ROOM': {
+      // action.store
+      return state.setIn([action.listType, 'activeItem'], action.activeItem);
+    }
     default:
       return state;
   }

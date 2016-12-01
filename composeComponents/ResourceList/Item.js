@@ -71,6 +71,7 @@ const renderColumn = (val, key) => {
       const valArray = [val.filter(i => !i.flagged).length, val.length];
       return renderIssueColumn(valArray[0], valArray[1]);
     }
+    // to add the linen check box here
     default:
       return <Text>{val}</Text>;
   }

@@ -6,7 +6,6 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Dimensions,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
@@ -15,22 +14,23 @@ import applyHeader from '../../HOC/applyHeader';
 import allList from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
 
-// const displayedInList = ['name', 'building', 'community'];
-console.log('ResourceList', ResourceList);
-// const window = Dimensions.get('window');
-
 const ResourceList = allList.List;
+
+const getMonday = ((d) => {
+  d = new Date(d);
+  const day = d.getDay(),
+      diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(d.setDate(diff));
+});
+
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    // backgroundColor: '#F5FCFF',
   },
   content: {
     fontSize: 13,
-    // fontSize: (window.width)/50,
     alignItems: 'center',
-    color: '#FFFFFF',
   },
   dateSelector: {
     paddingTop: 20,
@@ -40,21 +40,25 @@ const styles = StyleSheet.create({
   dateItem: {
     alignItems: 'center',
     borderRadius: 5,
+    margin: 5,
+    padding: 5,
+    width: 65,
+    height: 50,
+  },
+  dateItemSelected: {
+    alignItems: 'center',
+    borderRadius: 5,
     backgroundColor: '#3E50B4',
     margin: 5,
     padding: 5,
     width: 65,
     height: 50,
   },
-  // selectedDateItem: {
-  //   alignItems: 'center',
-  //   borderRadius: 5,
-  //   backgroundColor: '#3E50B4',
-  //   margin: 5,
-  //   padding: 5,
-  //   width: window.width/40,
-  //   height: 50,
-  // },
+  dateItemSelectedText: {
+    fontSize: 13,
+    alignItems: 'center',
+    color: '#FFFFFF',
+  },
   list: {
     flexDirection: 'column',
   },
@@ -63,55 +67,70 @@ const styles = StyleSheet.create({
   },
 });
 
+const today = new Date('2016-12-07');
+// const today = new Date();
+
+let displayDay = (today).getDay() - 1;
+if (displayDay === -1) {
+  displayDay = 0;
+} else if (displayDay > 4) {
+  displayDay = 4;
+}
+
 class CleaningList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      selectedDate: displayDay,
+    };
     this.selectRoom = this.selectRoom.bind(this);
     this.selectDate = this.selectDate.bind(this);
+    this.mapCleaningType = this.mapCleaningType.bind(this);
   }
 
   componentWillMount() {
-    
-    const getMonday = ((d) => {
-      d = new Date(d);
-      const day = d.getDay(),
-          diff = d.getDate() - day + (day === 0 ? -6 : 1);
-      return new Date(d.setDate(diff));
-    });
-
     const formattedDate = ((date) => {
-      let month = '' + (date.getMonth() + 1);
-      let day = '' + date.getDate();
+      let month = `${(date.getMonth() + 1)}`;
+      let day = `${date.getDate()}`;
       const year = date.getFullYear();
       if (month.length < 2) {
-        month = '0' + month;
+        month = `0${month}`;
       }
       if (day.length < 2) {
-        day = '0' + day;
+        day = `0${day}`;
       }
       return [day, month, year].join('');
     });
+    const currentMondayString = formattedDate(getMonday(today));
 
-    // const currentMondayString = formattedDate(getMonday(new Date('2015-03-31')));
-    const currentMondayString = formattedDate(getMonday(new Date()));
-
-    customFetch('http://127.0.0.1:3000/api/customDate?statingMonday=' +currentMondayString, {
+    customFetch(`http://127.0.0.1:3000/api/customWeek?startingMonday=${currentMondayString}`, {
       method: 'GET',
     })
     .then((resJSON) => {
-
-      console.log(resJSON);
-      //this.props.loadRoom(resJSON);
+      this.props.loadCleaningSchedule(this.mapCleaningType(resJSON));
     })
     .catch((e) => {
       console.log(e);
     });
-
+  }
+  // this is to map the array in cleaning schedule back to PC / BC / OFF
+  mapCleaningType(resJSON) {
+    for (let i = 0; i < resJSON.length; i++) {
+      if (resJSON[i].schedule[this.state.selectedDate] === 1) {
+        resJSON[i].cleaning = 'PC';
+      } else if (resJSON[i].schedule[this.state.selectedDate] === 0) {
+        resJSON[i].cleaning = 'BC';
+      } else if (resJSON[i].schedule[this.state.selectedDate] === 2) {
+        resJSON[i].cleaning = 'None';
+      }
+    }
+    return resJSON;
   }
 
   selectDate(selectDateObj) {
-    console.log(selectDateObj);
-    // Actions.RoomEdit();
+    this.setState({ selectedDate: selectDateObj.index }, () => {
+      this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));
+    });
   }
 
   selectRoom(selectedRoom, roomIndex) {
@@ -124,43 +143,55 @@ class CleaningList extends Component {
       toggleDrawer,
     } = this.props;
 
+    const Monday = getMonday(today);
     const dateArrObj = [
-      { 1: 'Mon' },
-      { 2: 'Tue' },
-      { 3: 'Wed' },
-      { 4: 'Thu' },
-      { 5: 'Fri' },
+      {
+        Mon: Monday.getDate(),
+        index: 0,
+      },
+      {
+        Tue: new Date(Monday.getTime() + 1 * 24 * 60 * 60 * 1000).getDate(),
+        index: 1,
+      },
+      {
+        Wed: new Date(Monday.getTime() + 2 * 24 * 60 * 60 * 1000).getDate(),
+        index: 2,
+      },
+      {
+        Thu: new Date(Monday.getTime() + 3 * 24 * 60 * 60 * 1000).getDate(),
+        index: 3,
+      },
+      {
+        Fri: new Date(Monday.getTime() + 4 * 24 * 60 * 60 * 1000).getDate(),
+        index: 4,
+      },
     ];
 
-    const data = [
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-      { Type: 'BC', Rooms: '1-5', Location: 'TST' },
-    ];
+    console.log('cleaningSchedule in cleaning list', this.props.cleaningSchedule[0]);
     return (
       <View style={styles.container} >
         <View>
           <ScrollView style={styles.dateSelector} horizontal={true}>
             {dateArrObj.map((Obj) => {
               return (
-                <TouchableOpacity
-                  style={styles.dateItem}
-                  key={Object.keys(Obj)[0]}
-                  onPress={() => this.selectDate(Obj)}
-                >
-                  <Text style={styles.content}> {Obj[Object.keys(Obj)[0]]} </Text>
-                  <Text style={styles.content}> {Object.keys(Obj)[0]} </Text>
-                </TouchableOpacity>
+                Obj.index === this.state.selectedDate ?
+                  <TouchableOpacity
+                    style={styles.dateItemSelected}
+                    key={Object.keys(Obj)[0]}
+                    onPress={() => this.selectDate(Obj)}
+                  >
+                    <Text style={styles.dateItemSelectedText}> {Object.keys(Obj)[0]} </Text>
+                    <Text style={styles.dateItemSelectedText}> {Obj[Object.keys(Obj)[0]]} </Text>
+                  </TouchableOpacity>
+                :
+                  <TouchableOpacity
+                    style={styles.dateItem}
+                    key={Object.keys(Obj)[0]}
+                    onPress={() => this.selectDate(Obj)}
+                  >
+                    <Text style={styles.content}> {Object.keys(Obj)[0]} </Text>
+                    <Text style={styles.content}> {Obj[Object.keys(Obj)[0]]} </Text>
+                  </TouchableOpacity>
               );
             })}
           </ScrollView>
@@ -168,8 +199,8 @@ class CleaningList extends Component {
 
         <View style={styles.list}>
           <ResourceList
-            displayedInList={['Type', 'Rooms', 'Location']}
-            data={data}
+            displayedInList={['cleaning', 'name', 'community']}
+            data={this.props.cleaningSchedule}
           />
         </View>
 
@@ -194,12 +225,16 @@ CleaningList.propTypes = {
   infiniteScroll: PropTypes.bool,
   selectRoom: PropTypes.func,
   loadRoom: PropTypes.func,
+  loadCleaningSchedule: PropTypes.func,
+  cleaningSchedule: PropTypes.array,
 };
 
 function mapStateToProps(store) {
   const data = store.list.toJS();
+  console.log('redux', data.cleaningSchedule);
   return {
     rooms: data.room,
+    cleaningSchedule: data.cleaningSchedule,
   };
 }
 
@@ -208,9 +243,9 @@ const mapDispatchToProps = (dispatch) => {
     // selectRoom: (selectedRoom) => {
     //   dispatch(Action.selectItem(selectedRoom, 'rooms'));
     // },
-    // loadRoom: (initObj) => {
-    //   dispatch(Action.loadRoom(initObj));
-    // },
+    loadCleaningSchedule: (initObj) => {
+      dispatch(Action.loadCleaningSchedule(initObj));
+    },
     toggleDrawer: (open) => {
       dispatch({
         type: 'TOGGLE_DRAWER',

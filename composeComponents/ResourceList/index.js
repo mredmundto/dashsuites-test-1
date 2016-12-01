@@ -55,7 +55,16 @@ class List extends Component {
   // }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.data.length === nextProps.data.length) return;
+    // if (this.props.data.length === nextProps.data.length) return;
+    // check if next props is a new data
+    let identical = (this.props.data.length !== nextProps.data.length) ? false : true;
+    this.props.data.forEach((item, i) => {
+      if (item !== nextProps.data[i]) {
+        identical = false;
+      }
+    });
+    if (identical) return;
+
     const data = nextProps.data;
     this.setState({
       dataBlob: data,

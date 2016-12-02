@@ -23,6 +23,18 @@ const getMonday = ((d) => {
   return new Date(d.setDate(diff));
 });
 
+const formattedDate = ((date) => {
+  let month = `${(date.getMonth() + 1)}`;
+  let day = `${date.getDate()}`;
+  const year = date.getFullYear();
+  if (month.length < 2) {
+    month = `0${month}`;
+  }
+  if (day.length < 2) {
+    day = `0${day}`;
+  }
+  return [day, month, year].join('');
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -67,8 +79,8 @@ const styles = StyleSheet.create({
   },
 });
 
-// const today = new Date('2016-12-20');
-const today = new Date();
+const today = new Date('2016-11-30');
+// const today = new Date();
 
 let displayDay = (today).getDay() - 1;
 if (displayDay === -1) {
@@ -77,7 +89,7 @@ if (displayDay === -1) {
   displayDay = 4;
 }
 
-class CleaningList extends Component {
+class LinenList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -85,51 +97,68 @@ class CleaningList extends Component {
     };
     this.selectRoom = this.selectRoom.bind(this);
     this.selectDate = this.selectDate.bind(this);
-    this.mapCleaningType = this.mapCleaningType.bind(this);
+    this.mapLinenToType = this.mapLinenToType.bind(this);
   }
 
   componentWillMount() {
-    const formattedDate = ((date) => {
-      let month = `${(date.getMonth() + 1)}`;
-      let day = `${date.getDate()}`;
-      const year = date.getFullYear();
-      if (month.length < 2) {
-        month = `0${month}`;
-      }
-      if (day.length < 2) {
-        day = `0${day}`;
-      }
-      return [day, month, year].join('');
-    });
-    const currentMondayString = formattedDate(getMonday(today));
-
+    // If today is Monday, we are getting Friday cleaning Schedule
+    let currentMondayString;
+    if (this.state.selectedDate === 0) {
+      currentMondayString = formattedDate(getMonday(new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000)));
+    } else {
+      currentMondayString = formattedDate(getMonday(today));
+    }
     customFetch(`http://127.0.0.1:3000/api/customWeek?startingMonday=${currentMondayString}`, {
       method: 'GET',
     })
     .then((resJSON) => {
-      this.props.loadCleaningSchedule(this.mapCleaningType(resJSON));
+      console.log('the resJSON', resJSON);
+      this.props.loadLinenSchedule(this.mapLinenToType(resJSON));
     })
     .catch((e) => {
       console.log(e);
     });
   }
-  // this is to map the array in cleaning schedule back to PC / BC / OFF
-  mapCleaningType(resJSON) {
-    for (let i = 0; i < resJSON.length; i++) {
-      if (resJSON[i].schedule[this.state.selectedDate] === 1) {
-        resJSON[i].cleaning = 'PC';
-      } else if (resJSON[i].schedule[this.state.selectedDate] === 0) {
-        resJSON[i].cleaning = 'BC';
-      } else if (resJSON[i].schedule[this.state.selectedDate] === 2) {
-        resJSON[i].cleaning = 'None';
+  // returning all the objects that are to display in list
+  mapLinenToType(resJSON) {
+    const arr = [];
+    // if today is Monday, get last week's Friday
+    if (this.state.selectedDate === 0) {
+      for (let i = 0; i < resJSON.length; i++) {
+        if (resJSON[i].schedule[4] === 1) {
+          arr.push(resJSON[i]);
+        }
+      }
+    } else {
+      // if not, get the previous day
+      for (let i = 0; i < resJSON.length; i++) {
+        if (resJSON[i].schedule[this.state.selectedDate - 1] === 1) {
+          arr.push(resJSON[i]);
+        }
       }
     }
-    return resJSON;
+    return arr;
   }
 
   selectDate(selectDateObj) {
     this.setState({ selectedDate: selectDateObj.index }, () => {
-      this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));
+      // If today is Monday, we are getting Friday cleaning Schedule
+      let currentMondayString;
+      if (this.state.selectedDate === 0) {
+        currentMondayString = formattedDate(getMonday(new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000)));
+      } else {
+        currentMondayString = formattedDate(getMonday(today));
+      }
+
+      customFetch(`http://127.0.0.1:3000/api/customWeek?startingMonday=${currentMondayString}`, {
+        method: 'GET',
+      })
+      .then((resJSON) => {
+        this.props.loadLinenSchedule(this.mapLinenToType(resJSON));
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     });
   }
 
@@ -169,9 +198,7 @@ class CleaningList extends Component {
         Fri: new Date(Monday.getTime() + 4 * 24 * 60 * 60 * 1000).getDate(),
         index: 4,
       },
-    ];
-
-    console.log('cleaningSchedule in cleaning list', this.props.cleaningSchedule[0]);
+    ];   
     return (
       <View style={styles.container} >
         <View>
@@ -204,7 +231,7 @@ class CleaningList extends Component {
         <View style={styles.list}>
           <ResourceList
             displayedInList={['name', 'community']}
-            data={this.props.cleaningSchedule}
+            data={this.props.linenSchedule}
             onItemPress={this.selectRoom}
           />
         </View>
@@ -214,13 +241,13 @@ class CleaningList extends Component {
   }
 }
 
-CleaningList.defaultProps = {
+LinenList.defaultProps = {
   allowCreate: true,
   rooms: [],
   infiniteScroll: true,
 };
 
-CleaningList.propTypes = {
+LinenList.propTypes = {
   toggleDrawer: PropTypes.func,
   allowCreate: PropTypes.bool,
   rooms: PropTypes.oneOfType([
@@ -230,16 +257,16 @@ CleaningList.propTypes = {
   infiniteScroll: PropTypes.bool,
   selectRoom: PropTypes.func,
   loadRoom: PropTypes.func,
-  loadCleaningSchedule: PropTypes.func,
+  loadLinenSchedule: PropTypes.func,
   cleaningSchedule: PropTypes.array,
+  linenSchedule: PropTypes.array,
 };
 
 function mapStateToProps(store) {
   const data = store.list.toJS();
-  console.log('redux', data);
   return {
     rooms: data.room,
-    cleaningSchedule: data.cleaningSchedule,
+    linenSchedule: data.linenSchedule,
   };
 }
 
@@ -248,8 +275,8 @@ const mapDispatchToProps = (dispatch) => {
     selectRoom: (selectedRoom) => {
       dispatch(Action.selectRoom(selectedRoom));
     },
-    loadCleaningSchedule: (initObj) => {
-      dispatch(Action.loadCleaningSchedule(initObj));
+    loadLinenSchedule: (initObj) => {
+      dispatch(Action.loadLinenSchedule(initObj));
     },
     toggleDrawer: (open) => {
       dispatch({
@@ -260,6 +287,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const composedCleaningList = HOC(CleaningList, [applyHeader]);
-const connectedCleaningList = connect(mapStateToProps, mapDispatchToProps)(composedCleaningList);
-export default connectedCleaningList;
+const composedLinenList = HOC(LinenList, [applyHeader]);
+const connectedLinenList = connect(mapStateToProps, mapDispatchToProps)(composedLinenList);
+export default connectedLinenList;

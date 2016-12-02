@@ -155,6 +155,7 @@ class App extends Component {
           />
           
           <Scene
+            initial
             key="CleaningList"
             component={(props) => {
               return (
@@ -178,7 +179,7 @@ class App extends Component {
             title="Room Details"
           />
           <Scene
-            initial
+            // initial
             key="LinenList"
             component={(props) => {
               return (

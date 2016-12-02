@@ -41,7 +41,7 @@ export default {
 
   // adding schema first
   loadSchema: (schemaObj) => {
-    const newList = Immutable.fromJS({ appSchema: schemaObj });
+    const newList = Immutable.fromJS(schemaObj);
     return {
       type: 'LOAD_SCHEMA',
       store: newList,
@@ -49,26 +49,30 @@ export default {
   },
 
   loadRoom: (currObj) => {
-    const newList = Immutable.fromJS({ room: currObj });
+    const newList = Immutable.fromJS(currObj);
     return {
       type: 'LOAD_ROOM',
       store: newList,
     };
   },
   loadReview: (currObj) => {
-    const newList = Immutable.fromJS({ review: currObj });
-    // console.log('newList in Load Review', newList.toJS());
+    const newList = Immutable.fromJS(currObj);
     return {
       type: 'LOAD_ROOM',
       store: newList,
     };
   },
   loadCleaningSchedule: (currObj) => {
-    // console.log('inside action', currObj);
-    const newList = Immutable.fromJS({ cleaningSchedule: currObj });
-    // console.log('inside action', newList.toJS());
+    const newList = Immutable.fromJS(currObj);
     return {
       type: 'LOAD_ClEANING_SCHEDULE',
+      store: newList,
+    };
+  },
+  loadLinenSchedule: (currObj) => {
+    const newList = Immutable.fromJS(currObj);
+    return {
+      type: 'LOAD_LINEN_SCHEDULE',
       store: newList,
     };
   },
@@ -76,6 +80,12 @@ export default {
     return {
       type: 'SELECT_ROOM',
       store: roomObj,
+    };
+  },
+  selectDay: (day) => {
+    return {
+      type: 'SELECT_DAY', 
+      store: day,
     };
   },
 };

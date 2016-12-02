@@ -80,7 +80,7 @@ class ReviewList extends Component {
   }
 
   selectReview(selectedReview, reviewIndex) {
-    Actions.ReviewView(`${selectedReview.roomIndex} reviewList ${reviewIndex}`);
+    //Actions.ReviewView(`${selectedReview.roomIndex} reviewList ${reviewIndex}`);
   }
   render() {
     const {

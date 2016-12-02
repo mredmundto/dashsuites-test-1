@@ -18,7 +18,7 @@ const menuList = [
   },
   {
     key: 'CleaningList',
-    title: 'Cleaing Schedule',
+    title: 'Cleaning Schedule',
   },
   {
     key: 'LinenList',

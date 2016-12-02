@@ -8,6 +8,9 @@
       "experimentalObjectRestSpread": true
     }
   },
+  "globals": {
+    "customFetch": true
+  },
   "rules": {
     "no-underscore-dangle": 0,
     "one-var": 0,

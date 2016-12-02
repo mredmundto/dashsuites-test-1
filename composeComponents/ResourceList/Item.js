@@ -9,6 +9,7 @@ import {
 import _ from 'lodash';
 
 import constants from './../../constants';
+import LinenButtom from './LinenButtom';
 
 const styles = StyleSheet.create({
   container: {
@@ -43,10 +44,17 @@ const styles = StyleSheet.create({
     height: 15,
     width: 15,
   },
+  linenIcon: {
+    height: 15,
+    width: 15,
+  },
 });
 
 const checkboxIcon = require('../../app/resources/images/checkbox@3x.png');
 const checkboxFullIcon = require('../../app/resources/images/checkboxfull@3x.png');
+
+const check = require('../../app/resources/images/check.png');
+const cross = require('../../app/resources/images/cross.png');
 
 const renderColumn = (val, key) => {
   const renderIssueColumn = (currPoint, fullPoint) => {
@@ -70,6 +78,13 @@ const renderColumn = (val, key) => {
     case 'issueList': {
       const valArray = [val.filter(i => !i.flagged).length, val.length];
       return renderIssueColumn(valArray[0], valArray[1]);
+    }
+    case 'linen': {
+      return (
+        <LinenButtom
+          val={val}
+        />
+      );
     }
     // to add the linen check box here
     default:

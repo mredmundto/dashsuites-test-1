@@ -6,6 +6,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
+import _ from 'lodash';
 import Item from './Item';
 // import Promise from 'bluebird';
 import HOC from '../../app/HOC';
@@ -57,14 +58,20 @@ class List extends Component {
   componentWillReceiveProps(nextProps) {
     // if (this.props.data.length === nextProps.data.length) return;
     // check if next props is a new data
+
+    console.log('this props data', this.props.data);
+    console.log('nextProps props data', nextProps.data);
+
     let identical = (this.props.data.length !== nextProps.data.length) ? false : true;
     this.props.data.forEach((item, i) => {
       if (item !== nextProps.data[i]) {
         identical = false;
       }
+      // if (!_.isEqual(item, nextProps.data[i])) {
+      //   identical = false;
+      // }
     });
     if (identical) return;
-
     const data = nextProps.data;
     this.setState({
       dataBlob: data,

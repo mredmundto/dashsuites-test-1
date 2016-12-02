@@ -16,13 +16,6 @@ import Action from './../List/action';
 
 const ResourceList = allList.List;
 
-const getMonday = ((d) => {
-  d = new Date(d);
-  const day = d.getDay(),
-      diff = d.getDate() - day + (day === 0 ? -6 : 1);
-  return new Date(d.setDate(diff));
-});
-
 
 const styles = StyleSheet.create({
   container: {
@@ -67,8 +60,29 @@ const styles = StyleSheet.create({
   },
 });
 
-// const today = new Date('2016-12-20');
-const today = new Date();
+const today = new Date('2016-11-30');
+// const today = new Date();
+
+const getMonday = ((d) => {
+  d = new Date(d);
+  const day = d.getDay(),
+      diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(d.setDate(diff));
+});
+
+const formattedDate = ((date) => {
+  let month = `${(date.getMonth() + 1)}`;
+  let day = `${date.getDate()}`;
+  const year = date.getFullYear();
+  if (month.length < 2) {
+    month = `0${month}`;
+  }
+  if (day.length < 2) {
+    day = `0${day}`;
+  }
+  return [day, month, year].join('');
+});
+const currentMondayString = formattedDate(getMonday(today));
 
 let displayDay = (today).getDay() - 1;
 if (displayDay === -1) {
@@ -76,6 +90,7 @@ if (displayDay === -1) {
 } else if (displayDay > 4) {
   displayDay = 4;
 }
+
 
 class CleaningList extends Component {
   constructor(props) {
@@ -89,20 +104,6 @@ class CleaningList extends Component {
   }
 
   componentWillMount() {
-    const formattedDate = ((date) => {
-      let month = `${(date.getMonth() + 1)}`;
-      let day = `${date.getDate()}`;
-      const year = date.getFullYear();
-      if (month.length < 2) {
-        month = `0${month}`;
-      }
-      if (day.length < 2) {
-        day = `0${day}`;
-      }
-      return [day, month, year].join('');
-    });
-    const currentMondayString = formattedDate(getMonday(today));
-
     customFetch(`http://127.0.0.1:3000/api/customWeek?startingMonday=${currentMondayString}`, {
       method: 'GET',
     })
@@ -116,18 +117,38 @@ class CleaningList extends Component {
   // this is to map the array in cleaning schedule back to PC / BC / OFF
   mapCleaningType(resJSON) {
     for (let i = 0; i < resJSON.length; i++) {
-      if (resJSON[i].schedule[this.state.selectedDate] === 1) {
+      if (resJSON[i].schedule[this.state.selectedDate] === 1 || resJSON[i].schedule[this.state.selectedDate] === 2 ) {
         resJSON[i].cleaning = 'PC';
+        resJSON[i].linen = {
+          roomId: resJSON[i].id,
+          schedule: resJSON[i].schedule,
+          startingMonday: currentMondayString,
+          selectedDate: this.state.selectedDate,
+        };
       } else if (resJSON[i].schedule[this.state.selectedDate] === 0) {
         resJSON[i].cleaning = 'BC';
-      } else if (resJSON[i].schedule[this.state.selectedDate] === 2) {
+        resJSON[i].linen = {
+          roomId: resJSON[i].id,
+          schedule: resJSON[i].schedule,
+          startingMonday: currentMondayString,
+          selectedDate: this.state.selectedDate,
+        };
+      } else if (resJSON[i].schedule[this.state.selectedDate] === 3) {
         resJSON[i].cleaning = 'None';
+        resJSON[i].linen = {
+          roomId: resJSON[i].id,
+          schedule: resJSON[i].schedule,
+          startingMonday: currentMondayString,
+          selectedDate: this.state.selectedDate,
+        };
       }
     }
     return resJSON;
   }
 
   selectDate(selectDateObj) {
+    // select the current date 
+    this.props.selectDay(selectDateObj.index);
     this.setState({ selectedDate: selectDateObj.index }, () => {
       this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));
     });
@@ -170,8 +191,7 @@ class CleaningList extends Component {
         index: 4,
       },
     ];
-
-    console.log('cleaningSchedule in cleaning list', this.props.cleaningSchedule[0]);
+    console.log('before render cleaning', this.props.cleaningSchedule);
     return (
       <View style={styles.container} >
         <View>
@@ -203,7 +223,7 @@ class CleaningList extends Component {
 
         <View style={styles.list}>
           <ResourceList
-            displayedInList={['cleaning', 'name', 'community']}
+            displayedInList={['cleaning', 'name', 'community', 'linen']}
             data={this.props.cleaningSchedule}
             onItemPress={this.selectRoom}
           />
@@ -232,19 +252,23 @@ CleaningList.propTypes = {
   loadRoom: PropTypes.func,
   loadCleaningSchedule: PropTypes.func,
   cleaningSchedule: PropTypes.array,
+  selectDay: PropTypes.func,
 };
 
 function mapStateToProps(store) {
   const data = store.list.toJS();
-  console.log('redux', data);
   return {
     rooms: data.room,
     cleaningSchedule: data.cleaningSchedule,
+    selectedDay: data.selectedDay,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    selectDay: (day) => {
+      dispatch(Action.selectDay(day));
+    },
     selectRoom: (selectedRoom) => {
       dispatch(Action.selectRoom(selectedRoom));
     },

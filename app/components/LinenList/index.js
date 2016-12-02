@@ -108,7 +108,7 @@ class LinenList extends Component {
     } else {
       currentMondayString = formattedDate(getMonday(today));
     }
-    customFetch(`http://127.0.0.1:3000/api/customWeek?startingMonday=${currentMondayString}`, {
+    customFetch(`http://staging.adminpanel.dashsuites.com/api/customWeek?startingMonday=${currentMondayString}`, {
       method: 'GET',
     })
     .then((resJSON) => {
@@ -150,7 +150,7 @@ class LinenList extends Component {
         currentMondayString = formattedDate(getMonday(today));
       }
 
-      customFetch(`http://127.0.0.1:3000/api/customWeek?startingMonday=${currentMondayString}`, {
+      customFetch(`http://staging.adminpanel.dashsuites.com/api/customWeek?startingMonday=${currentMondayString}`, {
         method: 'GET',
       })
       .then((resJSON) => {

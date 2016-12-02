@@ -30,7 +30,7 @@ import Action from './components/List/action';
 class App extends Component {
 
   componentWillMount() {
-    customFetch('http://127.0.0.1:3000/REST', {
+    customFetch('http://staging.adminpanel.dashsuites.com/REST', {
       method: 'GET',
     })
     .then((resJSON) => {
@@ -42,7 +42,7 @@ class App extends Component {
     });
 
     // getting all rooms
-    customFetch('http://127.0.0.1:3000/REST/room', {
+    customFetch('http://staging.adminpanel.dashsuites.com/REST/room', {
       method: 'GET',
     })
     .then((resJSON) => {
@@ -52,7 +52,7 @@ class App extends Component {
       console.log(e);
     });
     // getting all reviews
-    fetch('http://127.0.0.1:3000/REST/review', {
+    fetch('http://staging.adminpanel.dashsuites.com/REST/review', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',

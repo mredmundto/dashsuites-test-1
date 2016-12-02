@@ -94,7 +94,7 @@ class LinenButtom extends Component {
     const promiseChain = Promise.resolve();
     promiseChain
     .then(() => {
-      return customFetch('http://127.0.0.1:3000/api/customWeek', {
+      return customFetch('http://staging.adminpanel.dashsuites.com/api/customWeek', {
         method: 'POST',
         body: {
           roomId: this.props.val.roomId,
@@ -104,7 +104,7 @@ class LinenButtom extends Component {
       });
     })
     .then(() => {
-      return customFetch(`http://127.0.0.1:3000/api/customWeek?startingMonday=${currentMondayString}`, {
+      return customFetch(`http://staging.adminpanel.dashsuites.com/api/customWeek?startingMonday=${currentMondayString}`, {
         method: 'GET',
       });
     })
@@ -122,7 +122,7 @@ class LinenButtom extends Component {
     const promiseChain = Promise.resolve();
     promiseChain
     .then(() => {
-      return customFetch('http://127.0.0.1:3000/api/customWeek', {
+      return customFetch('http://staging.adminpanel.dashsuites.com/api/customWeek', {
         method: 'POST',
         body: {
           roomId: this.props.val.roomId,
@@ -132,7 +132,7 @@ class LinenButtom extends Component {
       });
     })
     .then(() => {
-      return customFetch(`http://127.0.0.1:3000/api/customWeek?startingMonday=${currentMondayString}`, {
+      return customFetch(`http://staging.adminpanel.dashsuites.com/api/customWeek?startingMonday=${currentMondayString}`, {
         method: 'GET',
       });
     })

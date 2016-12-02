@@ -13,6 +13,8 @@ import HOC from '../../HOC';
 import applyHeader from '../../HOC/applyHeader';
 import IssueList from '../ReviewList/IssueList';
 
+
+
 class CleaningItem extends Component {
 
   render() {

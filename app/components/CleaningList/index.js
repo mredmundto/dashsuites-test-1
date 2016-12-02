@@ -104,7 +104,7 @@ class CleaningList extends Component {
   }
 
   componentWillMount() {
-    customFetch(`http://127.0.0.1:3000/api/customWeek?startingMonday=${currentMondayString}`, {
+    customFetch(`http://staging.adminpanel.dashsuites.com/api/customWeek?startingMonday=${currentMondayString}`, {
       method: 'GET',
     })
     .then((resJSON) => {

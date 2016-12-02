@@ -37,7 +37,7 @@ class CreateRoom extends Component {
   }
 
   onClick() {
-    return customFetch('http://127.0.0.1:3000/REST/room', {
+    return customFetch('http://staging.adminpanel.dashsuites.com/REST/room', {
       method: 'POST',
       body: {
         name: this.state.name,

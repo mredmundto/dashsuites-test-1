@@ -7,10 +7,9 @@ import {
   Text,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import allList from '../../../composeComponents/ResourceList';
-import Action from './../List/action';
+import { ResourceListWithHeader } from '../../../composeComponents/ResourceList';
 
-const ResourceList = allList.composedList;
+import Action from './../List/action';
 
 const styles = StyleSheet.create({
   container: {
@@ -91,7 +90,7 @@ class ReviewList extends Component {
       <View
         style={styles.container}
       >
-        <ResourceList
+        <ResourceListWithHeader
           headerProps={{
             leftImage: require('../../resources/images/path@3x.png'),
             onLeft: () => {

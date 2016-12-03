@@ -159,4 +159,5 @@ List.propTypes = {
 const composedList = HOC(List, [applyHeader]);
 
 // exporting both list and composedList with is with header to render in different cases
-export default { List, composedList };
+export default List;
+export { composedList as ResourceListWithHeader };

@@ -11,7 +11,7 @@ import { Actions } from 'react-native-router-flux';
 
 import HOC from '../../HOC';
 import applyHeader from '../../HOC/applyHeader';
-import allList from '../../../composeComponents/ResourceList';
+import ResourceList from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
 import constants from '../../../constants';
 import Promise from 'bluebird';
@@ -164,17 +164,6 @@ class CleaningList extends Component {
     .catch((e) => {
       console.log(e);
     });
-    // select the current date
-    // this.props.selectDay(selectDateObj.index);
-    // // change to this.props.selectDay
-    // this.setState({ selectedDate: selectDateObj.index }, () => {
-    //   this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));
-    // // });
-    // console.log('before', this.props.selectedDay);
-    // this.props.selectDay(selectDateObj.index);
-    // console.log('here!');
-    // console.log('after', this.props.selectedDay);
-    // this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));
   }
 
   selectRoom(selectedRoom) {

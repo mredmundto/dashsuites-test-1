@@ -11,11 +11,10 @@ import { Actions } from 'react-native-router-flux';
 
 import HOC from '../../HOC';
 import applyHeader from '../../HOC/applyHeader';
-import allList from '../../../composeComponents/ResourceList';
+import ResourceList from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
 import constants from '../../../constants';
 
-const ResourceList = allList.List;
 
 const styles = StyleSheet.create({
   container: {

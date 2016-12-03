@@ -8,10 +8,8 @@ import {
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
-import allList from '../../../composeComponents/ResourceList';
+import { ResourceListWithHeader } from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
-
-const ResourceList = allList.composedList;
 
 const displayedInList = ['name', 'building', 'community'];
 
@@ -80,7 +78,7 @@ class RoomList extends Component {
       <View
         style={styles.container}
       >
-        <ResourceList
+        <ResourceListWithHeader
           headerProps={{
             leftImage: require('../../resources/images/path@3x.png'),
             onLeft: () => {

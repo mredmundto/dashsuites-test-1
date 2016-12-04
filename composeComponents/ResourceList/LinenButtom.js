@@ -20,8 +20,8 @@ const today = new Date();
 
 const getMonday = ((d) => {
   d = new Date(d);
-  const day = d.getDay(),
-      diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  const day = d.getDay();
+  const diff = d.getDate() - day + 1;
   return new Date(d.setDate(diff));
 });
 

@@ -1,6 +1,8 @@
 import { Map, List } from 'immutable';
 
-let displayDay = new Date('2016-11-30').getDay() - 1;
+// Mapping WeekDays to Monday to Friday
+// Before Sunday = 0, Monday = 1 => Now Monday = 0, Tuesday = 1, Friday = 4
+let displayDay = new Date().getDay() - 1;
 if (displayDay === -1) {
   displayDay = 0;
 } else if (displayDay > 4) {
@@ -13,7 +15,7 @@ const initialState = Map({
   ]),
   review: List([
     Map({
-      room: { 'name': 'testing' },
+      room: { name: 'testing' },
       createdAt: 'Seed data from client',
       issueList: List([
         Map({

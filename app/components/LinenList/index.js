@@ -17,26 +17,6 @@ import constants from '../../../constants';
 
 const ResourceList = allList.List;
 
-const getMonday = ((d) => {
-  d = new Date(d);
-  const day = d.getDay(),
-      diff = d.getDate() - day + (day === 0 ? -6 : 1);
-  return new Date(d.setDate(diff));
-});
-
-const formattedDate = ((date) => {
-  let month = `${(date.getMonth() + 1)}`;
-  let day = `${date.getDate()}`;
-  const year = date.getFullYear();
-  if (month.length < 2) {
-    month = `0${month}`;
-  }
-  if (day.length < 2) {
-    day = `0${day}`;
-  }
-  return [day, month, year].join('');
-});
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
@@ -80,8 +60,29 @@ const styles = StyleSheet.create({
   },
 });
 
-const today = new Date('2016-11-30');
-// const today = new Date();
+
+// const today = new Date('2016-11-30');
+const today = new Date();
+
+const getMonday = ((d) => {
+  d = new Date(d);
+  const day = d.getDay();
+  const diff = d.getDate() - day + 1;
+  return new Date(d.setDate(diff));
+});
+
+const formattedDate = ((date) => {
+  let month = `${(date.getMonth() + 1)}`;
+  let day = `${date.getDate()}`;
+  const year = date.getFullYear();
+  if (month.length < 2) {
+    month = `0${month}`;
+  }
+  if (day.length < 2) {
+    day = `0${day}`;
+  }
+  return [day, month, year].join('');
+});
 
 let displayDay = (today).getDay() - 1;
 if (displayDay === -1) {

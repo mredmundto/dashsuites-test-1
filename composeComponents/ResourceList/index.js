@@ -58,10 +58,6 @@ class List extends Component {
   componentWillReceiveProps(nextProps) {
     // if (this.props.data.length === nextProps.data.length) return;
     // check if next props is a new data
-
-    console.log('this props data', this.props.data);
-    console.log('nextProps props data', nextProps.data);
-
     let identical = (this.props.data.length !== nextProps.data.length) ? false : true;
     this.props.data.forEach((item, i) => {
       if (item !== nextProps.data[i]) {

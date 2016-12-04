@@ -61,13 +61,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const today = new Date('2016-11-30');
-// const today = new Date();
+// const today = new Date('2016-11-30');
+const today = new Date();
 
 const getMonday = ((d) => {
   d = new Date(d);
-  const day = d.getDay(),
-      diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  const day = d.getDay();
+  const diff = d.getDate() - day + 1;
   return new Date(d.setDate(diff));
 });
 
@@ -83,8 +83,10 @@ const formattedDate = ((date) => {
   }
   return [day, month, year].join('');
 });
+
 const currentMondayString = formattedDate(getMonday(today));
 
+// can comment this out
 let displayDay = (today).getDay() - 1;
 if (displayDay === -1) {
   displayDay = 0;
@@ -92,13 +94,14 @@ if (displayDay === -1) {
   displayDay = 4;
 }
 
-
 class CleaningList extends Component {
   constructor(props) {
     super(props);
+    // can comment this out
     this.state = {
       selectedDate: displayDay,
     };
+    
     this.selectRoom = this.selectRoom.bind(this);
     this.selectDate = this.selectDate.bind(this);
     this.mapCleaningType = this.mapCleaningType.bind(this);
@@ -118,6 +121,7 @@ class CleaningList extends Component {
   // this is to map the array in cleaning schedule back to PC / BC / OFF
   mapCleaningType(resJSON) {
     for (let i = 0; i < resJSON.length; i++) {
+      // change to this.props.selectedDay
       if (resJSON[i].schedule[this.state.selectedDate] === 1 || resJSON[i].schedule[this.state.selectedDate] === 2) {
         resJSON[i].cleaning = 'PC';
         resJSON[i].linen = {
@@ -150,6 +154,7 @@ class CleaningList extends Component {
   selectDate(selectDateObj) {
     // select the current date
     this.props.selectDay(selectDateObj.index);
+    // change to this.props.selectDay
     this.setState({ selectedDate: selectDateObj.index }, () => {
       this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));
     });
@@ -192,7 +197,7 @@ class CleaningList extends Component {
         index: 4,
       },
     ];
-    console.log('before render cleaning', this.props.cleaningSchedule);
+    // console.log('before render cleaning', this.props.cleaningSchedule);
     return (
       <View style={styles.container} >
         <View>
@@ -258,6 +263,7 @@ CleaningList.propTypes = {
 
 function mapStateToProps(store) {
   const data = store.list.toJS();
+  console.log('this is the state in cleaing list', data);
   return {
     rooms: data.room,
     cleaningSchedule: data.cleaningSchedule,

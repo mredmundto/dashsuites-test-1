@@ -50,9 +50,9 @@ if (displayDay === -1) {
 class LinenButtom extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedDate: this.props.val.selectedDate,
-    };
+    // this.state = {
+    //   // selectedDate: this.props.val.selectedDate,
+    // };
     this.checkToCross = this.checkToCross.bind(this);
     this.crossToCheck = this.crossToCheck.bind(this);
   }
@@ -66,7 +66,7 @@ class LinenButtom extends Component {
           roomId: resJSON[i].id,
           schedule: resJSON[i].schedule,
           startingMonday: currentMondayString,
-          selectedDate: this.props.selectedDay,
+          selectedDay: this.props.selectedDay,
         };
       } else if (resJSON[i].schedule[this.props.selectedDay] === 0) {
         resJSON[i].cleaning = 'BC';
@@ -74,7 +74,7 @@ class LinenButtom extends Component {
           roomId: resJSON[i].id,
           schedule: resJSON[i].schedule,
           startingMonday: currentMondayString,
-          selectedDate: this.props.selectedDay,
+          selectedDay: this.props.selectedDay,
         };
       } else if (resJSON[i].schedule[this.props.selectedDay] === 3) {
         resJSON[i].cleaning = 'None';
@@ -82,7 +82,7 @@ class LinenButtom extends Component {
           roomId: resJSON[i].id,
           schedule: resJSON[i].schedule,
           startingMonday: currentMondayString,
-          selectedDate: this.props.selectedDay,
+          selectedDay: this.props.selectedDay,
         };
       }
     }
@@ -91,7 +91,7 @@ class LinenButtom extends Component {
 
   checkToCross() {
     const newArr = this.props.val.schedule.slice();
-    newArr[this.props.val.selectedDate] = 2;
+    newArr[this.props.val.selectedDay] = 2;
     const promiseChain = Promise.resolve();
     promiseChain
     .then(() => {
@@ -119,7 +119,7 @@ class LinenButtom extends Component {
 
   crossToCheck() {
     const newArr = this.props.val.schedule.slice();
-    newArr[this.props.val.selectedDate] = 1;
+    newArr[this.props.val.selectedDay] = 1;
     const promiseChain = Promise.resolve();
     promiseChain
     .then(() => {
@@ -148,7 +148,7 @@ class LinenButtom extends Component {
   render() {
     return (
       <View>
-        {(this.props.val.schedule[this.props.val.selectedDate] === 1) ?
+        {(this.props.val.schedule[this.props.val.selectedDay] === 1) ?
           <TouchableOpacity onPress={this.checkToCross}>
             <Image
               style={styles.linenIcon}
@@ -156,7 +156,7 @@ class LinenButtom extends Component {
             />
           </TouchableOpacity>
           :
-          (this.props.val.schedule[this.props.val.selectedDate] === 2) ?
+          (this.props.val.schedule[this.props.val.selectedDay] === 2) ?
             <TouchableOpacity onPress={this.crossToCheck}>
               <Image
                 style={styles.linenIcon}

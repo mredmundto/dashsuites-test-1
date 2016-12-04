@@ -14,9 +14,9 @@ import applyHeader from '../../HOC/applyHeader';
 import allList from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
 import constants from '../../../constants';
+import Promise from 'bluebird';
 
 const ResourceList = allList.List;
-
 
 const styles = StyleSheet.create({
   container: {
@@ -86,22 +86,20 @@ const formattedDate = ((date) => {
 
 const currentMondayString = formattedDate(getMonday(today));
 
-// can comment this out
-let displayDay = (today).getDay() - 1;
-if (displayDay === -1) {
-  displayDay = 0;
-} else if (displayDay > 4) {
-  displayDay = 4;
-}
+// let displayDay = (today).getDay() - 1;
+// if (displayDay === -1) {
+//   displayDay = 0;
+// } else if (displayDay > 4) {
+//   displayDay = 4;
+// }
 
 class CleaningList extends Component {
   constructor(props) {
     super(props);
     // can comment this out
-    this.state = {
-      selectedDate: displayDay,
-    };
-    
+    // this.state = {
+    //   selectedDate: displayDay,
+    // };
     this.selectRoom = this.selectRoom.bind(this);
     this.selectDate = this.selectDate.bind(this);
     this.mapCleaningType = this.mapCleaningType.bind(this);
@@ -122,29 +120,29 @@ class CleaningList extends Component {
   mapCleaningType(resJSON) {
     for (let i = 0; i < resJSON.length; i++) {
       // change to this.props.selectedDay
-      if (resJSON[i].schedule[this.state.selectedDate] === 1 || resJSON[i].schedule[this.state.selectedDate] === 2) {
+      if (resJSON[i].schedule[this.props.selectedDay] === 1 || resJSON[i].schedule[this.props.selectedDay] === 2) {
         resJSON[i].cleaning = 'PC';
         resJSON[i].linen = {
           roomId: resJSON[i].id,
           schedule: resJSON[i].schedule,
           startingMonday: currentMondayString,
-          selectedDate: this.state.selectedDate,
+          selectedDay: this.props.selectedDay,
         };
-      } else if (resJSON[i].schedule[this.state.selectedDate] === 0) {
+      } else if (resJSON[i].schedule[this.props.selectedDay] === 0) {
         resJSON[i].cleaning = 'BC';
         resJSON[i].linen = {
           roomId: resJSON[i].id,
           schedule: resJSON[i].schedule,
           startingMonday: currentMondayString,
-          selectedDate: this.state.selectedDate,
+          selectedDay: this.props.selectedDay,
         };
-      } else if (resJSON[i].schedule[this.state.selectedDate] === 3) {
+      } else if (resJSON[i].schedule[this.props.selectedDay] === 3) {
         resJSON[i].cleaning = 'None';
         resJSON[i].linen = {
           roomId: resJSON[i].id,
           schedule: resJSON[i].schedule,
           startingMonday: currentMondayString,
-          selectedDate: this.state.selectedDate,
+          selectedDay: this.props.selectedDay,
         };
       }
     }
@@ -152,12 +150,31 @@ class CleaningList extends Component {
   }
 
   selectDate(selectDateObj) {
-    // select the current date
-    this.props.selectDay(selectDateObj.index);
-    // change to this.props.selectDay
-    this.setState({ selectedDate: selectDateObj.index }, () => {
-      this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));
+    const promiseChain = Promise.resolve();
+    promiseChain
+    .then(() => {
+      return this.props.selectDay(selectDateObj.index);
+    })
+    .then(() => {
+      return this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));
+    })
+    .then(() => {
+      console.log('done!');
+    })
+    .catch((e) => {
+      console.log(e);
     });
+    // select the current date
+    // this.props.selectDay(selectDateObj.index);
+    // // change to this.props.selectDay
+    // this.setState({ selectedDate: selectDateObj.index }, () => {
+    //   this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));
+    // // });
+    // console.log('before', this.props.selectedDay);
+    // this.props.selectDay(selectDateObj.index);
+    // console.log('here!');
+    // console.log('after', this.props.selectedDay);
+    // this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));
   }
 
   selectRoom(selectedRoom) {
@@ -204,7 +221,7 @@ class CleaningList extends Component {
           <ScrollView style={styles.dateSelector} horizontal={true}>
             {dateArrObj.map((Obj) => {
               return (
-                Obj.index === this.state.selectedDate ?
+                Obj.index === this.props.selectedDay ?
                   <TouchableOpacity
                     style={styles.dateItemSelected}
                     key={Object.keys(Obj)[0]}
@@ -259,11 +276,12 @@ CleaningList.propTypes = {
   loadCleaningSchedule: PropTypes.func,
   cleaningSchedule: PropTypes.array,
   selectDay: PropTypes.func,
+  selectedDay: PropTypes.number,
 };
 
 function mapStateToProps(store) {
   const data = store.list.toJS();
-  console.log('this is the state in cleaing list', data);
+  // console.log('this is the state in cleaing list', data);
   return {
     rooms: data.room,
     cleaningSchedule: data.cleaningSchedule,

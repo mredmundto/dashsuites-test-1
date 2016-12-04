@@ -94,9 +94,9 @@ if (displayDay === -1) {
 class LinenList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedDate: displayDay,
-    };
+    // this.state = {
+    //   selectedDate: displayDay,
+    // };
     this.selectRoom = this.selectRoom.bind(this);
     this.selectDate = this.selectDate.bind(this);
     this.mapLinenToType = this.mapLinenToType.bind(this);
@@ -105,27 +105,29 @@ class LinenList extends Component {
   componentWillMount() {
     // If today is Monday, we are getting Friday cleaning Schedule
     let currentMondayString;
-    if (this.state.selectedDate === 0) {
+    if (this.props.selectedDay === 0) {
       currentMondayString = formattedDate(getMonday(new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000)));
     } else {
       currentMondayString = formattedDate(getMonday(today));
     }
+    console.log('currentMondayString', currentMondayString);
     customFetch(`${constants.config.url}/api/customWeek?startingMonday=${currentMondayString}`, {
       method: 'GET',
     })
     .then((resJSON) => {
-      console.log('the resJSON', resJSON);
+      // console.log('the resJSON in linen schedule', resJSON);
       this.props.loadLinenSchedule(this.mapLinenToType(resJSON));
     })
     .catch((e) => {
       console.log(e);
     });
+    // console.log('date in linen', currentMondayString);
   }
   // returning all the objects that are to display in list
   mapLinenToType(resJSON) {
     const arr = [];
     // if today is Monday, get last week's Friday
-    if (this.state.selectedDate === 0) {
+    if (this.props.selectedDay === 0) {
       for (let i = 0; i < resJSON.length; i++) {
         if (resJSON[i].schedule[4] === 1) {
           arr.push(resJSON[i]);
@@ -134,7 +136,7 @@ class LinenList extends Component {
     } else {
       // if not, get the previous day
       for (let i = 0; i < resJSON.length; i++) {
-        if (resJSON[i].schedule[this.state.selectedDate - 1] === 1) {
+        if (resJSON[i].schedule[this.props.selectedDay - 1] === 1) {
           arr.push(resJSON[i]);
         }
       }
@@ -143,25 +145,47 @@ class LinenList extends Component {
   }
 
   selectDate(selectDateObj) {
-    this.setState({ selectedDate: selectDateObj.index }, () => {
-      // If today is Monday, we are getting Friday cleaning Schedule
-      let currentMondayString;
-      if (this.state.selectedDate === 0) {
-        currentMondayString = formattedDate(getMonday(new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000)));
-      } else {
-        currentMondayString = formattedDate(getMonday(today));
-      }
-
-      customFetch(`${constants.config.url}/api/customWeek?startingMonday=${currentMondayString}`, {
+    let currentMondayString;
+    if (selectDateObj.index === 0) {
+      currentMondayString = formattedDate(getMonday(new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000)));
+    } else {
+      currentMondayString = formattedDate(getMonday(today));
+    }
+    const promiseChain = Promise.resolve();
+    promiseChain
+    .then(() => {
+      return this.props.selectDay(selectDateObj.index);
+    })
+    .then(() => {
+      return customFetch(`${constants.config.url}/api/customWeek?startingMonday=${currentMondayString}`, {
         method: 'GET',
       })
       .then((resJSON) => {
         this.props.loadLinenSchedule(this.mapLinenToType(resJSON));
-      })
-      .catch((e) => {
-        console.log(e);
       });
+    })
+    .catch((e) => {
+      console.log(e);
     });
+
+    // this.setState({ selectedDate: selectDateObj.index }, () => {
+    //   // If today is Monday, we are getting Friday cleaning Schedule
+    //   let currentMondayString;
+    //   if (this.props.selectedDay === 0) {
+    //     currentMondayString = formattedDate(getMonday(new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000)));
+    //   } else {
+    //     currentMondayString = formattedDate(getMonday(today));
+    //   }
+    //   customFetch(`${constants.config.url}/api/customWeek?startingMonday=${currentMondayString}`, {
+    //     method: 'GET',
+    //   })
+    //   .then((resJSON) => {
+    //     this.props.loadLinenSchedule(this.mapLinenToType(resJSON));
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
+    // });
   }
 
   selectRoom(selectedRoom) {
@@ -200,14 +224,14 @@ class LinenList extends Component {
         Fri: new Date(Monday.getTime() + 4 * 24 * 60 * 60 * 1000).getDate(),
         index: 4,
       },
-    ];   
+    ];
     return (
       <View style={styles.container} >
         <View>
           <ScrollView style={styles.dateSelector} horizontal={true}>
             {dateArrObj.map((Obj) => {
               return (
-                Obj.index === this.state.selectedDate ?
+                Obj.index === this.props.selectedDay ?
                   <TouchableOpacity
                     style={styles.dateItemSelected}
                     key={Object.keys(Obj)[0]}
@@ -262,18 +286,25 @@ LinenList.propTypes = {
   loadLinenSchedule: PropTypes.func,
   cleaningSchedule: PropTypes.array,
   linenSchedule: PropTypes.array,
+  selectedDay: PropTypes.number,
+  selectDay: PropTypes.func,
 };
 
 function mapStateToProps(store) {
   const data = store.list.toJS();
+  console.log('data,', data);
   return {
     rooms: data.room,
     linenSchedule: data.linenSchedule,
+    selectedDay: data.selectedDay,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    selectDay: (day) => {
+      dispatch(Action.selectDay(day));
+    },
     selectRoom: (selectedRoom) => {
       dispatch(Action.selectRoom(selectedRoom));
     },

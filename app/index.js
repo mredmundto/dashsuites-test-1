@@ -145,7 +145,7 @@ class App extends Component {
             title="Create an issue"
           />
           <Scene
-            initial
+            // initial
             key="CleaningList"
             component={(props) => {
               return (
@@ -169,7 +169,7 @@ class App extends Component {
             title="Room Details"
           />
           <Scene
-            // initial
+            initial
             key="LinenList"
             component={(props) => {
               return (

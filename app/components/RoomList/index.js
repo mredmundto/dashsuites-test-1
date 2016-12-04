@@ -123,7 +123,7 @@ RoomList.propTypes = {
 };
 
 function mapStateToProps(store) {
-  const data = store.list.toJS(); 
+  const data = store.list.toJS();
   // console.log('store in room', store.list.toJS());
   return {
     rooms: data.room,

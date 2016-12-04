@@ -15,6 +15,7 @@ import Elements from '../../../composeComponents/Form/Elements';
 import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
 import Action from './../List/action';
+import constants from '../../../constants';
 
 const {
   Input,
@@ -37,7 +38,7 @@ class CreateRoom extends Component {
   }
 
   onClick() {
-    return customFetch('http://staging.adminpanel.dashsuites.com/REST/room', {
+    return customFetch(`${constants.config.url}/REST/room`, {
       method: 'POST',
       body: {
         name: this.state.name,

@@ -2,9 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import RoomList from './components/RoomList';
 import RoomCreate from './components/RoomList/Create';
 import RoomItem from './components/RoomList/Item';
-import {
-  Dimensions,
-} from 'react-native';
 import ReviewCreate from './components/ReviewList/Create';
 import ReviewList from './components/ReviewList';
 import ReviewItem from './components/ReviewList/Item';
@@ -23,14 +20,15 @@ import Router from './components/Router';
 import { connect } from 'react-redux';
 // import _ from 'lodash';
 
-// set customFetch to global
+// set customFetch to global when the app first starts
 import setFetchToGlobal from './admin/global';
 import Action from './components/List/action';
+import constants from './../constants';
 
 class App extends Component {
 
   componentWillMount() {
-    customFetch('http://staging.adminpanel.dashsuites.com/REST', {
+    customFetch(`${constants.config.url}/REST`, {
       method: 'GET',
     })
     .then((resJSON) => {
@@ -42,7 +40,7 @@ class App extends Component {
     });
 
     // getting all rooms
-    customFetch('http://staging.adminpanel.dashsuites.com/REST/room', {
+    customFetch(`${constants.config.url}/REST/room`, {
       method: 'GET',
     })
     .then((resJSON) => {
@@ -51,23 +49,16 @@ class App extends Component {
     .catch((e) => {
       console.log(e);
     });
-    // getting all reviews
-    fetch('http://staging.adminpanel.dashsuites.com/REST/review', {
+
+    // getting all rooms
+    customFetch(`${constants.config.url}/REST/review`, {
       method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((res) => {
-      return res.json();
     })
     .then((resJSON) => {
       this.props.loadReview(resJSON);
     })
     .catch((e) => {
-      console.log('e', e);
-      throw e;
+      console.log(e);
     });
   }
 
@@ -153,7 +144,6 @@ class App extends Component {
             component={IssueCreate}
             title="Create an issue"
           />
-          
           <Scene
             initial
             key="CleaningList"
@@ -206,6 +196,8 @@ class App extends Component {
 App.propTypes = {
   toggleDrawer: PropTypes.func,
   loadSchema: PropTypes.func,
+  loadRoom: PropTypes.func,
+  loadReview: PropTypes.func,
 };
 
 const mapDispatchToProps = (dispatch) => {

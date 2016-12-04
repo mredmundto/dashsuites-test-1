@@ -13,6 +13,7 @@ import HOC from '../../HOC';
 import applyHeader from '../../HOC/applyHeader';
 import allList from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
+import constants from '../../../constants';
 
 const ResourceList = allList.List;
 
@@ -108,7 +109,7 @@ class LinenList extends Component {
     } else {
       currentMondayString = formattedDate(getMonday(today));
     }
-    customFetch(`http://staging.adminpanel.dashsuites.com/api/customWeek?startingMonday=${currentMondayString}`, {
+    customFetch(`${constants.config.url}/api/customWeek?startingMonday=${currentMondayString}`, {
       method: 'GET',
     })
     .then((resJSON) => {
@@ -150,7 +151,7 @@ class LinenList extends Component {
         currentMondayString = formattedDate(getMonday(today));
       }
 
-      customFetch(`http://staging.adminpanel.dashsuites.com/api/customWeek?startingMonday=${currentMondayString}`, {
+      customFetch(`${constants.config.url}/api/customWeek?startingMonday=${currentMondayString}`, {
         method: 'GET',
       })
       .then((resJSON) => {

@@ -13,6 +13,7 @@ import HOC from '../../HOC';
 import applyHeader from '../../HOC/applyHeader';
 import allList from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
+import constants from '../../../constants';
 
 const ResourceList = allList.List;
 
@@ -104,7 +105,7 @@ class CleaningList extends Component {
   }
 
   componentWillMount() {
-    customFetch(`http://staging.adminpanel.dashsuites.com/api/customWeek?startingMonday=${currentMondayString}`, {
+    customFetch(`${constants.config.url}/api/customWeek?startingMonday=${currentMondayString}`, {
       method: 'GET',
     })
     .then((resJSON) => {
@@ -117,7 +118,7 @@ class CleaningList extends Component {
   // this is to map the array in cleaning schedule back to PC / BC / OFF
   mapCleaningType(resJSON) {
     for (let i = 0; i < resJSON.length; i++) {
-      if (resJSON[i].schedule[this.state.selectedDate] === 1 || resJSON[i].schedule[this.state.selectedDate] === 2 ) {
+      if (resJSON[i].schedule[this.state.selectedDate] === 1 || resJSON[i].schedule[this.state.selectedDate] === 2) {
         resJSON[i].cleaning = 'PC';
         resJSON[i].linen = {
           roomId: resJSON[i].id,
@@ -147,7 +148,7 @@ class CleaningList extends Component {
   }
 
   selectDate(selectDateObj) {
-    // select the current date 
+    // select the current date
     this.props.selectDay(selectDateObj.index);
     this.setState({ selectedDate: selectDateObj.index }, () => {
       this.props.loadCleaningSchedule(this.mapCleaningType(this.props.cleaningSchedule));

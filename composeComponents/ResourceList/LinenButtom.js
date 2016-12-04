@@ -8,14 +8,15 @@ import { Text,
 } from 'react-native';
 import Action from './../../app/components/List/action';
 import Promise from 'bluebird';
+import constants from './../../constants';
 
 const check = require('../../app/resources/images/check.png');
 const cross = require('../../app/resources/images/cross.png');
 
 // TODO: REFACTOR IN UTIL
 
-const today = new Date('2016-11-30');
-// const today = new Date();
+// const today = new Date('2016-11-30');
+const today = new Date();
 
 const getMonday = ((d) => {
   d = new Date(d);
@@ -94,7 +95,7 @@ class LinenButtom extends Component {
     const promiseChain = Promise.resolve();
     promiseChain
     .then(() => {
-      return customFetch('http://staging.adminpanel.dashsuites.com/api/customWeek', {
+      return customFetch(`${constants.config.url}/api/customWeek`, {
         method: 'POST',
         body: {
           roomId: this.props.val.roomId,
@@ -104,7 +105,7 @@ class LinenButtom extends Component {
       });
     })
     .then(() => {
-      return customFetch(`http://staging.adminpanel.dashsuites.com/api/customWeek?startingMonday=${currentMondayString}`, {
+      return customFetch(`${constants.config.url}/api/customWeek?startingMonday=${currentMondayString}`, {
         method: 'GET',
       });
     })
@@ -122,7 +123,7 @@ class LinenButtom extends Component {
     const promiseChain = Promise.resolve();
     promiseChain
     .then(() => {
-      return customFetch('http://staging.adminpanel.dashsuites.com/api/customWeek', {
+      return customFetch(`${constants.config.url}/api/customWeek`, {
         method: 'POST',
         body: {
           roomId: this.props.val.roomId,
@@ -132,7 +133,7 @@ class LinenButtom extends Component {
       });
     })
     .then(() => {
-      return customFetch(`http://staging.adminpanel.dashsuites.com/api/customWeek?startingMonday=${currentMondayString}`, {
+      return customFetch(`${constants.config.url}/api/customWeek?startingMonday=${currentMondayString}`, {
         method: 'GET',
       });
     })

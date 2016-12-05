@@ -16,8 +16,6 @@ import Action from './../List/action';
 import constants from '../../../constants';
 import Promise from 'bluebird';
 
-const ResourceList = allList.List;
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',

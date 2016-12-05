@@ -50,21 +50,23 @@ class RoomList extends Component {
     this.selectRoom = this.selectRoom.bind(this);
   }
 
-  // componentWillMount() {
-  //   // define in global
-  //   customFetch('http://127.0.0.1:3000/REST/room', {
-  //     method: 'GET',
-  //   })
-  //   .then((resJSON) => {
-  //     this.props.loadRoom(resJSON);
-  //   })
-  //   .catch((e) => {
-  //     console.log(e);
-  //   });
-  // }
+  componentWillMount() {
+    // define in global
+    // customFetch('http://127.0.0.1:3000/REST/room', {
+    //   method: 'GET',
+    // })
+    // .then((resJSON) => {
+    //   this.props.loadRoom(resJSON);
+    // })
+    // .catch((e) => {
+    //   console.log(e);
+    // });
+
+  }
 
   addItem() {
-    console.log('clicked add room');
+    // when going into create, clear the active room
+    this.props.selectRoom({});
     Actions.RoomEdit();
   }
 

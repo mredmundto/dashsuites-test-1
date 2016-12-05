@@ -34,6 +34,7 @@ class Input extends Component {
       onChangeText,
       maxLength,
       hideMaxLength,
+      value,
       ...others,
     } = this.props;
 
@@ -43,7 +44,6 @@ class Input extends Component {
     if (headerTextLabel && !hideMaxLength) {
       headerTextLabel = maxLength ? `${headerText} (${availableCharLen})` : headerText;
     }
-
     return (
       <View style={[{ marginTop: 10, marginBottom: 10, backgroundColor: 'transparent' }, style]}>
         {headerTextLabel ?
@@ -78,7 +78,7 @@ class Input extends Component {
             //   value: formattedValue,
             // });
           }}
-          value={this.state.value}
+          value={this.props.value}
         />
       {/*
         this.state.validationResult.valid ?

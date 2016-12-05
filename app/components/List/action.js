@@ -84,7 +84,7 @@ export default {
   },
   selectDay: (day) => {
     return {
-      type: 'SELECT_DAY', 
+      type: 'SELECT_DAY',
       store: day,
     };
   },

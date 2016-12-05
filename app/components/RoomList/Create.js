@@ -16,6 +16,7 @@ import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
 import Action from './../List/action';
 import constants from '../../../constants';
+import _ from 'lodash';
 
 const {
   Input,
@@ -28,34 +29,68 @@ class CreateRoom extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      create: true,
       name: '',
       building: '',
       community: 'TST',
       address: '',
-      professionalCleaning: 'Monday',
+      professionalCleaning: 'OFF',
+      id: null,
     };
     this.onClick = this.onClick.bind(this);
   }
 
+  componentWillMount() {
+    if (this.props.selectedRoom.id === undefined) {
+      this.setState({ create: true });
+    } else {
+      this.setState({
+        create: false,
+        name: this.props.selectedRoom.name,
+        building: this.props.selectedRoom.building,
+        community: this.props.selectedRoom.community,
+        address: this.props.selectedRoom.address,
+        professionalCleaning: this.props.selectedRoom.professionalCleaning,
+        id: this.props.selectedRoom.id,
+      });
+    }
+  }
+
   onClick() {
-    return customFetch(`${constants.config.url}/REST/room`, {
-      method: 'POST',
-      body: {
-        name: this.state.name,
-        building: this.state.building,
-        community: this.state.community,
-        address: this.state.address,
-        professionalCleaning: this.state.professionalCleaning,
-      },
-    })
-    .then((res) => {
-      console.log('successful post object', res);
-      Actions.RoomList();
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
+    if (this.state.create) {
+      // post
+      customFetch(`${constants.config.url}/REST/room`, {
+        method: 'POST',
+        body: {
+          name: this.state.name,
+          building: this.state.building,
+          Community: this.state.community,
+          address: this.state.address,
+          professionalCleaning: this.state.professionalCleaning,
+        },
+      })
+      .then(() => {
+        Actions.pop();
+      });
+    } else {
+      // put
+      customFetch(`${constants.config.url}/REST/room/${this.state.id}`, {
+        method: 'PUT',
+        body: {
+          id: this.state.id,
+          name: this.state.name,
+          building: this.state.building,
+          Community: this.state.community,
+          address: this.state.address,
+          professionalCleaning: this.state.professionalCleaning,
+        },
+      })
+      .then((resJSON) => {
+        console.log('the resJSON after put', resJSON);
+        
+        Actions.pop();
+      });
+    }
   }
 
   render() {
@@ -72,33 +107,38 @@ class CreateRoom extends Component {
       address: 'please enter the room address here',
       professionalCleaning: 'please enter the professionalCleaning date here',
     };
-    const room = room || defaultObj;
-
-
-    // TODO: to dynamic render
-
-    // this.props.appSchema.map((model) => {
-    //   if (model.name === 'room') {
-    //     model.fields.map((fieldsObj) => {
-    //       console.log(fieldsObj)
-    //     });
-    //   }
-    // });
 
     return (
       <View style={styles.container}>
         <ScrollView style={styles.insideContainer}>
-          <Input
-            headerText="name"
-            placeholder={room.name}
-            onChangeText={(name) => { this.setState({ name }); }}
-          />
 
-          <Input
-            headerText="building"
-            placeholder={room.building}
-            onChangeText={(building) => { this.setState({ building }); }}
-          />
+          {this.state.create ?
+            <Input
+              headerText="name"
+              placeholder={defaultObj.name}
+              onChangeText={(name) => { this.setState({ name }); }}
+            />
+            :
+            <Input
+              headerText="name"
+              value={this.state.name}
+              onChangeText={(name) => { this.setState({ name }); }}
+            />
+          }
+
+          {this.state.create ?
+            <Input
+              headerText="building"
+              placeholder={defaultObj.building}
+              onChangeText={(building) => { this.setState({ building }); }}
+            />
+            :
+            <Input
+              headerText="building"
+              value={ this.state.building }
+              onChangeText={(building) => { this.setState({ building }); }}
+            />
+          }
 
           <DropDownAndroid
             headerText="Community"
@@ -124,15 +164,27 @@ class CreateRoom extends Component {
           />
 
 
-          <Input
-            headerText="address"
-            placeholder={room.address}
-            onChangeText={(address) => { this.setState({ address }); }}
-          />
+          {this.state.create ?
+            <Input
+              headerText="address"
+              placeholder={defaultObj.address}
+              onChangeText={(address) => { this.setState({ address }); }}
+            />
+            :
+            <Input
+              headerText="address"
+              value={ this.state.address }
+              onChangeText={(address) => { this.setState({ address }); }}
+            />
+          }
 
           <DropDownAndroid
             headerText="Professional Cleaning"
             options={[
+              {
+                value: 'OFF',
+                label: 'OFF',
+              },
               {
                 value: 'Monday',
                 label: 'Monday',
@@ -162,7 +214,11 @@ class CreateRoom extends Component {
         <TouchableOpacity
           style={styles.bottom} onPress={() => { this.onClick(); }}
         >
-          <Text style={styles.bottomText} > SAVE </Text>
+          {this.props.selectedRoom.id === undefined ?
+            <Text style={styles.bottomText}> Create </Text>
+            :
+            <Text style={styles.bottomText}> Update </Text>
+          }
         </TouchableOpacity>
 
       </View>
@@ -198,13 +254,16 @@ const styles = StyleSheet.create({
 CreateRoom.propTypes = {
   addRoom: PropTypes.func,
   rooms: PropTypes.array,
+  selectedRoom: PropTypes.object,
 };
 
 function mapStateToProps(store) {
   // TODO: dynamic rendering
   const appSchema = store.list.toJS().appSchema;
+  const selectedRoom = store.list.toJS().selectedRoom;
   return {
     appSchema,
+    selectedRoom,
   };
 }
 

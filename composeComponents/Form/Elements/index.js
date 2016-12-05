@@ -21,3 +21,10 @@ const elements = {
 };
 
 export default elements;
+export {
+  Input,
+  PhotoUploadAndroid,
+  Switch,
+  DropDownAndroid,
+  HeaderText,
+};

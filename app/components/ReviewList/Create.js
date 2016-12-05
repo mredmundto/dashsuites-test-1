@@ -47,14 +47,11 @@ class CreateReview extends Component {
     } = this.props;
     // if only one date that is in create
     // if there are date and reviewList => that is in edit
-    
+
     const roomIndex = data.split(' ')[0];
     const room = roomList.get(roomIndex).toJS();
     const review = roomList.getIn(data.split(' ')).toJS();
-    
-    // console.log('date in review create', data);
-    // console.log('room in review create', room);
-    // console.log('review in review create', review);
+
 
     return (
       <View style={styles.container}>
@@ -142,7 +139,6 @@ CreateReview.propTypes = {
 };
 
 function mapStateToProps(store) {
-  console.log('store in create review list', store);
   return {
     source: store.list,
     roomList: store.list.get('data'),

@@ -9,11 +9,11 @@ if (displayDay === -1) {
 } else if (displayDay > 4) {
   displayDay = 4;
 }
-
 const initialState = Map({
   room: List([
     Map({}),
   ]),
+  roomParam: Map({}),
   review: List([
     Map({
       room: { name: 'testing' },
@@ -37,27 +37,24 @@ const list = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_ISSUE':
       return action.store;
-    case 'LOAD_ROOM': {
+    case 'LOAD_ROOM':
       return state.set('room', action.store);
-    }
-    case 'LOAD_REVIEW': {
+    case 'SET_ROOM_PARAM':
+      return state.setIn(['roomParam', action.key], action.value);
+    case 'DELETE_ROOM_PARAM':
+      return state.deleteIn(['roomParam', action.key]);
+    case 'LOAD_REVIEW':
       return state.set('review', action.store);
-    }
-    case 'LOAD_SCHEMA': {
+    case 'LOAD_SCHEMA':
       return state.set('appSchema', action.store);
-    }
-    case 'LOAD_ClEANING_SCHEDULE': {
+    case 'LOAD_ClEANING_SCHEDULE':
       return state.set('cleaningSchedule', action.store);
-    }
-    case 'LOAD_LINEN_SCHEDULE': {
+    case 'LOAD_LINEN_SCHEDULE':
       return state.set('linenSchedule', action.store);
-    }
-    case 'SELECT_ROOM': {
+    case 'SELECT_ROOM':
       return state.set('selectedRoom', action.store);
-    }
-    case 'SELECT_DAY': {
+    case 'SELECT_DAY':
       return state.set('selectedDay', action.store);
-    }
     default:
       return state;
   }

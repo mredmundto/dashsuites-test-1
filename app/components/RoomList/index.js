@@ -44,6 +44,9 @@ const styles = StyleSheet.create({
 class RoomList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      searchModalOpen: false,
+    };
     this.selectRoom = this.selectRoom.bind(this);
   }
 
@@ -74,6 +77,9 @@ class RoomList extends Component {
     const {
       toggleDrawer,
     } = this.props;
+    const {
+      searchModalOpen,
+    } = this.state;
     return (
       <View
         style={styles.container}
@@ -81,9 +87,20 @@ class RoomList extends Component {
         <ResourceListWithHeader
           headerProps={{
             leftImage: require('../../resources/images/path@3x.png'),
+            showRight: true,
             onLeft: () => {
               toggleDrawer(true);
+              this.props.deleteRoomParam('testing');
             },
+            onRight: () => {
+              this.props.setRoomParam('testing', 'this');
+              this.setState({ searchModalOpen: true });
+            },
+          }}
+          searchable
+          searchModalOpen={searchModalOpen}
+          onSearchClose={() => {
+            this.setState({ searchModalOpen: false });
           }}
           data={this.props.rooms}
           onItemPress={this.selectRoom}
@@ -125,6 +142,7 @@ function mapStateToProps(store) {
   // console.log('store in room', store.list.toJS());
   return {
     rooms: data.room,
+    qParams: data.roomParams,
   };
 }
 
@@ -140,6 +158,19 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: 'TOGGLE_DRAWER',
         open,
+      });
+    },
+    setRoomParam: (key, value) => {
+      dispatch({
+        type: 'SET_ROOM_PARAM',
+        key,
+        value,
+      });
+    },
+    deleteRoomParam: (key) => {
+      dispatch({
+        type: 'DELETE_ROOM_PARAM',
+        key,
       });
     },
   };

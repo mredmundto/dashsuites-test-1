@@ -40,7 +40,6 @@ class RoomDetail extends Component {
               }
             })}
           </View>
-  
           <TouchableOpacity
             style={{
               flexDirection: 'row',

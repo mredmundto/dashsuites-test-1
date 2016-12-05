@@ -41,14 +41,9 @@ class CreateList extends Component {
   }
 
   onClick() {
-    console.log('the state in issue created', this.state);
     const arr = this.props.data.split(' ');
-    console.log('this is the arr', arr);
     const roomIndex = arr[0];
-    console.log('review Index before assign', reviewIndex);
     const reviewIndex = arr[2] || 0;
-    console.log('review Index before assign', reviewIndex);
-    console.log(roomIndex);
     this.props.addIssue(this.state, roomIndex, reviewIndex);
   }
 

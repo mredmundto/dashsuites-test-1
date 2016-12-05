@@ -14,9 +14,11 @@ const Header = (props) => {
   const {
     title,
     constants,
+    showLeft,
     leftImage,
     leftTitle,
     rightTitle,
+    showRight,
     rightImage,
     onLeft,
     onRight,
@@ -82,24 +84,26 @@ const Header = (props) => {
       }}
     >
       <View style={styles.container}>
-        <TouchableOpacity
-          onPress={onLeft}
-          style={styles.leftContainer}
-        >
-          {leftType === 'icon' ?
-            <Image
-              resizeMode={'center'}
-              style={styles.leftIcon}
-              source={leftImage}
-            />
-            :
-            <Text
-              style={styles.leftTitle}
-            >
-              {leftTitle.toUpperCase()}
-            </Text>
-          }
-        </TouchableOpacity>
+        {showLeft ?
+          <TouchableOpacity
+            onPress={onLeft}
+            style={styles.leftContainer}
+          >
+            {leftType === 'icon' ?
+              <Image
+                resizeMode={'center'}
+                style={styles.leftIcon}
+                source={leftImage}
+              />
+              :
+              <Text
+                style={styles.leftTitle}
+              >
+                {leftTitle.toUpperCase()}
+              </Text>
+            }
+          </TouchableOpacity>
+        : null}
         <View style={styles.titleContainer}>
           <Text
             style={styles.title}
@@ -107,24 +111,26 @@ const Header = (props) => {
             {_.capitalize(title)}
           </Text>
         </View>
-        <TouchableOpacity
-          onPress={onRight}
-          style={styles.rightContainer}
-        >
-          {rightType === 'icon' ?
-            <Image
-              resizeMode={'center'}
-              style={styles.rightIcon}
-              source={rightImage}
-            />
-          :
-            <Text
-              style={styles.rightTitle}
-            >
-              {rightTitle.toUpperCase()}
-            </Text>
-          }
-        </TouchableOpacity>
+        {showRight ?
+          <TouchableOpacity
+            onPress={onRight}
+            style={styles.rightContainer}
+          >
+            {rightType === 'icon' ?
+              <Image
+                resizeMode={'center'}
+                style={styles.rightIcon}
+                source={rightImage}
+              />
+            :
+              <Text
+                style={styles.rightTitle}
+              >
+                {rightTitle.toUpperCase()}
+              </Text>
+            }
+          </TouchableOpacity>
+        : null}
       </View>
     </View>
   );
@@ -135,12 +141,16 @@ Header.defaultProps = {
   leftTitle: '',
   leftImage: require('../../resources/images/left-arrow@3x.png'),
   rightTitle: '',
-  // rightImage: require('../../resources/images/search@3x.png'),
+  rightImage: require('../../resources/images/search@3x.png'),
   onLeft: () => { Actions.pop(); },
   onRight: () => {},
+  showLeft: true,
+  showRight: false,
 };
 
 Header.propTypes = {
+  showLeft: PropTypes.bool,
+  showRight: PropTypes.bool,
   onLeft: PropTypes.func,
   onRight: PropTypes.func,
   title: PropTypes.string,

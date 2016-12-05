@@ -203,7 +203,6 @@ class CleaningList extends Component {
         index: 4,
       },
     ];
-    // console.log('before render cleaning', this.props.cleaningSchedule);
     return (
       <View style={styles.container} >
         <View>

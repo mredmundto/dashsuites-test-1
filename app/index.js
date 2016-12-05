@@ -74,6 +74,7 @@ class App extends Component {
           hideNavBar
         >
           <Scene
+            initial
             key="RoomList"
             component={RoomList}
             title="Rooms"
@@ -145,7 +146,6 @@ class App extends Component {
             title="Create an issue"
           />
           <Scene
-            // initial
             key="CleaningList"
             component={(props) => {
               return (
@@ -169,7 +169,6 @@ class App extends Component {
             title="Room Details"
           />
           <Scene
-            initial
             key="LinenList"
             component={(props) => {
               return (

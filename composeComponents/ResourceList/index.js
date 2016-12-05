@@ -6,7 +6,6 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import _ from 'lodash';
 import Item from './Item';
 // import Promise from 'bluebird';
 import HOC from '../../app/HOC';
@@ -58,15 +57,14 @@ class List extends Component {
   componentWillReceiveProps(nextProps) {
     // if (this.props.data.length === nextProps.data.length) return;
     // check if next props is a new data
-    let identical = (this.props.data.length !== nextProps.data.length) ? false : true;
-    this.props.data.forEach((item, i) => {
-      if (item !== nextProps.data[i]) {
-        identical = false;
-      }
-      // if (!_.isEqual(item, nextProps.data[i])) {
-      //   identical = false;
-      // }
-    });
+    let identical = this.props.data.length === nextProps.data.length;
+    if (!identical) {
+      this.props.data.forEach((item, i) => {
+        if (item !== nextProps.data[i]) {
+          identical = false;
+        }
+      });
+    }
     if (identical) return;
     const data = nextProps.data;
     this.setState({
@@ -90,6 +88,7 @@ class List extends Component {
     const {
       searchable,
       searchModalOpen,
+      searchCriteria,
       onSearchClose,
       onSearchModalRequestClose,
       displayedInList,
@@ -113,6 +112,7 @@ class List extends Component {
 
         {searchable ?
           <SearchModal
+            criteria={searchCriteria}
             onRequestClose={onSearchModalRequestClose}
             visible={searchModalOpen}
             onClose={onSearchClose}
@@ -134,9 +134,10 @@ class List extends Component {
 }
 
 List.defaultProps = {
+  searchCriteria: [],
   onSearchModalRequestClose: () => {},
   searchModalOpen: false,
-  searchable: true,
+  searchable: false,
   allowCreate: true,
   infiniteScroll: true,
   onSearchClose: () => {},
@@ -145,6 +146,7 @@ List.defaultProps = {
 };
 
 List.propTypes = {
+  searchCriteria: PropTypes.array,
   onSearchModalRequestClose: PropTypes.func,
   searchModalOpen: PropTypes.bool,
   searchable: PropTypes.bool,

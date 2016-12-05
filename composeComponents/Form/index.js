@@ -1,64 +1,87 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
-  TouchableOpacity,
-  Text,
   View,
-  ScrollView,
   Dimensions,
+  Platform,
+  Keyboard,
 } from 'react-native';
-import Constants from '../../constants';
-import ConfirmButton from '../Theme/ConfirmButton';
-import KeyboardAwareScrollView from '../Theme/KeyboardAwareScrollView';
-import KeyboardSpacer from '../Theme/KeyboardSpacer';
-import NavigationBar from '../Theme/NavigationBar';
+import SubmitButton from './SubmitButton';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const Form = (props) => {
-  const {
-    style,
-    disableSubmit,
-    children,
-    showSubmit,
-    onSubmit,
-    submitText,
-    scrollViewMinimumHeight,
-    ...others,
-  } = props;
-  const extraHeight = showSubmit ? ConfirmButton.DEFAULT_HEIGHT : 0;
-  const minHeight = scrollViewMinimumHeight - extraHeight;
-  return (
-    <View style={{ flex: 1, backgroundColor: Constants.style.secondaryBackgroundColor }}>
-      <KeyboardAwareScrollView
-        style={{ flex:1 }}
-        contentContainerStyle={{ minHeight }}
-        extraHeight={extraHeight}
-        {...others}
-      >
-        <View style={[{flex:1, backgroundColor: Constants.style.primaryBackgroundColor}, style]} >
+
+class Form extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      keyboardIsShowing: false,
+    };
+
+    this.keyboardWillShow = this.keyboardWillShow.bind(this);
+    this.keyboardWillHide = this.keyboardWillHide.bind(this);
+  }
+
+  componentWillMount() {
+    const willShow = Platform.OS === 'android' ? 'keyboardDidShow' : 'keyboardWillShow';
+    const willHide = Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide';
+    this.keyboardWillShowListener = Keyboard.addListener(willShow, this.keyboardWillShow);
+    this.keyboardWillHideListener = Keyboard.addListener(willHide, this.keyboardWillHide);
+  }
+  componentWillUnmount() {
+    this.keyboardWillShowListener.remove();
+    this.keyboardWillHideListener.remove();
+  }
+  keyboardWillShow() {
+    this.setState({ keyboardIsShowing: true });
+  }
+  keyboardWillHide() {
+    this.setState({ keyboardIsShowing: false });
+  }
+  render() {
+    const {
+      style,
+      disableSubmit,
+      children,
+      showSubmit,
+      onSubmit,
+      submitText,
+      extraHeight,
+      minHeight,
+      ...others,
+    } = this.props;
+
+    const shouldShowSubmitButton = (showSubmit && !this.state.keyboardIsShowing);
+
+    return (
+      <View style={{ flex: 1 }}>
+        <KeyboardAwareScrollView
+          style={[{ flex: 1 }, style]}
+          contentContainerStyle={{ minHeight }}
+          extraHeight={extraHeight}
+          {...others}
+        >
           {children}
-        </View>
-      </KeyboardAwareScrollView>
-      {showSubmit ?
-        <ConfirmButton
-          disable={disableSubmit}
-          title={submitText}
-          onPress={onSubmit}
-        />
-        :
-         null
-      }
-      <KeyboardSpacer />
-    </View>
-  );
-};
+        </KeyboardAwareScrollView>
+        {shouldShowSubmitButton ?
+          <SubmitButton
+            disabled={disableSubmit}
+            title={submitText}
+            onPress={onSubmit}
+          />
+        : null}
+      </View>
+    );
+  }
+}
+
 Form.defaultProps = {
   submitText: 'Submit',
   disableSubmit: false,
   showSubmit: true,
   onSubmit: () => {},
-  scrollViewMinimumHeight: Dimensions.get('window').height - NavigationBar.DEFAULT_STATUS_BAR_HEIGHT,
 };
 
 Form.propTypes = {
+  style: PropTypes.object,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -67,7 +90,8 @@ Form.propTypes = {
   submitText: PropTypes.string,
   onSubmit: PropTypes.func,
   showSubmit: PropTypes.bool,
-  scrollViewMinimumHeight: PropTypes.number,
+  extraHeight: PropTypes.number,
+  minHeight: PropTypes.number,
 };
 
 export default Form;

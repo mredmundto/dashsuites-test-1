@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
-import ResourceList from '../../../composeComponents/ResourceList';
+import { ResourceListWithHeader } from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
 
 const displayedInList = ['name', 'building', 'community'];
@@ -44,12 +44,28 @@ const styles = StyleSheet.create({
 class RoomList extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      searchModalOpen: false,
+    };
     this.selectRoom = this.selectRoom.bind(this);
   }
 
+  // componentWillMount() {
+  //   // define in global
+  //   customFetch('http://127.0.0.1:3000/REST/room', {
+  //     method: 'GET',
+  //   })
+  //   .then((resJSON) => {
+  //     this.props.loadRoom(resJSON);
+  //   })
+  //   .catch((e) => {
+  //     console.log(e);
+  //   });
+  // }
+
   addItem() {
-    Actions.RoomCreate();
+    console.log('clicked add room');
+    Actions.RoomEdit();
   }
 
   selectRoom(selectedRoom) {
@@ -61,27 +77,43 @@ class RoomList extends Component {
     const {
       toggleDrawer,
     } = this.props;
-
+    const {
+      searchModalOpen,
+    } = this.state;
     return (
       <View
         style={styles.container}
       >
-        <ResourceList
+        <ResourceListWithHeader
           headerProps={{
+            leftImage: require('../../resources/images/path@3x.png'),
+            showRight: true,
             onLeft: () => {
               toggleDrawer(true);
+              this.props.deleteRoomParam('testing');
             },
+            onRight: () => {
+              this.props.setRoomParam('testing', 'this');
+              this.setState({ searchModalOpen: true });
+            },
+          }}
+          searchable
+          searchModalOpen={searchModalOpen}
+          onSearchClose={() => {
+            this.setState({ searchModalOpen: false });
           }}
           data={this.props.rooms}
           onItemPress={this.selectRoom}
           displayedInList={displayedInList}
         />
+
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => this.addItem()}
         >
           <Text style={styles.addButtonText}> + </Text>
         </TouchableOpacity>
+
       </View>
     );
   }
@@ -102,28 +134,43 @@ RoomList.propTypes = {
   ]),
   infiniteScroll: PropTypes.bool,
   selectRoom: PropTypes.func,
+  loadRoom: PropTypes.func,
 };
 
 function mapStateToProps(store) {
-  const storeRooms = store.list.toArray();
-  const rooms = [];
-  storeRooms.forEach(mapRoom => {
-    rooms.push(mapRoom.toJS());
-  });
+  const data = store.list.toJS();
+  // console.log('store in room', store.list.toJS());
   return {
-    rooms,
+    rooms: data.room,
+    qParams: data.roomParams,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     selectRoom: (selectedRoom) => {
-      dispatch(Action.selectItem(selectedRoom, 'rooms'));
+      dispatch(Action.selectRoom(selectedRoom));
     },
+    // loadRoom: (initObj) => {
+    //   dispatch(Action.loadRoom(initObj));
+    // },
     toggleDrawer: (open) => {
       dispatch({
         type: 'TOGGLE_DRAWER',
         open,
+      });
+    },
+    setRoomParam: (key, value) => {
+      dispatch({
+        type: 'SET_ROOM_PARAM',
+        key,
+        value,
+      });
+    },
+    deleteRoomParam: (key) => {
+      dispatch({
+        type: 'DELETE_ROOM_PARAM',
+        key,
       });
     },
   };

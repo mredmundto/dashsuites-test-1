@@ -59,15 +59,15 @@ class Input extends Component {
           {...others}
           maxLength={maxLength}
           style={[{
-            height: 40,
-            color: this.props.constants ? this.props.constants.style.textColor : Input.defaultProps.color,
+            // height: 40,
+            color: this.props.constants ? this.props.constants.style.textColor : this.props.textColor,
             fontSize: 15,
             //fontFamily: this.props.constants.style.primaryFontFamily,
             //borderColor: this.state.validationResult.valid ? '#DEDEDE' : 'red',
-            borderWidth: 1,
-            borderRadius: 3,
-            paddingHorizontal: 10,
-            paddingVertical: 5,
+            //borderWidth: 1,
+            //borderRadius: 3,
+            //paddingHorizontal: 10,
+            //paddingVertical: 5,
           }, this.props.textInputStyle]}
           onChangeText={(value) => {
             this.setState({ value });
@@ -107,7 +107,7 @@ Input.defaultProps = {
   validationHeaderStyle: { color: 'red' },
   formatValue: (before, value) => value,
   hideMaxLength: false,
-  color: 'blue',
+  textColor: 'black',
 };
 
 Input.propTypes = {

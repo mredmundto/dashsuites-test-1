@@ -27,8 +27,6 @@ class List extends Component {
   constructor(props) {
     super(props);
 
-    console.log('data',props.data);
-
     this.state = {
       loading: false,
       errorMessage: '',
@@ -50,7 +48,6 @@ class List extends Component {
   //         dataBlob: data,
   //         dataSource: this.state.dataSource.cloneWithRows(data),
   //       });
-  //       console.log(this.state.dataSource);
   //     })
   //     .catch((err) => {
   //       this.setState({ errorMessage: err.message });
@@ -58,7 +55,17 @@ class List extends Component {
   // }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.data.length === nextProps.data.length) return;
+    // if (this.props.data.length === nextProps.data.length) return;
+    // check if next props is a new data
+    let identical = this.props.data.length === nextProps.data.length;
+    if (!identical) {
+      this.props.data.forEach((item, i) => {
+        if (item !== nextProps.data[i]) {
+          identical = false;
+        }
+      });
+    }
+    if (identical) return;
     const data = nextProps.data;
     this.setState({
       dataBlob: data,
@@ -66,10 +73,10 @@ class List extends Component {
     });
   }
 
-  _renderRow(rowData) {
-    console.log('rowData', rowData);
+  _renderRow(rowData, a, b) {
     return (
       <Item
+        id={b}
         onItemPress={this.props.onItemPress}
         data={rowData}
         displayedInList={this.props.displayedInList}
@@ -81,6 +88,7 @@ class List extends Component {
     const {
       searchable,
       searchModalOpen,
+      searchCriteria,
       onSearchClose,
       onSearchModalRequestClose,
       displayedInList,
@@ -104,6 +112,7 @@ class List extends Component {
 
         {searchable ?
           <SearchModal
+            criteria={searchCriteria}
             onRequestClose={onSearchModalRequestClose}
             visible={searchModalOpen}
             onClose={onSearchClose}
@@ -125,9 +134,10 @@ class List extends Component {
 }
 
 List.defaultProps = {
+  searchCriteria: [],
   onSearchModalRequestClose: () => {},
   searchModalOpen: false,
-  searchable: true,
+  searchable: false,
   allowCreate: true,
   infiniteScroll: true,
   onSearchClose: () => {},
@@ -136,6 +146,7 @@ List.defaultProps = {
 };
 
 List.propTypes = {
+  searchCriteria: PropTypes.array,
   onSearchModalRequestClose: PropTypes.func,
   searchModalOpen: PropTypes.bool,
   searchable: PropTypes.bool,
@@ -149,4 +160,6 @@ List.propTypes = {
 
 const composedList = HOC(List, [applyHeader]);
 
-export default composedList;
+// exporting both list and composedList with is with header to render in different cases
+export default List;
+export { composedList as ResourceListWithHeader };

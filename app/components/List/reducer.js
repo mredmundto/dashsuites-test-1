@@ -1,57 +1,60 @@
 import { Map, List } from 'immutable';
 
-const initialState = List([
-  Map({
-    name: 'Suite#1',
-    building: 'Tai Chi Court',
-    community: 'TST-1',
-    address: '5A, Tai Chi Court, 132-134 Austin Road, Tsim Sha Tsui, Kowloon',
-    reviews: List([
-      Map({
-        issues: '3/4',
-        room: 'Suite#1 TST-1',
-        created: 'Nov 15 2016',
-        issueList: List([
-          Map({
-            flagged: true,
-            title: 'Issue Title Name',
-            created: 'Nov 15 2016',
-          }),
-        ]),
-      }),
-    ]),
-  }),
-]);
-      // Map({ room: 'Suite#2', building: 'Tai Chi Court', community: '1' }),
-      // Map({ room: 'Suite#3', building: 'Tai Chi Court', community: '1' }),
-      // Map({ room: 'Suite#19', building: 'Brilliant Court', community: '1' }),
-      // Map({ room: 'Suite#20', building: 'Universal Mansion', community: '1' }),
-      // Map({ room: 'Suite#21', building: 'Universal Mansion', community: '1' }),
-      // Map({ room: 'Suite#1', building: 'Malahon Apartments', community: '2' }),
-      // Map({ room: 'Suite#2', building: 'Vienna Mansion', community: '2' }),
-      // Map({ room: 'Suite#3', building: 'Vienna Mansion', community: '2' }),
-      // Map({ room: 'Suite#16', building: 'Greenfield Mansion', community: '2' }),
-      // Map({ room: 'Suite#17', building: 'Greenfield Mansion', community: '2' }),
-      // Map({ room: 'Suite#9', building: 'Lei Ha Court', community: '3' }),
-      // Map({ room: 'Suite#10', building: 'Lei Ha Court', community: '3' }),
-      // Map({ room: 'Suite#11', building: 'Lei Ha Court', community: '3' }),
-      // Map({ room: 'Suite#1', building: 'Tonnochy Tower', community: '2' }),
-
-      // Map({ issues: '3/4', room: 'Suite#1 - community 1', created: 'Nov 15 2016' }),
-      // Map({ issues: '3/4', room: 'Suite#9 - community 3', created: 'Nov 9 2016' }),
-      // Map({ issues: '4/4', room: 'Suite#20 - community 1 ', created: 'Oct 8 2016' }),
-
-      // Map({ flagged: true, title: 'Issue Title Name', created: 'Nov 9 2016' }),
-      // Map({ flagged: true, title: 'Issue Title Name', created: 'Oct 8 2016' }),
+// Mapping WeekDays to Monday to Friday
+// Before Sunday = 0, Monday = 1 => Now Monday = 0, Tuesday = 1, Friday = 4
+// let displayDay = new Date('2016-11-30').getDay() - 1;
+let displayDay = new Date().getDay() - 1;
+if (displayDay === -1) {
+  displayDay = 0;
+} else if (displayDay > 4) {
+  displayDay = 4;
+}
+const initialState = Map({
+  room: List([
+    Map({}),
+  ]),
+  roomParam: Map({}),
+  review: List([
+    Map({
+      room: { name: 'testing' },
+      createdAt: 'Seed data from client',
+      issueList: List([
+        Map({
+          flagged: true,
+          title: 'Some issue one',
+          createdAt: 'Nov 15 2016',
+        }),
+      ]),
+    }),
+  ]),
+  cleaningSchedule: List([]),
+  linenSchedule: List([]),
+  selectedRoom: Map({}),
+  selectedDay: displayDay,
+});
 
 const list = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_ITEM':
-      return state.setIn([action.listType, 'list'], action.itemList);
-
-    case 'SELECT_ITEM': {
-      return state.setIn([action.listType, 'activeItem'], action.activeItem);
-    }
+    case 'ADD_ISSUE':
+      return action.store;
+    case 'LOAD_ROOM':
+      return state.set('room', action.store);
+    case 'SET_ROOM_PARAM':
+      return state.setIn(['roomParam', action.key], action.value);
+    case 'DELETE_ROOM_PARAM':
+      return state.deleteIn(['roomParam', action.key]);
+    case 'LOAD_REVIEW':
+      return state.set('review', action.store);
+    case 'LOAD_SCHEMA':
+      return state.set('appSchema', action.store);
+    case 'LOAD_ClEANING_SCHEDULE':
+      return state.set('cleaningSchedule', action.store);
+    case 'LOAD_LINEN_SCHEDULE':
+      return state.set('linenSchedule', action.store);
+    case 'SELECT_ROOM':
+      return state.set('selectedRoom', action.store);
+    case 'SELECT_DAY':
+      return state.set('selectedDay', action.store);
     default:
       return state;
   }

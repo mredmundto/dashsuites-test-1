@@ -7,7 +7,8 @@ import {
   Text,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import ResourceList from '../../../composeComponents/ResourceList';
+import { ResourceListWithHeader } from '../../../composeComponents/ResourceList';
+
 import Action from './../List/action';
 
 const styles = StyleSheet.create({
@@ -38,7 +39,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const displayedInList = ['issues', 'room', 'created'];
+const displayedInList = ['issueList', 'room name', 'createdAt'];
+// const displayedInList = ['roomname', 'createdAt'];
 
 class ReviewList extends Component {
   constructor(props) {
@@ -51,33 +53,55 @@ class ReviewList extends Component {
     this.selectReview = this.selectReview.bind(this);
   }
 
+  componentWillMount() {
+    // get all reviews
+    // fetch('http://127.0.0.1:3000/REST/review', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    // .then((res) => {
+    //   return res.json();
+    // })
+    // .then((resJSON) => {
+    //   this.props.loadReview(resJSON);
+    // })
+    // .catch((e) => {
+    //   console.log('e', e);
+    //   throw e;
+    // });
+  }
+
   addItem() {
     // Actions.RoomCreate();
   }
 
-  selectReview(selectedReview) {
-    // this.props.selectReview(selectedReview);
-    // Actions.RoomView();
+  selectReview(selectedReview, reviewIndex) {
+    //Actions.ReviewView(`${selectedReview.roomIndex} reviewList ${reviewIndex}`);
   }
   render() {
     const {
+      reviewList,
       toggleDrawer,
     } = this.props;
     return (
       <View
         style={styles.container}
       >
-        <ResourceList
+        <ResourceListWithHeader
           headerProps={{
+            leftImage: require('../../resources/images/path@3x.png'),
             onLeft: () => {
               toggleDrawer(true);
             },
-            onRight: () => {
-              this.setState({ modalOpen: true });
-            },
+            // onRight: () => {
+            //   this.setState({ modalOpen: true });
+            // },
           }}
           displayedInList={displayedInList}
-          data={this.props.reviews}
+          data={reviewList}
           onItemPress={this.selectReview}
           searchModalOpen={this.state.modalOpen}
           onSearchClose={() => {
@@ -107,21 +131,41 @@ ReviewList.propTypes = {
   ]),
   infiniteScroll: PropTypes.bool,
   selectReview: PropTypes.func,
+  loadReview: PropTypes.func,
+  reviewList: PropTypes.array,
 };
 
-function mapStateToProps(store) {
-  const rooms = store.list.toArray();
-  const reviews = [];
-  rooms.forEach(room => {
-    reviews.push(room.toJS().reviews[0]);
+const mapStateToProps = (store) => {
+  // console.log('store in review', store.list.toJS());
+  const reviewList = store.list.toJS().review;
+  // this is to map the room name from the room object back to the review array
+  reviewList.forEach((review) => {
+    review['room name'] = review.room.name;
   });
+
   return {
-    reviews,
+    reviewList,
   };
-}
+
+  // const roomList = store.list.get('data');
+  // const reviewList = roomList
+  //   .map((room, i) => {
+  //     return room.get('reviewList')
+  //       .map(review => review.set('room', room.get('name')).set('roomIndex', i));
+  //   })
+  //   .flatten(1);
+
+  // return {
+  //   roomList,
+  //   reviewList,
+  // };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    // loadReview: (initObj) => {
+    //   dispatch(Action.loadReview(initObj));
+    // },
     toggleDrawer: (open) => {
       return dispatch({
         type: 'TOGGLE_DRAWER',

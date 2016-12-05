@@ -3,7 +3,15 @@ import {
   Modal,
   StyleSheet,
 } from 'react-native';
-import SearchBar from './Bar';
+// import SearchBar from './Bar';
+import Form from '../Form';
+import {
+  Input,
+} from '../Form/Elements';
+import constants from '../../constants';
+import applyHeader from '../../app/HOC/applyHeader';
+
+const FormWithHeader = applyHeader(Form);
 
 class SearchModal extends Component {
   render() {
@@ -12,20 +20,64 @@ class SearchModal extends Component {
       style,
       ...others,
     } = this.props;
+    // <SearchBar
+    //   autoFocus
+    //   leftImage={require('../../app/resources/images/left-arrow@3x.png')}
+    //   onLeft={onClose}
+    // />
     return (
       <Modal
         {...others}
         style={[styles.container, style]}
       >
-        <SearchBar
-          autoFocus
-          leftImage={require('../../app/resources/images/left-arrow@3x.png')}
-          onLeft={onClose}
-        />
+        <FormWithHeader
+          headerProps={{
+            onLeft: onClose,
+            title: 'Search',
+          }}
+        >
+          <Input
+            headerText="Add title"
+            placeholder="Enter here"
+            multiline={false}
+            numberOfLines={1}
+            maxLength={120}
+            onChangeText={(title) => { this.setState({ title }); }}
+            constants={constants}
+          />
+          <Input
+            headerText="Add title"
+            placeholder="Enter here"
+            multiline={false}
+            numberOfLines={1}
+            maxLength={120}
+            onChangeText={(title) => { this.setState({ title }); }}
+            constants={constants}
+          />
+          <Input
+            headerText="Add title"
+            placeholder="Enter here"
+            multiline={false}
+            numberOfLines={1}
+            maxLength={120}
+            onChangeText={(title) => { this.setState({ title }); }}
+            constants={constants}
+          />
+          <Input
+            headerText="Add title"
+            placeholder="Enter here"
+            multiline={false}
+            numberOfLines={1}
+            maxLength={120}
+            onChangeText={(title) => { this.setState({ title }); }}
+            constants={constants}
+          />
+        </FormWithHeader>
       </Modal>
     );
   }
 }
+
 
 SearchModal.defaultProps = {
   animationType: 'slide',
@@ -58,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     height: 50,
-    backgroundColor: '#3E50B4',
+    // backgroundColor: '#3E50B4',
   },
   inputContainer: {
     paddingHorizontal: 15,

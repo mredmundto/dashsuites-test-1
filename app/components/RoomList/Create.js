@@ -9,14 +9,11 @@ import { Text,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Elements from '../../../composeComponents/Form/Elements';
-
-// importing the constants for theme
-// import constants from '../../../constants';
 import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
 import Action from './../List/action';
 import constants from '../../../constants';
-import _ from 'lodash';
+import Promise from 'bluebird';
 
 const {
   Input,
@@ -41,17 +38,18 @@ class CreateRoom extends Component {
   }
 
   componentWillMount() {
+    // check if thats for create or edit
     if (this.props.selectedRoom.id === undefined) {
       this.setState({ create: true });
     } else {
       this.setState({
         create: false,
+        id: this.props.selectedRoom.id,
         name: this.props.selectedRoom.name,
         building: this.props.selectedRoom.building,
         community: this.props.selectedRoom.community,
         address: this.props.selectedRoom.address,
         professionalCleaning: this.props.selectedRoom.professionalCleaning,
-        id: this.props.selectedRoom.id,
       });
     }
   }
@@ -59,53 +57,76 @@ class CreateRoom extends Component {
   onClick() {
     if (this.state.create) {
       // post
-      customFetch(`${constants.config.url}/REST/room`, {
-        method: 'POST',
-        body: {
-          name: this.state.name,
-          building: this.state.building,
-          Community: this.state.community,
-          address: this.state.address,
-          professionalCleaning: this.state.professionalCleaning,
-        },
+      const promiseChain = Promise.resolve();
+      promiseChain
+      .then(() => {
+        return customFetch(`${constants.config.url}/REST/room`, {
+          method: 'POST',
+          body: {
+            name: this.state.name,
+            building: this.state.building,
+            community: this.state.community,
+            address: this.state.address,
+            professionalCleaning: this.state.professionalCleaning,
+          },
+        });
       })
       .then(() => {
-        Actions.pop();
+        return customFetch(`${constants.config.url}/REST/room`, {
+          method: 'GET',
+        });
+      })
+      .then((resJSON) => {
+        this.props.loadRoom(resJSON);
+      })
+      .then(() => {
+        return Actions.pop();
       });
     } else {
-      // put
-      customFetch(`${constants.config.url}/REST/room/${this.state.id}`, {
-        method: 'PUT',
-        body: {
+      const promiseChain = Promise.resolve();
+      promiseChain
+      .then(() => {
+        return customFetch(`${constants.config.url}/REST/room/${this.state.id}`, {
+          method: 'PUT',
+          body: {
+            id: this.state.id,
+            name: this.state.name,
+            building: this.state.building,
+            community: this.state.community,
+            address: this.state.address,
+            professionalCleaning: this.state.professionalCleaning,
+          },
+        });
+      })
+      .then(() => {
+        return this.props.selectRoom({
           id: this.state.id,
           name: this.state.name,
           building: this.state.building,
-          Community: this.state.community,
+          community: this.state.community,
           address: this.state.address,
           professionalCleaning: this.state.professionalCleaning,
-        },
+        });
+      })
+      .then(() => {
+        return customFetch(`${constants.config.url}/REST/room`, {
+          method: 'GET',
+        });
       })
       .then((resJSON) => {
-        console.log('the resJSON after put', resJSON);
-        
+        this.props.loadRoom(resJSON);
+      })
+      .then(() => {
         Actions.pop();
       });
     }
   }
 
   render() {
-    const {
-      source,
-      data,
-      roomList,
-    } = this.props;
-
     const defaultObj = {
       name: 'please enter the room name here',
       building: 'please enter the room building here',
-      community: 'please enter the room community here',
       address: 'please enter the room address here',
-      professionalCleaning: 'please enter the professionalCleaning date here',
     };
 
     return (
@@ -135,34 +156,64 @@ class CreateRoom extends Component {
             :
             <Input
               headerText="building"
-              value={ this.state.building }
+              value={this.state.building}
               onChangeText={(building) => { this.setState({ building }); }}
             />
           }
 
-          <DropDownAndroid
-            headerText="Community"
-            options={[
-              {
-                value: 'TST',
-                label: 'TST',
-              },
-              {
-                value: 'CWB1',
-                label: 'CWB1',
-              },
-              {
-                value: 'CWB2',
-                label: 'CWB2',
-              },
-              {
-                value: 'Wan Chai',
-                label: 'Wan Chai',
-              },
-            ]}
-            onValueChange={(community) => { this.setState({ community }); }}
-          />
-
+          {this.state.create ?
+            <DropDownAndroid
+              headerText="Community"
+              options={[
+                {
+                  value: 'TST',
+                  label: 'TST',
+                },
+                {
+                  value: 'CWB1',
+                  label: 'CWB1',
+                },
+                {
+                  value: 'CWB2',
+                  label: 'CWB2',
+                },
+                {
+                  value: 'Wan Chai',
+                  label: 'Wan Chai',
+                },
+              ]}
+              onValueChange={(community) => { this.setState({ community }); }}
+            />
+            :
+            <DropDownAndroid
+              headerText="Community"
+              options={[
+                {
+                  value: this.state.community,
+                  label: this.state.community,
+                },
+                ...[
+                  {
+                    value: 'TST',
+                    label: 'TST',
+                  },
+                  {
+                    value: 'CWB1',
+                    label: 'CWB1',
+                  },
+                  {
+                    value: 'CWB2',
+                    label: 'CWB2',
+                  },
+                  {
+                    value: 'Wan Chai',
+                    label: 'Wan Chai',
+                  },
+                ].filter((option) => option.value !== this.state.community),
+              ]}
+              onValueChange={(community) => { this.setState({ community }); }}
+            />
+          }
 
           {this.state.create ?
             <Input
@@ -173,44 +224,81 @@ class CreateRoom extends Component {
             :
             <Input
               headerText="address"
-              value={ this.state.address }
+              value={this.state.address}
               onChangeText={(address) => { this.setState({ address }); }}
             />
           }
 
-          <DropDownAndroid
-            headerText="Professional Cleaning"
-            options={[
-              {
-                value: 'OFF',
-                label: 'OFF',
-              },
-              {
-                value: 'Monday',
-                label: 'Monday',
-              },
-              {
-                value: 'Tuesday',
-                label: 'Tuesday',
-              },
-              {
-                value: 'Wednesday',
-                label: 'Wednesday',
-              },
-              {
-                value: 'Thursday',
-                label: 'Thursday',
-              },
-              {
-                value: 'Friday',
-                label: 'Friday',
-              },
-            ]}
-            onValueChange={(professionalCleaning) => { this.setState({ professionalCleaning }); }}
-          />
-
+          {this.state.create ?
+            <DropDownAndroid
+              headerText="Professional Cleaning"
+              options={[
+                {
+                  value: 'OFF',
+                  label: 'OFF',
+                },
+                {
+                  value: 'Monday',
+                  label: 'Monday',
+                },
+                {
+                  value: 'Tuesday',
+                  label: 'Tuesday',
+                },
+                {
+                  value: 'Wednesday',
+                  label: 'Wednesday',
+                },
+                {
+                  value: 'Thursday',
+                  label: 'Thursday',
+                },
+                {
+                  value: 'Friday',
+                  label: 'Friday',
+                },
+              ]}
+              onValueChange={(professionalCleaning) => { this.setState({ professionalCleaning }); }}
+            />
+            :
+            <DropDownAndroid
+              headerText="Professional Cleaning"
+              options={[
+                {
+                  value: this.state.professionalCleaning,
+                  label: this.state.professionalCleaning,
+                },
+                ...[
+                  {
+                    value: 'OFF',
+                    label: 'OFF',
+                  },
+                  {
+                    value: 'Monday',
+                    label: 'Monday',
+                  },
+                  {
+                    value: 'Tuesday',
+                    label: 'Tuesday',
+                  },
+                  {
+                    value: 'Wednesday',
+                    label: 'Wednesday',
+                  },
+                  {
+                    value: 'Thursday',
+                    label: 'Thursday',
+                  },
+                  {
+                    value: 'Friday',
+                    label: 'Friday',
+                  },
+                ].filter((option) => option.value !== this.state.professionalCleaning),
+              ]}
+              onValueChange={(professionalCleaning) => { this.setState({ professionalCleaning }); }}
+            />
+          }
         </ScrollView>
-
         <TouchableOpacity
           style={styles.bottom} onPress={() => { this.onClick(); }}
         >
@@ -255,6 +343,8 @@ CreateRoom.propTypes = {
   addRoom: PropTypes.func,
   rooms: PropTypes.array,
   selectedRoom: PropTypes.object,
+  loadRoom: PropTypes.func,
+  selectRoom: PropTypes.func,
 };
 
 function mapStateToProps(store) {
@@ -269,9 +359,12 @@ function mapStateToProps(store) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    // addRoom: (newRoom) => {
-    //   return dispatch(Action.addItem(newRoom, 'rooms'));
-    // },
+    selectRoom: (selectedRoom) => {
+      dispatch(Action.selectRoom(selectedRoom));
+    },
+    loadRoom: (initObj) => {
+      dispatch(Action.loadRoom(initObj));
+    },
   };
 }
 

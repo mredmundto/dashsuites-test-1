@@ -84,20 +84,9 @@ const formattedDate = ((date) => {
 
 const currentMondayString = formattedDate(getMonday(today));
 
-// let displayDay = (today).getDay() - 1;
-// if (displayDay === -1) {
-//   displayDay = 0;
-// } else if (displayDay > 4) {
-//   displayDay = 4;
-// }
-
 class CleaningList extends Component {
   constructor(props) {
     super(props);
-    // can comment this out
-    // this.state = {
-    //   selectedDate: displayDay,
-    // };
     this.selectRoom = this.selectRoom.bind(this);
     this.selectDate = this.selectDate.bind(this);
     this.mapCleaningType = this.mapCleaningType.bind(this);

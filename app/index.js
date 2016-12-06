@@ -39,18 +39,7 @@ class App extends Component {
       console.log(e);
     });
 
-    // getting all rooms
-    customFetch(`${constants.config.url}/REST/room`, {
-      method: 'GET',
-    })
-    .then((resJSON) => {
-      this.props.loadRoom(resJSON);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-
-    // getting all rooms
+    // getting all review
     customFetch(`${constants.config.url}/REST/review`, {
       method: 'GET',
     })
@@ -88,8 +77,9 @@ class App extends Component {
                   headerProps={{
                     onRight: () => {
                       console.log('right from view ');
-                      Actions.RoomEdit(props.data);
+                      Actions.RoomEdit();
                     },
+                    showRight: true,
                     rightTitle: 'Edit',
                   }}
                 />
@@ -120,6 +110,7 @@ class App extends Component {
                       console.log('right from view ');
                       Actions.ReviewEdit(props.data);
                     },
+                    showRight: true,
                     rightTitle: 'Edit',
                   }}
                 />

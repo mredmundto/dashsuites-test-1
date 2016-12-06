@@ -41,31 +41,7 @@ class List extends Component {
     this._renderRow = this._renderRow.bind(this);
   }
 
-  // componentDidMount() {
-  //   Promise.resolve(this.props.data())
-  //     .then((data) => {
-  //       this.setState({
-  //         dataBlob: data,
-  //         dataSource: this.state.dataSource.cloneWithRows(data),
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       this.setState({ errorMessage: err.message });
-  //     });
-  // }
-
   componentWillReceiveProps(nextProps) {
-    // if (this.props.data.length === nextProps.data.length) return;
-    // check if next props is a new data
-    let identical = this.props.data.length === nextProps.data.length;
-    if (!identical) {
-      this.props.data.forEach((item, i) => {
-        if (item !== nextProps.data[i]) {
-          identical = false;
-        }
-      });
-    }
-    if (identical) return;
     const data = nextProps.data;
     this.setState({
       dataBlob: data,

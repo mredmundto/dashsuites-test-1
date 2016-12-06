@@ -10,6 +10,7 @@ import { Actions } from 'react-native-router-flux';
 
 import { ResourceListWithHeader } from '../../../composeComponents/ResourceList';
 import Action from './../List/action';
+import constants from './../../../constants';
 
 const displayedInList = ['name', 'building', 'community'];
 
@@ -51,17 +52,15 @@ class RoomList extends Component {
   }
 
   componentWillMount() {
-    // define in global
-    // customFetch('http://127.0.0.1:3000/REST/room', {
-    //   method: 'GET',
-    // })
-    // .then((resJSON) => {
-    //   this.props.loadRoom(resJSON);
-    // })
-    // .catch((e) => {
-    //   console.log(e);
-    // });
-
+    customFetch(`${constants.config.url}/REST/room`, {
+      method: 'GET',
+    })
+    .then((resJSON) => {
+      this.props.loadRoom(resJSON);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
   }
 
   addItem() {
@@ -82,6 +81,7 @@ class RoomList extends Component {
     const {
       searchModalOpen,
     } = this.state;
+
     return (
       <View
         style={styles.container}
@@ -153,9 +153,9 @@ const mapDispatchToProps = (dispatch) => {
     selectRoom: (selectedRoom) => {
       dispatch(Action.selectRoom(selectedRoom));
     },
-    // loadRoom: (initObj) => {
-    //   dispatch(Action.loadRoom(initObj));
-    // },
+    loadRoom: (initObj) => {
+      dispatch(Action.loadRoom(initObj));
+    },
     toggleDrawer: (open) => {
       dispatch({
         type: 'TOGGLE_DRAWER',

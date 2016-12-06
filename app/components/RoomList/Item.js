@@ -26,7 +26,6 @@ class RoomDetail extends Component {
     // const roomIndex = this.props.data.split(' ')[0];
     // const room = this.props.roomList.get(roomIndex).toJS();
     const room = this.props.room;
-
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>

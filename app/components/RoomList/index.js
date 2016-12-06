@@ -9,7 +9,8 @@ import {
 import { Actions } from 'react-native-router-flux';
 
 import { ResourceListWithHeader } from '../../../composeComponents/ResourceList';
-import Action from './../List/action';
+// import Action from './../List/action';
+import Action from './action';
 import constants from './../../../constants';
 
 const displayedInList = ['name', 'building', 'community'];
@@ -51,7 +52,7 @@ class RoomList extends Component {
     this.selectRoom = this.selectRoom.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     customFetch(`${constants.config.url}/REST/room`, {
       method: 'GET',
     })
@@ -66,7 +67,7 @@ class RoomList extends Component {
   addItem() {
     // when going into create, clear the active room
     this.props.selectRoom({});
-    Actions.RoomEdit();
+    Actions.RoomForm();
   }
 
   selectRoom(selectedRoom) {
@@ -141,9 +142,9 @@ RoomList.propTypes = {
 
 function mapStateToProps(store) {
   const data = store.list.toJS();
-  // console.log('store in room', store.list.toJS());
+
   return {
-    rooms: data.room,
+    rooms: store.room.toJS().room,
     qParams: data.roomParams,
   };
 }

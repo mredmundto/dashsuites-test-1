@@ -35,23 +35,11 @@ class CreateRoom extends Component {
       id: null,
     };
     this.onClick = this.onClick.bind(this);
+    this.fetchFromServer = this.fetchFromServer.bind(this);
   }
 
-  componentWillMount() {
-    // check if thats for create or edit
-    if (this.props.selectedRoom.id === undefined) {
-      this.setState({ create: true });
-    } else {
-      this.setState({
-        create: false,
-        id: this.props.selectedRoom.id,
-        name: this.props.selectedRoom.name,
-        building: this.props.selectedRoom.building,
-        community: this.props.selectedRoom.community,
-        address: this.props.selectedRoom.address,
-        professionalCleaning: this.props.selectedRoom.professionalCleaning,
-      });
-    }
+  componentDidMount() {
+    this.fetchFromServer();
   }
 
   onClick() {
@@ -118,6 +106,23 @@ class CreateRoom extends Component {
       })
       .then(() => {
         Actions.pop();
+      });
+    }
+  }
+
+  fetchFromServer() {
+    // check if thats for create or edit
+    if (this.props.selectedRoom.id === undefined) {
+      this.setState({ create: true });
+    } else {
+      this.setState({
+        create: false,
+        id: this.props.selectedRoom.id,
+        name: this.props.selectedRoom.name,
+        building: this.props.selectedRoom.building,
+        community: this.props.selectedRoom.community,
+        address: this.props.selectedRoom.address,
+        professionalCleaning: this.props.selectedRoom.professionalCleaning,
       });
     }
   }
@@ -349,8 +354,9 @@ CreateRoom.propTypes = {
 
 function mapStateToProps(store) {
   // TODO: dynamic rendering
+  console.log('store', store);
   const appSchema = store.list.toJS().appSchema;
-  const selectedRoom = store.list.toJS().selectedRoom;
+  const selectedRoom = store.room.toJS().selectedRoom;
   return {
     appSchema,
     selectedRoom,

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import RoomList from './components/RoomList';
-import RoomCreate from './components/RoomList/Create';
+import RoomForm from './components/RoomList/Form';
 import RoomItem from './components/RoomList/Item';
 import ReviewCreate from './components/ReviewList/Create';
 import ReviewList from './components/ReviewList';
@@ -77,7 +77,7 @@ class App extends Component {
                   headerProps={{
                     onRight: () => {
                       console.log('right from view ');
-                      Actions.RoomEdit();
+                      Actions.RoomForm();
                     },
                     showRight: true,
                     rightTitle: 'Edit',
@@ -89,8 +89,8 @@ class App extends Component {
           />
 
           <Scene
-            key="RoomEdit"
-            component={(props) => <RoomCreate {...props} edit />}
+            key="RoomForm"
+            component={(props) => <RoomForm {...props} edit />}
             title="Room"
           />
           <Scene

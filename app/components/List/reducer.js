@@ -10,9 +10,6 @@ if (displayDay === -1) {
   displayDay = 4;
 }
 const initialState = Map({
-  room: List([
-    Map({}),
-  ]),
   roomParam: Map({}),
   review: List([
     Map({
@@ -29,7 +26,6 @@ const initialState = Map({
   ]),
   cleaningSchedule: List([]),
   linenSchedule: List([]),
-  selectedRoom: Map({}),
   selectedDay: displayDay,
 });
 
@@ -37,8 +33,6 @@ const list = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_ISSUE':
       return action.store;
-    case 'LOAD_ROOM':
-      return state.set('room', action.store);
     case 'SET_ROOM_PARAM':
       return state.setIn(['roomParam', action.key], action.value);
     case 'DELETE_ROOM_PARAM':
@@ -51,8 +45,6 @@ const list = (state = initialState, action) => {
       return state.set('cleaningSchedule', action.store);
     case 'LOAD_LINEN_SCHEDULE':
       return state.set('linenSchedule', action.store);
-    case 'SELECT_ROOM':
-      return state.set('selectedRoom', action.store);
     case 'SELECT_DAY':
       return state.set('selectedDay', action.store);
     default:

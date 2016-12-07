@@ -73,6 +73,7 @@ class IssueList extends Component {
       roomList,
       addIssue,
       resolvedIssueCount,
+      currentReview,
       ...others,
     } = this.props;
 
@@ -81,6 +82,7 @@ class IssueList extends Component {
     const resolvedCount = data.filter(i => !i.flagged).length;
     const totalCount = data.length;
 
+    console.log('data in IssueList', data); 
     return (
       <View
         {...others}
@@ -103,10 +105,10 @@ class IssueList extends Component {
           {renderIssueIcon(resolvedCount, totalCount)}
           {editable ?
             <TouchableOpacity
-              style={{ padding: 5, borderRadius: 5, borderWidth: 1, borderColor: '#078B75' }}
+              style={{ padding: 5, borderRadius: 5, backgroundColor: '#009688' }}
               onPress={addIssue}
             >
-              <Text style={{ textAlign: 'center', color: '#078B75', fontSize: 12 }}>{'+ Add Issue'}</Text>
+              <Text style={{ textAlign: 'center', color: 'white', fontSize: 14 }}>{'       + Add Issue       '}</Text>
             </TouchableOpacity>
 
           : null}
@@ -166,17 +168,25 @@ IssueList.propTypes = {
 };
 
 const mapStateToProps = (store) => {
-  const roomList = store.list.get('data');
-  const reviewList = roomList
-    .map(room => {
-      return room.get('reviewList')
-        .map(review => review.set('room', room.get('name')));
-    })
-    .flatten(1);
+
+  // TODO: needs to be changed!
+
+  // const roomList = store.list.get('data');
+  // const reviewList = roomList
+  //   .map(room => {
+  //     return room.get('reviewList')
+  //       .map(review => review.set('room', room.get('name')));
+  //   })
+  //   .flatten(1);
+  const reviewList = store.list.toJS().review;
+  console.log('reviewList in issueList', reviewList);
+
+  const currentReview = reviewList[0];
 
   return {
-    roomList,
+    // roomList,
     reviewList,
+    currentReview,
   };
 };
 

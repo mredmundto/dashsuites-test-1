@@ -38,17 +38,6 @@ class App extends Component {
     .catch((e) => {
       console.log(e);
     });
-
-    // getting all review
-    customFetch(`${constants.config.url}/REST/review`, {
-      method: 'GET',
-    })
-    .then((resJSON) => {
-      this.props.loadReview(resJSON);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
   }
 
   render() {

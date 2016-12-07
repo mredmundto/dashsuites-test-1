@@ -20,23 +20,25 @@ export default {
   //     listType: type,
   //   };
   // },
-  // addIssue: (newIssue, roomIndex, reviewIndex) => {
-  //   // to get the application state
-  //   const currList = store.getState().list;
-  //   // to create the new issue list by getting the old issue list and pushing the new issue to the list
-  //   const newIssueList = currList.get('data')
-  //                       .get(roomIndex)
-  //                       .get('reviewList')
-  //                       .get(reviewIndex)
-  //                       .get('issueList')
-  //                       .push(Map(newIssue));
-  //   //  to generate a new application state
-  //   const newList = currList.setIn(['data', roomIndex, 'reviewList', reviewIndex, 'issueList'], newIssueList);
-  //   return {
-  //     type: 'ADD_ISSUE',
-  //     store: newList,
-  //   };
-  // },
+  addIssue: (newIssue) => {
+    console.log('newIsse', newIssue);
+    // to get the application state
+    // TODO: Set the review index
+    const reviewIndex = 0;
+    const currList = store.getState().list;
+    // // to create the new issue list by getting the old issue list and pushing the new issue to the list
+    const newIssueList = currList
+                        .get('review')
+                        .get(reviewIndex)
+                        .get('issueList')
+                        .push(Map(newIssue));
+    //  to generate a new application state
+    const newList = currList.setIn(['review', reviewIndex, 'issueList'], newIssueList);
+    return {
+      type: 'ADD_ISSUE',
+      store: newList,
+    };
+  },
 
 
   // adding schema first
@@ -58,7 +60,7 @@ export default {
   loadReview: (currObj) => {
     const newList = Immutable.fromJS(currObj);
     return {
-      type: 'LOAD_ROOM',
+      type: 'LOAD_REVIEW',
       store: newList,
     };
   },

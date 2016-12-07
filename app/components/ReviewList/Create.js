@@ -11,9 +11,9 @@ import { Actions } from 'react-native-router-flux';
 import Elements from '../../../composeComponents/Form/Elements';
 import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
-
 import Action from './../List/action';
 import IssueList from './IssueList';
+import constants from '../../../constants';
 
 const {
   Input,
@@ -35,23 +35,38 @@ class CreateReview extends Component {
   }
 
   onClick() {
-    // this.props.addIssue(this.state, 0, 0);
+    console.log('reviews save clicked');
+    const promiseChain = Promise.resolve();
+    promiseChain
+    .then(() => {
+      return customFetch(`${constants.config.url}/API/review`, {
+        method: 'POST',
+        body: {
+          // TODO: to fix this
+          roomId: 1,
+          createdAt: new Date(),
+          issueList: JSON.stringify(this.props.issueList),
+        },
+      });
+    })
+    .then(() => {
+      return Actions.ReviewList();
+    });
   }
 
   render() {
     const {
-      data,
-      source,
+      // data,
+      // source,
       roomList,
-      edit,
+      selectedRoom,
+      issueList,
+      // edit,
     } = this.props;
     // if only one date that is in create
     // if there are date and reviewList => that is in edit
-
-    const roomIndex = data.split(' ')[0];
-    const room = roomList.get(roomIndex).toJS();
-    const review = roomList.getIn(data.split(' ')).toJS();
-
+    // const selectedRoom = this.props.selectedRoom;
+    console.log('issueList', issueList);
 
     return (
       <View style={styles.container}>
@@ -59,8 +74,9 @@ class CreateReview extends Component {
           <Input
             headerText="Room"
             editable={false}
-            placeholder={room.name}
+            placeholder={selectedRoom.name}
           />
+        {/*
           <DropDownAndroid
             headerText="Community"
             options={[
@@ -96,11 +112,19 @@ class CreateReview extends Component {
           <DropDownAndroid
             headerText="Condition"
           />
-          <IssueList source={source} data={review.issueList || []} roomList={roomList} editable addIssue={() => { Actions.IssueCreate(data); }} />
-        </ScrollView>
-
+          */}
+          <IssueList
+            // source={source}
+            // data={ review.issueList || []}
+            data={ issueList || []}
+            roomList={roomList}
+            // editable addIssue={() => { Actions.IssueCreate(data); }}
+            editable addIssue={() => { Actions.IssueCreate(); }}
+          />
+          </ScrollView>
+        
         <TouchableOpacity
-          style={styles.bottom} onPress={() => { Actions.ReviewList(); }}
+          style={styles.bottom} onPress={() => { this.onClick() }}
         >
           <Text style={styles.bottomText} > SAVE </Text>
         </TouchableOpacity>
@@ -140,8 +164,10 @@ CreateReview.propTypes = {
 
 function mapStateToProps(store) {
   return {
-    source: store.list,
-    roomList: store.list.get('data'),
+    selectedRoom: store.room.toJS().selectedRoom,
+    roomList: store.room.toJS().room,
+    // refactor list into review
+    issueList: store.list.toJS().review[0].issueList,
   };
 }
 

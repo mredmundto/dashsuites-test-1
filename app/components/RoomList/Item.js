@@ -20,7 +20,7 @@ class RoomDetail extends Component {
   }
   writeReview() {
     // Actions()
-    // Actions.RoomCreate();
+    Actions.ReviewCreate();
   }
   render() {
     // const roomIndex = this.props.data.split(' ')[0];
@@ -51,7 +51,7 @@ class RoomDetail extends Component {
               backgroundColor: _.get(constants, 'style.secondaryColor', 'green'),
             }}
             onPress={() => {
-             // Actions.ReviewCreate();
+             Actions.ReviewCreate();
             }}
           >
             <Text style={{ color: 'white', textAlign: 'center' }}>{'Write Review'}</Text>

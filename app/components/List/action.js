@@ -1,46 +1,22 @@
 import store from './../../store';
-import Immutable, { Map } from 'immutable';
+import Immutable, { Map, List } from 'immutable';
 
 export default {
-  // addItem: (newRoom, type) => {
-  //   let roomList = store.getState().list.getIn([type, 'list']);
-
-  //   roomList = roomList.push(Map(newRoom));
-
-  //   return {
-  //     type: 'ADD_ITEM',
-  //     itemList: roomList,
-  //     listType: type,
-  //   };
-  // },
-  // selectItem: (activeItem, type) => {
-  //   return {
-  //     type: 'SELECT_ITEM',
-  //     activeItem,
-  //     listType: type,
-  //   };
-  // },
-  addIssue: (newIssue) => {
-    console.log('newIsse', newIssue);
-    // to get the application state
-    // TODO: Set the review index
-    const reviewIndex = 0;
-    const currList = store.getState().list;
-    // // to create the new issue list by getting the old issue list and pushing the new issue to the list
-    const newIssueList = currList
-                        .get('review')
-                        .get(reviewIndex)
-                        .get('issueList')
-                        .push(Map(newIssue));
-    //  to generate a new application state
-    const newList = currList.setIn(['review', reviewIndex, 'issueList'], newIssueList);
+  addIssueForNewReview: (newIssue) => {
+    const currentIssueList = store.getState().list.get('tempIssueList').push(Map(newIssue));
+    const newList = store.getState().list.set('tempIssueList', currentIssueList);
     return {
-      type: 'ADD_ISSUE',
+      type: 'ADD_ISSUE_FOR_NEW_REVIEW',
       store: newList,
     };
   },
-
-
+  clearTempIssue: () => {
+    const newList = store.getState().list.set('tempIssueList', List([]));
+    return {
+      type: 'CLEAR_TEMP_ISSUE',
+      store: newList,
+    };
+  },
   // adding schema first
   loadSchema: (schemaObj) => {
     const newList = Immutable.fromJS(schemaObj);
@@ -49,7 +25,6 @@ export default {
       store: newList,
     };
   },
-
   loadRoom: (currObj) => {
     const newList = Immutable.fromJS(currObj);
     return {

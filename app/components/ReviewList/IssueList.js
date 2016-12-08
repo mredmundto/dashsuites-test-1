@@ -73,7 +73,7 @@ class IssueList extends Component {
       roomList,
       addIssue,
       resolvedIssueCount,
-      currentReview,
+      // currentReview,
       ...others,
     } = this.props;
 
@@ -82,7 +82,7 @@ class IssueList extends Component {
     const resolvedCount = data.filter(i => !i.flagged).length;
     const totalCount = data.length;
 
-    console.log('data in IssueList', data); 
+    // console.log('ReviewList IssueList.js', data);
     return (
       <View
         {...others}
@@ -178,15 +178,13 @@ const mapStateToProps = (store) => {
   //       .map(review => review.set('room', room.get('name')));
   //   })
   //   .flatten(1);
-  const reviewList = store.list.toJS().review;
-  console.log('reviewList in issueList', reviewList);
-
-  const currentReview = reviewList[0];
+  // const reviewList = store.list.toJS().review;
+  // const currentReview = reviewList[0];
 
   return {
     // roomList,
-    reviewList,
-    currentReview,
+    // reviewList,
+    // currentReview,
   };
 };
 

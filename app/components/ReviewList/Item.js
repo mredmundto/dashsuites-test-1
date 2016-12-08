@@ -51,6 +51,7 @@ class CreateReview extends Component {
       source,
       data,
       roomList,
+      tempIssueList,
     } = this.props;
     const path = data.split(' ');
 
@@ -104,7 +105,7 @@ class CreateReview extends Component {
             enabled={false}
             headerText="Condition"
           />
-          <IssueList data={review.issueList} editable={false} source={source} roomList={roomList} style={{ flex: 1 }} />
+          <IssueList data={tempIssueList} editable={false} source={source} roomList={roomList} style={{ flex: 1 }} />
         </ScrollView>
       </View>
     );
@@ -132,6 +133,7 @@ function mapStateToProps(store) {
   return {
     source: store.list,
     roomList: store.list.get('data'),
+    tempIssueList: store.list.tempIssueList.toJS(), 
   };
 }
 

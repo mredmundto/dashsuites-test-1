@@ -35,7 +35,6 @@ class CreateReview extends Component {
   }
 
   onClick() {
-    console.log('reviews save clicked');
     const promiseChain = Promise.resolve();
     promiseChain
     .then(() => {
@@ -50,7 +49,10 @@ class CreateReview extends Component {
       });
     })
     .then(() => {
-      return Actions.ReviewList();
+      this.props.clearTempIssue();
+    })
+    .then(() => {
+      return Actions.RoomList();
     });
   }
 
@@ -66,8 +68,6 @@ class CreateReview extends Component {
     // if only one date that is in create
     // if there are date and reviewList => that is in edit
     // const selectedRoom = this.props.selectedRoom;
-    console.log('issueList', issueList);
-
     return (
       <View style={styles.container}>
         <ScrollView style={styles.insideContainer}>
@@ -116,15 +116,14 @@ class CreateReview extends Component {
           <IssueList
             // source={source}
             // data={ review.issueList || []}
-            data={ issueList || []}
+            data={issueList || []}
             roomList={roomList}
             // editable addIssue={() => { Actions.IssueCreate(data); }}
             editable addIssue={() => { Actions.IssueCreate(); }}
           />
-          </ScrollView>
-        
+        </ScrollView>
         <TouchableOpacity
-          style={styles.bottom} onPress={() => { this.onClick() }}
+          style={styles.bottom} onPress={() => { this.onClick(); }}
         >
           <Text style={styles.bottomText} > SAVE </Text>
         </TouchableOpacity>
@@ -160,23 +159,26 @@ const styles = StyleSheet.create({
 CreateReview.propTypes = {
   addRoom: PropTypes.func,
   rooms: PropTypes.array,
+  clearTempIssue: PropTypes.func,
+  issueList: PropTypes.array,
 };
 
 function mapStateToProps(store) {
+  console.log('reviewList create.js', store.list.toJS().tempIssueList);
   return {
     selectedRoom: store.room.toJS().selectedRoom,
     roomList: store.room.toJS().room,
     // refactor list into review
-    issueList: store.list.toJS().review[0].issueList,
+    issueList: store.list.toJS().tempIssueList,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   // to be updated with the new action
   return {
-    // addIssue: (newIssue, roomIndex, reviewIndex) => {
-    //   return dispatch(Action.addIssue(newIssue, roomIndex, reviewIndex));
-    // },
+    clearTempIssue: () => {
+      return dispatch(Action.clearTempIssue());
+    },
   };
 }
 

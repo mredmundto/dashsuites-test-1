@@ -16,14 +16,15 @@ const initialState = Map({
       room: { name: 'testing' },
       createdAt: 'Seed data from client',
       issueList: List([
-        Map({
-          flagged: true,
-          title: 'Some issue one',
-          createdAt: 'Nov 15 2016',
-        }),
+        // Map({
+        //   flagged: true,
+        //   title: 'Some issue one',
+        //   createdAt: 'Nov 15 2016',
+        // }),
       ]),
     }),
   ]),
+  tempIssueList: List([]),
   cleaningSchedule: List([]),
   linenSchedule: List([]),
   selectedDay: displayDay,
@@ -32,6 +33,10 @@ const initialState = Map({
 const list = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_ISSUE':
+      return action.store;
+    case 'ADD_ISSUE_FOR_NEW_REVIEW':
+      return action.store;
+    case 'CLEAR_TEMP_ISSUE':
       return action.store;
     case 'SET_ROOM_PARAM':
       return state.setIn(['roomParam', action.key], action.value);

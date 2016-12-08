@@ -44,9 +44,8 @@ class CreateList extends Component {
     // const arr = this.props.data.split(' ');
     // const roomIndex = arr[0];
     // const reviewIndex = arr[2] || 0;
-
-    console.log('state in issue', this.state);
-    this.props.addIssue(this.state);
+    this.props.addIssueForNewReview(this.state);
+    Actions.pop();
   }
 
   render() {
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
 });
 
 CreateList.propTypes = {
-  addIssue: PropTypes.func,
+  addIssueForNewReview: PropTypes.func,
 };
 
 function mapStateToProps(state) {
@@ -139,8 +138,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addIssue: (newIssue) => {
-      return dispatch(Action.addIssue(newIssue));
+    addIssueForNewReview: (newIssue) => {
+      return dispatch(Action.addIssueForNewReview(newIssue));
     },
   };
 }

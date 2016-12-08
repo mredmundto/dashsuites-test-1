@@ -55,14 +55,11 @@ class ReviewList extends Component {
   }
 
   componentWillMount() {
-   // getting all review
-    console.log('componentWillMount in review');
-    
     customFetch(`${constants.config.url}/REST/review`, {
       method: 'GET',
     })
     .then((resJSON) => {
-      console.log('resJSON in review list', resJSON);
+      // console.log('resJSON in review list', resJSON);
       this.props.loadReview(resJSON);
     })
     .catch((e) => {
@@ -75,7 +72,7 @@ class ReviewList extends Component {
   }
 
   selectReview(selectedReview, reviewIndex) {
-    //Actions.ReviewView(`${selectedReview.roomIndex} reviewList ${reviewIndex}`);
+    // Actions.ReviewView(`${selectedReview.roomIndex} reviewList ${reviewIndex}`);
   }
   render() {
     const {
@@ -133,7 +130,7 @@ ReviewList.propTypes = {
 
 const mapStateToProps = (store) => {
   // console.log('store in review', store.list.toJS());
-  console.log('render again', store.list.toJS().review);
+  // console.log('render again', store.list.toJS().review);
   const reviewList = store.list.toJS().review;
   // this is to map the room name from the room object back to the review array
   reviewList.forEach((review) => {

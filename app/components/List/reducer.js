@@ -11,20 +11,6 @@ if (displayDay === -1) {
 }
 const initialState = Map({
   roomParam: Map({}),
-  review: List([
-    Map({
-      room: { name: 'testing' },
-      createdAt: 'Seed data from client',
-      issueList: List([
-        // Map({
-        //   flagged: true,
-        //   title: 'Some issue one',
-        //   createdAt: 'Nov 15 2016',
-        // }),
-      ]),
-    }),
-  ]),
-  tempIssueList: List([]),
   cleaningSchedule: List([]),
   linenSchedule: List([]),
   selectedDay: displayDay,
@@ -32,18 +18,10 @@ const initialState = Map({
 
 const list = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_ISSUE':
-      return action.store;
-    case 'ADD_ISSUE_FOR_NEW_REVIEW':
-      return action.store;
-    case 'CLEAR_TEMP_ISSUE':
-      return action.store;
     case 'SET_ROOM_PARAM':
       return state.setIn(['roomParam', action.key], action.value);
     case 'DELETE_ROOM_PARAM':
       return state.deleteIn(['roomParam', action.key]);
-    case 'LOAD_REVIEW':
-      return state.set('review', action.store);
     case 'LOAD_SCHEMA':
       return state.set('appSchema', action.store);
     case 'LOAD_ClEANING_SCHEDULE':

@@ -9,7 +9,8 @@ import {
 import { Actions } from 'react-native-router-flux';
 import { ResourceListWithHeader } from '../../../composeComponents/ResourceList';
 
-import Action from './../List/action';
+// import Action from './../List/action';
+import Action from './action';
 import constants from './../../../constants';
 
 const styles = StyleSheet.create({
@@ -131,7 +132,8 @@ ReviewList.propTypes = {
 const mapStateToProps = (store) => {
   // console.log('store in review', store.list.toJS());
   // console.log('render again', store.list.toJS().review);
-  const reviewList = store.list.toJS().review;
+  console.log('store in review', store.review.toJS());
+  const reviewList = store.review.toJS().review;
   // this is to map the room name from the room object back to the review array
   reviewList.forEach((review) => {
     review['room name'] = review.room.name;

@@ -14,7 +14,7 @@ import HOC from '../../../app/HOC';
 // importing the constants for theme
 import constants from '../../../constants';
 
-import Action from './../List/action';
+import Action from './../ReviewList/action';
 
 const {
   Input,

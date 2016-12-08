@@ -61,16 +61,12 @@ class IssueList extends Component {
     };
   }
 
-  // addIssue() {
-  //   Actions.IssueCreate();
-  // }
-
   render() {
     const {
       data,
       editable,
       source,
-      roomList,
+      // roomList,
       addIssue,
       resolvedIssueCount,
       // currentReview,
@@ -82,7 +78,6 @@ class IssueList extends Component {
     const resolvedCount = data.filter(i => !i.flagged).length;
     const totalCount = data.length;
 
-    // console.log('ReviewList IssueList.js', data);
     return (
       <View
         {...others}

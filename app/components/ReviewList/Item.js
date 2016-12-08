@@ -56,7 +56,8 @@ class CreateReview extends Component {
     const path = data.split(' ');
 
     const room = roomList.get(path[0]).toJS();
-    const review = roomList.getIn(path).toJS();
+    // const review = roomList.getIn(path).toJS();
+    
     return (
       <View style={{ flex: 1 }}>
 
@@ -133,7 +134,7 @@ function mapStateToProps(store) {
   return {
     source: store.list,
     roomList: store.list.get('data'),
-    tempIssueList: store.list.tempIssueList.toJS(), 
+    tempIssueList: store.review.tempIssueList.toJS(),
   };
 }
 

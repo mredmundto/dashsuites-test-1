@@ -3,6 +3,7 @@ import router from '../components/Router/reducer';
 import drawer from '../components/Drawer/reducer';
 import list from '../components/List/reducer';
 import room from '../components/RoomList/reducer';
+import review from '../components/ReviewList/reducer';
 import { composeWithDevTools } from 'remote-redux-devtools';
 import thunk from 'redux-thunk';
 
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   drawer,
   list,
   room,
+  review,
 });
 
 const store = createStore(

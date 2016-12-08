@@ -11,7 +11,7 @@ import { Actions } from 'react-native-router-flux';
 import Elements from '../../../composeComponents/Form/Elements';
 import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
-import Action from './../List/action';
+import Action from './action';
 import IssueList from './IssueList';
 import constants from '../../../constants';
 
@@ -52,7 +52,7 @@ class CreateReview extends Component {
       this.props.clearTempIssue();
     })
     .then(() => {
-      return Actions.RoomList();
+      return Actions.ReviewList();
     });
   }
 
@@ -76,43 +76,6 @@ class CreateReview extends Component {
             editable={false}
             placeholder={selectedRoom.name}
           />
-        {/*
-          <DropDownAndroid
-            headerText="Community"
-            options={[
-              {
-                value: room.community,
-                label: room.community,
-              },
-              ...[
-                {
-                  value: 'TST',
-                  label: 'TST',
-                },
-                {
-                  value: 'Causeway Bay 1',
-                  label: 'Causeway Bay 1',
-                },
-                {
-                  value: 'Causeway Bay 2',
-                  label: 'Causeway Bay 2',
-                },
-                {
-                  value: 'Wan Chai',
-                  label: 'Wan Chai',
-                },
-              ].filter((option) => option.value !== room.community),
-            ]}
-          />
-          <Input
-            headerText="Last Cleaning Date"
-            editable={false}
-            placeholder={String(new Date())}
-          />
-          <DropDownAndroid
-            headerText="Condition"
-          />
-          */}
           <IssueList
             // source={source}
             // data={ review.issueList || []}
@@ -164,17 +127,14 @@ CreateReview.propTypes = {
 };
 
 function mapStateToProps(store) {
-  console.log('reviewList create.js', store.list.toJS().tempIssueList);
   return {
     selectedRoom: store.room.toJS().selectedRoom,
     roomList: store.room.toJS().room,
-    // refactor list into review
-    issueList: store.list.toJS().tempIssueList,
+    issueList: store.review.toJS().tempIssueList,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  // to be updated with the new action
   return {
     clearTempIssue: () => {
       return dispatch(Action.clearTempIssue());

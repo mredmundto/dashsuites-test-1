@@ -11,7 +11,7 @@ import { Actions } from 'react-native-router-flux';
 import Elements from '../../../composeComponents/Form/Elements';
 import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
-import Action from './../List/action';
+import Action from './action';
 import constants from '../../../constants';
 import Promise from 'bluebird';
 
@@ -44,7 +44,6 @@ class CreateRoom extends Component {
 
   onClick() {
     if (this.state.create) {
-      // post
       const promiseChain = Promise.resolve();
       promiseChain
       .then(() => {

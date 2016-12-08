@@ -41,9 +41,6 @@ class CreateList extends Component {
   }
 
   onClick() {
-    // const arr = this.props.data.split(' ');
-    // const roomIndex = arr[0];
-    // const reviewIndex = arr[2] || 0;
     this.props.addIssueForNewReview(this.state);
     Actions.pop();
   }

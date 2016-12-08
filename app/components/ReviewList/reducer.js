@@ -15,22 +15,22 @@ const initialState = Map({
     }),
   ]),
   tempIssueList: List([]),
+  selectedRoomId: null,
 });
 
 const review = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_ISSUE_FOR_NEW_REVIEW': {
-      console.log('add issue', state)
       return action.store;
     }
-    case 'CLEAR_TEMP_ISSUE':{
-            console.log('Clear issue', state)
+    case 'CLEAR_TEMP_ISSUE': {
       return action.store;
     }
-    case 'LOAD_REVIEW':{
-      console.log('load review', state)
+    case 'LOAD_REVIEW': {
       return state.set('review', action.store);
     }
+    case 'SELECT_ROOM_ID':
+      return state.set('selectedRoomId', action.store);
     default:
       return state;
   }

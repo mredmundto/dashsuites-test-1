@@ -27,7 +27,7 @@ import constants from './../constants';
 
 class App extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     customFetch(`${constants.config.url}/REST`, {
       method: 'GET',
     })

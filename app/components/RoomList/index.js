@@ -150,6 +150,7 @@ function mapStateToProps(store) {
 }
 
 const mapDispatchToProps = (dispatch) => {
+
   return {
     selectRoom: (selectedRoom) => {
       dispatch(Action.selectRoom(selectedRoom));

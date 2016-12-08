@@ -8,8 +8,6 @@ import {
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { ResourceListWithHeader } from '../../../composeComponents/ResourceList';
-
-// import Action from './../List/action';
 import Action from './action';
 import constants from './../../../constants';
 
@@ -55,12 +53,11 @@ class ReviewList extends Component {
     this.selectReview = this.selectReview.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     customFetch(`${constants.config.url}/REST/review`, {
       method: 'GET',
     })
     .then((resJSON) => {
-      // console.log('resJSON in review list', resJSON);
       this.props.loadReview(resJSON);
     })
     .catch((e) => {
@@ -73,6 +70,7 @@ class ReviewList extends Component {
   }
 
   selectReview(selectedReview, reviewIndex) {
+    // TODO: yet to refactor
     // Actions.ReviewView(`${selectedReview.roomIndex} reviewList ${reviewIndex}`);
   }
   render() {
@@ -130,9 +128,7 @@ ReviewList.propTypes = {
 };
 
 const mapStateToProps = (store) => {
-  // console.log('store in review', store.list.toJS());
-  // console.log('render again', store.list.toJS().review);
-  console.log('store in review', store.review.toJS());
+
   const reviewList = store.review.toJS().review;
   // this is to map the room name from the room object back to the review array
   reviewList.forEach((review) => {

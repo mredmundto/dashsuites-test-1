@@ -8,7 +8,6 @@ import {
   Text,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-// import ResourceList from '../../../composeComponents/ResourceList';
 
 const styles = StyleSheet.create({
   container: {
@@ -65,16 +64,10 @@ class IssueList extends Component {
     const {
       data,
       editable,
-      source,
-      // roomList,
       addIssue,
-      resolvedIssueCount,
-      // currentReview,
       ...others,
     } = this.props;
 
-    // const roomIndex = data.split(' ')[0];
-    // const room = roomList.get(roomIndex).toJS();
     const resolvedCount = data.filter(i => !i.flagged).length;
     const totalCount = data.length;
 
@@ -160,28 +153,11 @@ IssueList.defaultProps = {
 };
 
 IssueList.propTypes = {
+  data: PropTypes.array,
+  editable: PropTypes.bool,
+  addIssue: PropTypes.func,
 };
 
-const mapStateToProps = (store) => {
-
-  // TODO: needs to be changed!
-
-  // const roomList = store.list.get('data');
-  // const reviewList = roomList
-  //   .map(room => {
-  //     return room.get('reviewList')
-  //       .map(review => review.set('room', room.get('name')));
-  //   })
-  //   .flatten(1);
-  // const reviewList = store.list.toJS().review;
-  // const currentReview = reviewList[0];
-
-  return {
-    // roomList,
-    // reviewList,
-    // currentReview,
-  };
-};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -194,4 +170,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(IssueList);
+export default connect(null, mapDispatchToProps)(IssueList);

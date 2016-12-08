@@ -25,4 +25,10 @@ export default {
       store: newList,
     };
   },
+  selectRoomId: (id) => {
+    return {
+      type: 'SELECT_ROOM_ID',
+      store: id,
+    };
+  },
 };

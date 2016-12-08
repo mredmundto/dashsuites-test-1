@@ -17,7 +17,6 @@ import constants from '../../../constants';
 
 const {
   Input,
-  DropDownAndroid,
 } = Elements;
 
 const window = Dimensions.get('window');
@@ -25,13 +24,11 @@ const window = Dimensions.get('window');
 class CreateReview extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      flag: false,
-      issue: true,
-      imageArr: [],
-      description: '',
-    };
     this.onClick = this.onClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.selectRoomId(this.props.selectedRoom.id);
   }
 
   onClick() {
@@ -41,8 +38,7 @@ class CreateReview extends Component {
       return customFetch(`${constants.config.url}/API/review`, {
         method: 'POST',
         body: {
-          // TODO: to fix this
-          roomId: 1,
+          roomId: this.props.selectedRoomId,
           createdAt: new Date(),
           issueList: JSON.stringify(this.props.issueList),
         },
@@ -58,16 +54,9 @@ class CreateReview extends Component {
 
   render() {
     const {
-      // data,
-      // source,
-      roomList,
       selectedRoom,
       issueList,
-      // edit,
     } = this.props;
-    // if only one date that is in create
-    // if there are date and reviewList => that is in edit
-    // const selectedRoom = this.props.selectedRoom;
     return (
       <View style={styles.container}>
         <ScrollView style={styles.insideContainer}>
@@ -77,11 +66,7 @@ class CreateReview extends Component {
             placeholder={selectedRoom.name}
           />
           <IssueList
-            // source={source}
-            // data={ review.issueList || []}
             data={issueList || []}
-            roomList={roomList}
-            // editable addIssue={() => { Actions.IssueCreate(data); }}
             editable addIssue={() => { Actions.IssueCreate(); }}
           />
         </ScrollView>
@@ -124,18 +109,24 @@ CreateReview.propTypes = {
   rooms: PropTypes.array,
   clearTempIssue: PropTypes.func,
   issueList: PropTypes.array,
+  selectRoomId: PropTypes.func,
+  selectedRoom: PropTypes.object,
+  selectedRoomId: PropTypes.number,
 };
 
 function mapStateToProps(store) {
   return {
     selectedRoom: store.room.toJS().selectedRoom,
-    roomList: store.room.toJS().room,
     issueList: store.review.toJS().tempIssueList,
+    selectedRoomId: store.review.toJS().selectedRoomId,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    selectRoomId: (id) => {
+      return dispatch(Action.selectRoomId(id));
+    },
     clearTempIssue: () => {
       return dispatch(Action.clearTempIssue());
     },

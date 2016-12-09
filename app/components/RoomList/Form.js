@@ -353,7 +353,6 @@ CreateRoom.propTypes = {
 
 function mapStateToProps(store) {
   // TODO: dynamic rendering
-  console.log('store', store);
   const appSchema = store.list.toJS().appSchema;
   const selectedRoom = store.room.toJS().selectedRoom;
   return {

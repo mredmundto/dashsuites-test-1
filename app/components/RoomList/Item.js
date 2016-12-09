@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(store) {
-  console.log('roomlist item.js', store.list.toJS().tempIssueList);
+  //console.log('roomlist item.js', store.list.toJS().tempIssueList);
   return {
     room: store.room.toJS().selectedRoom,
   };

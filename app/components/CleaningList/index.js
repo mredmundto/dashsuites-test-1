@@ -256,7 +256,6 @@ CleaningList.propTypes = {
 
 function mapStateToProps(store) {
   const data = store.list.toJS();
-  // console.log('this is the state in cleaing list', data);
   return {
     rooms: data.room,
     cleaningSchedule: data.cleaningSchedule,

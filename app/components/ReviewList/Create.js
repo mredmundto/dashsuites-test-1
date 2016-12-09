@@ -17,6 +17,7 @@ import constants from '../../../constants';
 
 const {
   Input,
+  DropDownAndroid,
 } = Elements;
 
 const window = Dimensions.get('window');
@@ -24,6 +25,9 @@ const window = Dimensions.get('window');
 class CreateReview extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      rating: null,
+    };
     this.onClick = this.onClick.bind(this);
   }
 
@@ -64,6 +68,19 @@ class CreateReview extends Component {
             headerText="Room"
             editable={false}
             placeholder={selectedRoom.name}
+          />
+
+          <DropDownAndroid
+            headerText="Rating"
+            options={[
+              { value: 'Excellent', label: 'Excellent' },
+              { value: 'Good', label: 'Good' },
+              { value: 'Average', label: 'Average' },
+              { value: 'Bad', label: 'Bad' },
+              { value: 'Poor', label: 'Poor' },
+            ]}
+            value={this.state.rating}
+            onValueChange={(rating) => { this.setState({ rating }); }}
           />
           <IssueList
             data={issueList || []}

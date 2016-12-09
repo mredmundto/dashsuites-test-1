@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import Action from './../../ReviewList/action';
 
 const styles = StyleSheet.create({
   container: {
@@ -65,6 +66,7 @@ class IssueItem extends Component {
 
     this.onClickItem = this.onClickItem.bind(this);
     this.onClickEdit = this.onClickEdit.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   onClickItem() {
@@ -74,9 +76,11 @@ class IssueItem extends Component {
   }
 
   onClickEdit() {
-    console.log('edit pressed');
-    // this.props.i => the index of the issue
-    console.log(this);
+    Actions.IssueCreate({ issue: this.props.issue, issueId: this.props.i });
+  }
+
+  onClickDelete() {
+    this.props.deleteIssueForNewReview(this.props.i);
   }
 
   render() {
@@ -133,22 +137,24 @@ class IssueItem extends Component {
               style={{
                 padding: 5,
                 borderRadius: 5,
-                marginRight: 10,
+                // marginRight: 10,
                 flexDirection: 'row',
               }}
               onPress={this.onClickEdit}
             >
               <Text style={{ textAlign: 'center', color: '#3E50B4', fontSize: 16 }}>{'Edit'}</Text>
-              <Image
-                style={{
-                  marginLeft: 10,
-                  height: 20,
-                  width: 20,
-                  transform: [{ rotate: '180deg' }],
-                }}
-                resizeMode={'contain'}
-                source={triangle}
-              />
+
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                padding: 5,
+                borderRadius: 5,
+                // marginRight: 10,
+                flexDirection: 'row',
+              }}
+              onPress={this.onClickDelete}
+            >
+              <Text style={{ textAlign: 'center', color: '#3E50B4', fontSize: 16 }}>{'Delete'}</Text>
             </TouchableOpacity>
           </TouchableOpacity>
           <View
@@ -238,12 +244,13 @@ class IssueItem extends Component {
             style={{
               padding: 5,
               borderRadius: 5,
-              marginRight: 10,
+              //marginRight: 10,
               flexDirection: 'row',
             }}
             onPress={this.onClickEdit}
           >
             <Text style={{ textAlign: 'center', color: '#3E50B4', fontSize: 16 }}>{'Edit'}</Text>
+            {/*}
             <Image
               style={{
                 marginLeft: 10,
@@ -253,6 +260,18 @@ class IssueItem extends Component {
               resizeMode={'contain'}
               source={triangle}
             />
+          */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              padding: 5,
+              borderRadius: 5,
+              //marginRight: 10,
+              flexDirection: 'row',
+            }}
+            onPress={this.onClickDelete}
+          >
+            <Text style={{ textAlign: 'center', color: '#3E50B4', fontSize: 16 }}>{'Delete'}</Text>
           </TouchableOpacity>
         </TouchableOpacity>
       }
@@ -272,6 +291,16 @@ IssueItem.propTypes = {
   addIssue: PropTypes.func,
   i: PropTypes.number,
   issue: PropTypes.object,
+  deleteIssueForNewReview: PropTypes.func,
 };
 
-export default connect(null, null)(IssueItem);
+
+function mapDispatchToProps(dispatch) {
+  return {
+    deleteIssueForNewReview: (index) => {
+      return dispatch(Action.deleteIssueForNewReview(index));
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(IssueItem);

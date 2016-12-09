@@ -42,6 +42,10 @@ class PhotoUploadAndroid extends Component {
     };
   }
 
+  componentWillMount() {
+    this.setState({ imageArr: this.props.imageArr || [] });
+  }
+
   renderPicture() {
     return (
       this.state.imageArr.map(link => {

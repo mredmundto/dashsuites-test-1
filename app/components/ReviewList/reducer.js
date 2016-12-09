@@ -23,6 +23,12 @@ const review = (state = initialState, action) => {
     case 'ADD_ISSUE_FOR_NEW_REVIEW': {
       return action.store;
     }
+    case 'UPDATE_ISSUE_FOR_NEW_REVIEW': {
+      return action.store;
+    }
+    case 'DELETE_ISSUE_FOR_NEW_REVIEW': {
+      return action.store;
+    }
     case 'CLEAR_TEMP_ISSUE': {
       return action.store;
     }

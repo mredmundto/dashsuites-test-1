@@ -5,9 +5,24 @@ export default {
   addIssueForNewReview: (newIssue) => {
     const currentIssueList = store.getState().review.get('tempIssueList').push(Map(newIssue));
     const newList = store.getState().review.set('tempIssueList', currentIssueList);
-    console.log('add new issue in action', store.getState());
     return {
       type: 'ADD_ISSUE_FOR_NEW_REVIEW',
+      store: newList,
+    };
+  },
+  updateIssueForNewReview: (updatedIssue, index) => {
+    const updatedIssueList = store.getState().review.get('tempIssueList').set(index, Map(updatedIssue));
+    const newList = store.getState().review.set('tempIssueList', updatedIssueList);
+    return {
+      type: 'UPDATE_ISSUE_FOR_NEW_REVIEW',
+      store: newList,
+    };
+  },
+  deleteIssueForNewReview: (index) => {
+    const updatedIssueList = store.getState().review.get('tempIssueList').delete(index);
+    const newList = store.getState().review.set('tempIssueList', updatedIssueList);
+    return {
+      type: 'DELETE_ISSUE_FOR_NEW_REVIEW',
       store: newList,
     };
   },

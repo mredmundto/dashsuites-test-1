@@ -30,6 +30,7 @@ class CreateList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      create: false,
       flagged: false,
       issue: true,
       imageArr: [],
@@ -42,69 +43,166 @@ class CreateList extends Component {
   }
 
   onClick() {
-    this.props.addIssueForNewReview(this.state);
+    if (this.state.create) {
+      this.props.addIssueForNewReview(this.state);
+    } else {
+      this.props.updateIssueForNewReview(this.state, this.props.issueId);
+    }
     Actions.pop();
+  }
+
+  // componentWillMount() {
+  // }
+  componentWillMount() {
+    if (this.props.issue === undefined) {
+      this.setState({ create: true });
+    } else {
+      this.setState({
+        issue: this.props.issue.issue,
+        title: this.props.issue.title,
+        flagged: this.props.issue.flagged,
+        description: this.props.issue.description,
+        category: this.props.issue.category,
+        imageArr: this.props.issue.imageArr,
+      });
+    }
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.insideContainer}>
-          <Switch
-            headerText="Flagged"
-            value={this.state.flagged}
-            onValueChange={(flagged) => { this.setState({ flagged }); }}
-          />
+      <View style={{ flex: 1, flexDirection: 'column' }}>
+        {this.state.create ?
+          <View
+            style={styles.container}
+          >
+            <ScrollView style={styles.insideContainer}>
+              <Switch
+                headerText="Flagged"
+                value={this.state.flagged}
+                onValueChange={(flagged) => { this.setState({ flagged }); }}
+              />
 
-          <Switch
-            headerText="Issue Solved"
-            value={this.state.issue}
-            onValueChange={(issue) => { this.setState({ issue }); }}
-          />
+              <Switch
+                headerText="Issue Solved"
+                value={this.state.issue}
+                onValueChange={(issue) => { this.setState({ issue }); }}
+              />
 
-          <DropDownAndroid
-            headerText="Category"
-            options={[
-              { value: 'Cleaning', label: 'Cleaning' },
-              { value: 'Maintenance', label: 'Maintenance' },
-              { value: 'Guest Services', label: 'Guest Services' },
-            ]}
-            onValueChange={(category) => { this.setState({ category }); }}
-          />
+              <DropDownAndroid
+                headerText="Category"
+                options={[
+                  { value: 'Cleaning', label: 'Cleaning' },
+                  { value: 'Maintenance', label: 'Maintenance' },
+                  { value: 'Guest Services', label: 'Guest Services' },
+                ]}
+                value={this.state.category}
+                onValueChange={(category) => { this.setState({ category }); }}
+              />
 
-          <Input
-            headerText="Add title"
-            placeholder="Enter here"
-            multiline={false}
-            numberOfLines={1}
-            maxLength={120}
-            onChangeText={(title) => { this.setState({ title }); }}
-            constants={constants}
-          />
+              <Input
+                headerText="Add title"
+                placeholder="Enter here"
+                multiline={false}
+                numberOfLines={1}
+                maxLength={120}
+                value={this.state.title}
+                onChangeText={(title) => { this.setState({ title }); }}
+                constants={constants}
+              />
 
-          <Input
-            headerText="Add Description"
-            placeholder="Enter here"
-            multiline={true}
-            numberOfLines={3}
-            maxLength={120}
-            onChangeText={(description) => { this.setState({ description }); }}
-            constants={constants}
-          />
+              <Input
+                headerText="Add Description"
+                placeholder="Enter here"
+                multiline={true}
+                numberOfLines={3}
+                maxLength={120}
+                value={this.state.description}
+                onChangeText={(description) => { this.setState({ description }); }}
+                constants={constants}
+              />
 
-          <PhotoUploadAndroid
-            headerText="Add Photos"
-            successCallback={(newImage) => { this.setState({ imageArr: [...this.state.imageArr, newImage] }); }}
-          />
-        </ScrollView>
+              <PhotoUploadAndroid
+                headerText="Add Photos"
+                successCallback={(newImage) => { this.setState({ imageArr: [...this.state.imageArr, newImage] }); }}
+              />
+            </ScrollView>
 
-        <TouchableOpacity
-          style={styles.bottom} onPress={() => this.onClick()}
-        >
-          <Text style={styles.bottomText} > SAVE </Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.bottom} onPress={() => this.onClick()}
+            >
+              <Text style={styles.bottomText} > SAVE </Text>
+            </TouchableOpacity>
+          </View>
+          :           
+          <View
+            style={styles.container}
+          >
+            <ScrollView style={styles.insideContainer}>
 
+              <Switch
+                headerText="Flagged"
+                value={this.state.flagged}
+                onValueChange={(flagged) => { this.setState({ flagged }); }}
+              />
+
+              <Switch
+                headerText="Issue Solved"
+                value={this.state.issue}
+                onValueChange={(issue) => { this.setState({ issue }); }}
+              />
+
+              <DropDownAndroid
+                headerText="Category"
+                options={[
+                { value: this.state.category, label: this.state.category },
+                  ...[
+                  { value: 'Cleaning', label: 'Cleaning' },
+                  { value: 'Maintenance', label: 'Maintenance' },
+                  { value: 'Guest Services', label: 'Guest Services' },
+                  ].filter((option) => option.value !== this.state.category),
+                ]}
+                value={this.state.category}
+                onValueChange={(category) => { this.setState({ category }); }}
+              />
+
+              <Input
+                headerText="Add title"
+                placeholder="Enter here"
+                multiline={false}
+                numberOfLines={1}
+                maxLength={120}
+                value={this.state.title}
+                onChangeText={(title) => { this.setState({ title }); }}
+                constants={constants}
+              />
+
+              <Input
+                headerText="Add Description"
+                placeholder="Enter here"
+                multiline={true}
+                numberOfLines={3}
+                maxLength={120}
+                value={this.state.description}
+                onChangeText={(description) => { this.setState({ description }); }}
+                constants={constants}
+              />
+
+              <PhotoUploadAndroid
+                headerText="Add Photos"
+                successCallback={(newImage) => { this.setState({ imageArr: [...this.state.imageArr, newImage] }); }}
+                imageArr={this.state.imageArr}
+              />
+            </ScrollView>
+
+            <TouchableOpacity
+              style={styles.bottom} onPress={() => this.onClick()}
+            >
+              <Text style={styles.bottomText} > Update </Text>
+            </TouchableOpacity>
+          </View>
+        }
       </View>
+
     );
   }
 }
@@ -137,12 +235,12 @@ const styles = StyleSheet.create({
 
 CreateList.propTypes = {
   addIssueForNewReview: PropTypes.func,
+  issue: PropTypes.object, 
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(store) {
   // to be updated
   return {
-    // rooms: state.rooms,
   };
 }
 
@@ -150,6 +248,9 @@ function mapDispatchToProps(dispatch) {
   return {
     addIssueForNewReview: (newIssue) => {
       return dispatch(Action.addIssueForNewReview(newIssue));
+    },
+    updateIssueForNewReview: (updatedIssue, index) => {
+      return dispatch(Action.updateIssueForNewReview(updatedIssue, index));
     },
   };
 }

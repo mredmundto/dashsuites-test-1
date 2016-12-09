@@ -12,7 +12,7 @@ import Elements from '../../../composeComponents/Form/Elements';
 import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
 import Action from './action';
-import IssueList from './IssueList';
+import IssueList from './../IssueList/IssueList';
 import constants from '../../../constants';
 
 const {

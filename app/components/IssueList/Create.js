@@ -33,9 +33,10 @@ class CreateList extends Component {
       flagged: false,
       issue: true,
       imageArr: [],
-      title: null,
+      title: '',
       createdAt: new Date().toString(),
-      category: null || 'cleaning', // to be set as some default values
+      category: null || 'Cleaning', // to be set as some default values
+      description: null,
     };
     this.onClick = this.onClick.bind(this);
   }
@@ -81,6 +82,16 @@ class CreateList extends Component {
             constants={constants}
           />
 
+          <Input
+            headerText="Add Description"
+            placeholder="Enter here"
+            multiline={true}
+            numberOfLines={3}
+            maxLength={120}
+            onChangeText={(description) => { this.setState({ description }); }}
+            constants={constants}
+          />
+
           <PhotoUploadAndroid
             headerText="Add Photos"
             successCallback={(newImage) => { this.setState({ imageArr: [...this.state.imageArr, newImage] }); }}
@@ -102,6 +113,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    paddingBottom: 70, // TODO hack to solve scroll bottom being clipped
+
   },
   insideContainer: {
     flex: 1,

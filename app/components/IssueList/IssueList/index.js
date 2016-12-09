@@ -6,8 +6,10 @@ import {
   Image,
   View,
   Text,
+  Dimensions,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import IssueItem from './IssueItem.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -32,8 +34,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const checkboxIcon = require('../../../app/resources/images/checkbox@3x.png');
-const checkboxFullIcon = require('../../../app/resources/images/checkboxfull@3x.png');
+const checkboxIcon = require('../../../../app/resources/images/checkbox@3x.png');
+const checkboxFullIcon = require('../../../../app/resources/images/checkboxfull@3x.png');
+const triangle = require('../../../../app/resources/images/triangle.png');
+
 const renderIssueIcon = (currPoint, fullPoint) => {
   const source = (currPoint === fullPoint) ? checkboxFullIcon : checkboxIcon;
   return (
@@ -104,41 +108,11 @@ class IssueList extends Component {
         <View>
           {data.map((issue, i) => {
             return (
-              <TouchableOpacity
-                key={i}
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  padding: 8,
-                  marginTop: 15,
-                  borderRadius: 5,
-                  borderWidth: 1,
-                  borderColor: 'grey',
-                }}
-              >
-                <Image
-                  style={{
-                    marginLeft: 5,
-                    height: 20,
-                    width: 20,
-                  }}
-                  resizeMode={'contain'}
-                  source={issue.flagged ? checkboxIcon : checkboxFullIcon}
+                <IssueItem
+                  key={i}
+                  i={i}
+                  issue={issue}
                 />
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    flexGrow: 1,
-                    marginLeft: 25,
-                  }}
-                >
-                  <Text>{issue.title}</Text>
-                  <Text>{issue.createdAt}</Text>
-                </View>
-              </TouchableOpacity>
             );
           })}
         </View>

@@ -17,7 +17,8 @@ import applyHeader from '../../../app/HOC/applyHeader';
 import HOC from '../../../app/HOC';
 // importing the constants for theme
 import constants from '../../../constants';
-import IssueList from './IssueList';
+// TODO: Refactor
+// import IssueList from './IssueList';
 
 
 import Action from './../List/action';

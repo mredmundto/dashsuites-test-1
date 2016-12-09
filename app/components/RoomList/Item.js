@@ -11,7 +11,6 @@ import constants from '../../../constants';
 import { Actions } from 'react-native-router-flux';
 import HOC from '../../HOC';
 import applyHeader from '../../HOC/applyHeader';
-import IssueList from '../ReviewList/IssueList';
 
 class RoomDetail extends Component {
   constructor(props) {
@@ -23,8 +22,6 @@ class RoomDetail extends Component {
     Actions.ReviewCreate();
   }
   render() {
-    // const roomIndex = this.props.data.split(' ')[0];
-    // const room = this.props.roomList.get(roomIndex).toJS();
     const room = this.props.room;
     return (
       <View style={{ flex: 1 }}>

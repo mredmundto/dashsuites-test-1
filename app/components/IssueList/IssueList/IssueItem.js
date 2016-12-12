@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
 
 const checkboxIcon = require('../../../../app/resources/images/checkbox@3x.png');
 const checkboxFullIcon = require('../../../../app/resources/images/checkboxfull@3x.png');
-const triangle = require('../../../../app/resources/images/triangle.png');
+const editIcon = require('../../../../app/resources/images/edit.png');
+const deleteIcon = require('../../../../app/resources/images/delete.png');
 
 const renderIssueIcon = (currPoint, fullPoint) => {
   const source = (currPoint === fullPoint) ? checkboxFullIcon : checkboxIcon;
@@ -142,8 +143,15 @@ class IssueItem extends Component {
               }}
               onPress={this.onClickEdit}
             >
-              <Text style={{ textAlign: 'center', color: '#3E50B4', fontSize: 16 }}>{'Edit'}</Text>
-
+            <Image
+              style={{
+                marginLeft: 10,
+                height: 20,
+                width: 20,
+              }}
+              resizeMode={'contain'}
+              source={editIcon}
+            />
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -154,7 +162,15 @@ class IssueItem extends Component {
               }}
               onPress={this.onClickDelete}
             >
-              <Text style={{ textAlign: 'center', color: '#3E50B4', fontSize: 16 }}>{'Delete'}</Text>
+            <Image
+              style={{
+                marginRight: 10,
+                height: 20,
+                width: 20,
+              }}
+              resizeMode={'contain'}
+              source={deleteIcon}
+            />
             </TouchableOpacity>
           </TouchableOpacity>
           <View
@@ -249,8 +265,6 @@ class IssueItem extends Component {
             }}
             onPress={this.onClickEdit}
           >
-            <Text style={{ textAlign: 'center', color: '#3E50B4', fontSize: 16 }}>{'Edit'}</Text>
-            {/*}
             <Image
               style={{
                 marginLeft: 10,
@@ -258,20 +272,27 @@ class IssueItem extends Component {
                 width: 20,
               }}
               resizeMode={'contain'}
-              source={triangle}
+              source={editIcon}
             />
-          */}
           </TouchableOpacity>
           <TouchableOpacity
             style={{
               padding: 5,
               borderRadius: 5,
-              //marginRight: 10,
+              // marginRight: 10,
               flexDirection: 'row',
             }}
             onPress={this.onClickDelete}
           >
-            <Text style={{ textAlign: 'center', color: '#3E50B4', fontSize: 16 }}>{'Delete'}</Text>
+            <Image
+              style={{
+                marginRight: 10,
+                height: 20,
+                width: 20,
+              }}
+              resizeMode={'contain'}
+              source={deleteIcon}
+            />
           </TouchableOpacity>
         </TouchableOpacity>
       }
